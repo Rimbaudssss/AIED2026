@@ -1,0 +1,24 @@
+AIED2026 Experiment Summary
+Started: 2025-12-17T14:36:06
+Device: cuda
+COMMON_KNOBS: {'batch_size': 512, 'seq_len': 50, 'device': 'auto', 'seed': 42, 'test_ratio': 0.2}
+
+[dataset=oulad] path=C:/Users/Administrator/Desktop/AIED2026/DataSet/OULAD/oulad_processed.npz n=24101 seq_len=50 d_x=4 a_vocab=20 t_vocab=2
+  [model=scm] ckpt=C:/Users/Administrator/Desktop/AIED2026/runs/exp_runner/oulad/scm/seed42/ckpt_scm_C_ep5.pt
+    metrics: auc=0.8712 rmse=0.3411 mmd=0.0066 policyY=0.6606
+
+  [model=rcgan] ckpt=C:/Users/Administrator/Desktop/AIED2026/runs/exp_runner/oulad/rcgan/seed42/ckpt_rcgan_B_ep10.pt
+    metrics: auc=0.8846 rmse=0.3355 mmd=0.0066 policyY=0.6508
+
+  [model=crn] ckpt=C:/Users/Administrator/Desktop/AIED2026/runs/exp_runner/oulad/crn/seed42/ckpt_crn_ep10.pt
+    metrics: auc=0.8714 rmse=0.3404 mmd=0.0073 policyY=0.6553
+
+  [model=diffusion] ckpt=C:/Users/Administrator/Desktop/AIED2026/runs/exp_runner/oulad/diffusion/seed42/ckpt_diffusion_ep10.pt
+    metrics: auc=nan rmse=nan mmd=0.0369 policyY=0.4403
+    predictive_note: predictive fidelity skipped for diffusion
+
+  [model=vae] ckpt=C:/Users/Administrator/Desktop/AIED2026/runs/exp_runner/oulad/vae/seed42/ckpt_vae_ep10.pt
+    metrics: auc=0.8845 rmse=0.3355 mmd=0.0067 policyY=0.6545
+
+
+Finished: 2025-12-17T14:40:41

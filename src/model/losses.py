@@ -49,7 +49,11 @@ def gradient_penalty(
     alpha = torch.rand(bsz, 1, 1, device=real_seq.device)
     interp = alpha * real_seq + (1.0 - alpha) * fake_seq
     interp = interp.requires_grad_(True)
-    scores = d_fn(interp, mask=mask)
+    # WGAN-GP requires higher-order gradients through `d_fn` (gp depends on d/dx of `d_fn`).
+    # CuDNN RNN kernels do not support double backward, so we disable CuDNN for this forward.
+    # This is particularly important when `d_fn` includes GRU/LSTM layers (e.g., SequenceDiscriminator).
+    with torch.backends.cudnn.flags(enabled=False):
+        scores = d_fn(interp, mask=mask)
     grad = torch.autograd.grad(
         outputs=scores.sum(),
         inputs=interp,
@@ -145,4 +149,3 @@ def policy_moment_loss(y_real: torch.Tensor, y_gen: torch.Tensor, mask: Optional
         y_gen = y_gen[..., None]
     diff = (y_real.mean(dim=0) - y_gen.mean(dim=0)).abs().mean(dim=-1)  # [T]
     return masked_mean(diff, mask.mean(dim=0) if mask is not None else None)
-

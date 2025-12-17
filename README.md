@@ -86,9 +86,9 @@ src/
 
 ## 统一入口（SCM + baselines）
 
-新增统一入口脚本：`python -m src.main`，用于在同一套数据接口上训练多种模型：
+新增统一入口脚本：`python -m src.main`，默认读取 `src/main.py` 顶部的配置区（`DATASET_PATHS / ACTIVE_DATASETS / ACTIVE_MODELS`），自动循环训练 + 评估，并输出 `results_summary.txt`：
 
-`python -m src.main --model {scm,rcgan,vae,diffusion,crn} --out_dir runs/NAME [--data_npz path/to/data.npz]`
+`python -m src.main [--datasets assist09,statics] [--models scm,crn] [--out_root runs/exp_runner] [--report_path results_summary.txt]`
 
 - GAN：`scm` / `rcgan`（WGAN-GP + supervised term）
 - 非对抗：`vae`（ELBO）、`diffusion`（denoising MSE）、`crn`（预测损失 + GRL 去偏）
