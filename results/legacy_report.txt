@@ -1,0 +1,6 @@
+[model=scm] metrics: tstr_auc=0.530128 trts_auc=0.690177 tstr_rmse=0.198594 trts_rmse=0.194125 ate_mae=0.000542 value_err=0.430102 policyY=0.983300 privacy_auc=0.492313 nn_mean=0.539625
+[model=rcgan] metrics: tstr_auc=0.464336 trts_auc=0.690179 tstr_rmse=0.198567 trts_rmse=0.194125 ate_mae=0.000594 value_err=0.423388 policyY=0.976565 privacy_auc=0.497934 nn_mean=0.547828
+[model=vae] metrics: tstr_auc=0.684503 trts_auc=0.690180 tstr_rmse=0.194663 trts_rmse=0.194125 ate_mae=0.006249 value_err=0.405877 policyY=0.959299 privacy_auc=0.505284 nn_mean=0.540714
+[model=diffusion] metrics: tstr_auc=0.676522 trts_auc=0.690177 tstr_rmse=0.346613 trts_rmse=0.194125 ate_mae=0.015365 value_err=nan policyY=nan privacy_auc=0.514761 nn_mean=0.610711
+[model=crn] metrics: tstr_auc=0.677287 trts_auc=0.690177 tstr_rmse=0.194785 trts_rmse=0.194125 ate_mae=0.007018 value_err=0.396175 policyY=0.949376 privacy_auc=0.496948 nn_mean=0.539345
+[model=timegan] metrics: tstr_auc=0.638285 trts_auc=0.690178 tstr_rmse=0.195797 trts_rmse=0.194125 ate_mae=0.004780 value_err=0.407822 policyY=0.961008 privacy_auc=0.490470 nn_mean=0.530523

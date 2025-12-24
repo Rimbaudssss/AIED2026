@@ -7,6 +7,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from baselines.timegan import TimeGAN, TimeGANConfig
+
 from .discriminators import SequenceDiscriminator, SequenceDiscriminatorConfig
 from .losses import bernoulli_nll_from_logits, grad_reverse, masked_mean
 from .policy import Policy
@@ -631,25 +633,57 @@ class SeqDiffusion(nn.Module):
         if mask is None:
             mask = torch.ones(bsz, steps, device=x.device)
 
+        if policy is not None:
+            raise NotImplementedError("SeqDiffusion does not support closed-loop policy rollouts.")
+
+        if t_obs is None and do_t is None:
+            raise ValueError("One of t_obs or do_t must be provided.")
+
         if t_obs is None:
-            if policy is None:
-                raise ValueError("One of t_obs or policy must be provided.")
-            t_list = []
-            dummy_h = torch.zeros(bsz, 1, device=x.device)
-            prev_y = torch.zeros(bsz, 1, device=x.device)
-            for ti in range(steps):
-                if do_t is not None and ti in do_t:
-                    t_t = do_t[ti]
-                else:
-                    t_t = policy.act(dummy_h, t_index=ti, x=x, a_t=a[:, ti], prev_y=prev_y)
-                t_list.append(t_t)
-            t_used = torch.stack(t_list, dim=1)
+            t_used = torch.zeros(
+                bsz,
+                steps,
+                device=x.device,
+                dtype=torch.long if self.cfg.t_is_discrete else torch.float32,
+            )
         else:
             t_used = t_obs[:, :steps].clone()
-            if do_t is not None:
-                for ti, val in do_t.items():
-                    if 0 <= int(ti) < steps:
-                        t_used[:, int(ti)] = val
+            t_used = t_used.long() if self.cfg.t_is_discrete else t_used.float()
+
+        if do_t is not None:
+            def _coerce_action(val: object) -> torch.Tensor:
+                if isinstance(val, torch.Tensor):
+                    v = val.to(x.device)
+                else:
+                    v = torch.tensor(val, device=x.device)
+                if v.ndim == 0:
+                    v = v.expand(bsz)
+                v = v.reshape(-1)
+                if v.numel() == 1:
+                    v = v.expand(bsz)
+                if v.numel() != bsz:
+                    raise ValueError("do_t action must be scalar or batch-sized tensor.")
+                return v.to(dtype=t_used.dtype)
+
+            if "all" in do_t:
+                v = _coerce_action(do_t["all"]).view(bsz, 1)
+                t_used[:, :steps] = v.expand(bsz, steps)
+            if "range" in do_t:
+                t_start, t_end, action = do_t["range"]
+                t_start = max(0, int(t_start))
+                t_end = min(steps - 1, int(t_end))
+                if t_start <= t_end:
+                    v = _coerce_action(action).view(bsz, 1)
+                    t_used[:, t_start : t_end + 1] = v.expand(bsz, t_end - t_start + 1)
+            for ti, val in do_t.items():
+                if ti in {"all", "range"}:
+                    continue
+                try:
+                    idx = int(ti)
+                except Exception:
+                    continue
+                if 0 <= idx < steps:
+                    t_used[:, idx] = _coerce_action(val)
 
         y = self.sample(x=x, a=a[:, :steps], t=t_used, mask=mask, eps=eps)
         if stochastic_y:
@@ -906,9 +940,22 @@ def load_rollout_model_from_checkpoint(ckpt: dict, *, device: torch.device) -> T
     elif model_name == "crn":
         cfg = CRNConfig(**cfg_dict)
         model = CRN(cfg).to(device)
+    elif model_name == "timegan":
+        cfg = TimeGANConfig(**cfg_dict)
+        model = TimeGAN(cfg).to(device)
     else:
         raise ValueError(f"Unknown model={model_name}")
 
     model.load_state_dict(state)
+    if model_name == "timegan":
+        # Optional: attach generation helpers without pushing large tensors to GPU.
+        if "reservoir" in ckpt and getattr(model, "_reservoir", None) is None:
+            res = ckpt["reservoir"]
+            if isinstance(res, dict):
+                model._reservoir = {k: torch.as_tensor(v).cpu() for k, v in res.items()}  # type: ignore[attr-defined]
+        if "x_mean" in ckpt and getattr(model, "_x_mean", None) is None:
+            model._x_mean = torch.as_tensor(ckpt["x_mean"]).cpu()  # type: ignore[attr-defined]
+        if "x_std" in ckpt and getattr(model, "_x_std", None) is None:
+            model._x_std = torch.as_tensor(ckpt["x_std"]).cpu()  # type: ignore[attr-defined]
     model.eval()
     return model, model_name

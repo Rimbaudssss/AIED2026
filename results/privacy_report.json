@@ -1,0 +1,122 @@
+[
+  {
+    "dataset": "oulad",
+    "model": "scm",
+    "nn_distance": {
+      "metric": "embedding_l2",
+      "mean": 0.5396254565494019,
+      "p01": 0.1626358810067177,
+      "p05": 0.22263135388493538,
+      "p10": 0.27333581149578096
+    },
+    "mia": {
+      "attack_auc": 0.4923130663422627,
+      "attack_acc": 0.7964100141709967,
+      "features": [
+        "recon_error",
+        "avg_confidence",
+        "nn_distance"
+      ]
+    }
+  },
+  {
+    "dataset": "oulad",
+    "model": "rcgan",
+    "nn_distance": {
+      "metric": "embedding_l2",
+      "mean": 0.5478276394351269,
+      "p01": 0.1658167703449726,
+      "p05": 0.2311115600168705,
+      "p10": 0.26800674498081206
+    },
+    "mia": {
+      "attack_auc": 0.4979340959640024,
+      "attack_acc": 0.7964100141709967,
+      "features": [
+        "recon_error",
+        "avg_confidence",
+        "nn_distance"
+      ]
+    }
+  },
+  {
+    "dataset": "oulad",
+    "model": "vae",
+    "nn_distance": {
+      "metric": "embedding_l2",
+      "mean": 0.5407141380565008,
+      "p01": 0.16450988218188287,
+      "p05": 0.23335869759321212,
+      "p10": 0.2718569427728653
+    },
+    "mia": {
+      "attack_auc": 0.5052837968964498,
+      "attack_acc": 0.7964100141709967,
+      "features": [
+        "recon_error",
+        "avg_confidence",
+        "nn_distance"
+      ]
+    }
+  },
+  {
+    "dataset": "oulad",
+    "model": "diffusion",
+    "nn_distance": {
+      "metric": "embedding_l2",
+      "mean": 0.6107108848373173,
+      "p01": 0.21279683485627174,
+      "p05": 0.28186661154031756,
+      "p10": 0.3369643151760101
+    },
+    "mia": {
+      "attack_auc": 0.5147613285272127,
+      "attack_acc": 0.7964100141709967,
+      "features": [
+        "recon_error",
+        "avg_confidence",
+        "nn_distance"
+      ]
+    }
+  },
+  {
+    "dataset": "oulad",
+    "model": "crn",
+    "nn_distance": {
+      "metric": "embedding_l2",
+      "mean": 0.5393447363458108,
+      "p01": 0.1876930981874466,
+      "p05": 0.25803684145212175,
+      "p10": 0.2900452852249146
+    },
+    "mia": {
+      "attack_auc": 0.4969480858850941,
+      "attack_acc": 0.7964100141709967,
+      "features": [
+        "recon_error",
+        "avg_confidence",
+        "nn_distance"
+      ]
+    }
+  },
+  {
+    "dataset": "oulad",
+    "model": "timegan",
+    "nn_distance": {
+      "metric": "embedding_l2",
+      "mean": 0.530523359811923,
+      "p01": 0.1701781740784645,
+      "p05": 0.220160810649395,
+      "p10": 0.26295554637908936
+    },
+    "mia": {
+      "attack_auc": 0.490469945385271,
+      "attack_acc": 0.7964100141709967,
+      "features": [
+        "recon_error",
+        "avg_confidence",
+        "nn_distance"
+      ]
+    }
+  }
+]

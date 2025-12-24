@@ -1,6 +1,17 @@
 from .scm_generator import SCMGenerator, SCMGeneratorConfig
 from .policy import ConstantPolicy, DoIntervention, Policy, RandomPolicy
-from .baselines import CRN, CRNConfig, RCGANConfig, RCGANGenerator, SeqDiffusion, SeqDiffusionConfig, SeqVAE, SeqVAEConfig
+from .baselines import (
+    CRN,
+    CRNConfig,
+    RCGANConfig,
+    RCGANGenerator,
+    SeqDiffusion,
+    SeqDiffusionConfig,
+    SeqVAE,
+    SeqVAEConfig,
+    TimeGAN,
+    TimeGANConfig,
+)
 from .discriminators import SequenceDiscriminator, SequenceDiscriminatorConfig
 
 __all__ = [
@@ -18,6 +29,8 @@ __all__ = [
     "SeqDiffusionConfig",
     "CRN",
     "CRNConfig",
+    "TimeGAN",
+    "TimeGANConfig",
     "SequenceDiscriminator",
     "SequenceDiscriminatorConfig",
 ]

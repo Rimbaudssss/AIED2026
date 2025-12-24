@@ -18,6 +18,33 @@ class SequenceBatch:
     mask: torch.Tensor  # [B, T] bool/float
 
 
+@dataclass(frozen=True)
+class TrajectoryBatch:
+    """Unified trajectory batch structure used across baselines and estimators."""
+
+    X: torch.Tensor  # [B, d_x]
+    A: torch.Tensor  # [B, T, d_a] or [B, T] if discrete
+    T: torch.Tensor  # [B, T] discrete action ids
+    Y: torch.Tensor  # [B, T] outcome (0/1 for binary)
+    mask: torch.Tensor  # [B, T] bool/float
+    lengths: torch.Tensor  # [B] int64
+
+    def to(self, device: torch.device) -> "TrajectoryBatch":
+        return TrajectoryBatch(
+            X=_as_tensor(self.X, device=device),
+            A=_as_tensor(self.A, device=device),
+            T=_as_tensor(self.T, device=device),
+            Y=_as_tensor(self.Y, device=device),
+            mask=_as_tensor(self.mask, device=device),
+            lengths=_as_tensor(self.lengths, device=device),
+        )
+
+
+def compute_lengths(mask: torch.Tensor) -> torch.Tensor:
+    m = mask.float()
+    return m.sum(dim=1).clamp(min=1.0).long()
+
+
 def _as_tensor(x: Any, *, device: Optional[torch.device] = None) -> torch.Tensor:
     t = x if isinstance(x, torch.Tensor) else torch.as_tensor(x)
     if device is not None:
@@ -235,6 +262,40 @@ class IRTSyntheticDataset(Dataset):
         }
 
 
+class TrajectoryDataset(Dataset):
+    """Dataset wrapper that yields TrajectoryBatch-style samples."""
+
+    def __init__(self, *, X: torch.Tensor, A: torch.Tensor, T: torch.Tensor, Y: torch.Tensor, mask: torch.Tensor):
+        if X.ndim != 2:
+            raise ValueError(f"X must be [N,d_x], got {tuple(X.shape)}")
+        if A.ndim not in (2, 3):
+            raise ValueError(f"A must be [N,T] or [N,T,d_a], got {tuple(A.shape)}")
+        if T.ndim != 2:
+            raise ValueError(f"T must be [N,T], got {tuple(T.shape)}")
+        if Y.ndim != 2:
+            raise ValueError(f"Y must be [N,T], got {tuple(Y.shape)}")
+        if mask.ndim != 2:
+            raise ValueError(f"mask must be [N,T], got {tuple(mask.shape)}")
+        self.X = X
+        self.A = A
+        self.T = T
+        self.Y = Y
+        self.mask = mask
+        self.n = int(X.shape[0])
+
+    def __len__(self) -> int:
+        return self.n
+
+    def __getitem__(self, idx: int) -> Dict[str, torch.Tensor]:
+        return {
+            "X": self.X[int(idx)],
+            "A": self.A[int(idx)],
+            "T": self.T[int(idx)],
+            "Y": self.Y[int(idx)],
+            "mask": self.mask[int(idx)],
+        }
+
+
 def make_dataloader(
     dataset: Dataset,
     *,
@@ -260,6 +321,33 @@ def make_dataloader(
     )
 
 
+def make_trajectory_dataloader(
+    dataset: Dataset,
+    *,
+    batch_size: int = 64,
+    shuffle: bool = True,
+    num_workers: int = 0,
+    drop_last: bool = False,
+) -> DataLoader:
+    def collate(examples: list[Dict[str, torch.Tensor]]) -> TrajectoryBatch:
+        x = torch.stack([e["X"] for e in examples], dim=0)
+        a = torch.stack([e["A"] for e in examples], dim=0)
+        t = torch.stack([e["T"] for e in examples], dim=0)
+        y = torch.stack([e["Y"] for e in examples], dim=0)
+        m = torch.stack([e["mask"] for e in examples], dim=0)
+        lengths = compute_lengths(m)
+        return TrajectoryBatch(X=x, A=a, T=t, Y=y, mask=m, lengths=lengths)
+
+    return DataLoader(
+        dataset,
+        batch_size=batch_size,
+        shuffle=shuffle,
+        num_workers=num_workers,
+        collate_fn=collate,
+        drop_last=drop_last,
+    )
+
+
 def move_batch(batch: SequenceBatch, device: torch.device) -> SequenceBatch:
     return SequenceBatch(
         X=_as_tensor(batch.X, device=device),
@@ -268,3 +356,7 @@ def move_batch(batch: SequenceBatch, device: torch.device) -> SequenceBatch:
         Y=_as_tensor(batch.Y, device=device),
         mask=_as_tensor(batch.mask, device=device),
     )
+
+
+def move_trajectory_batch(batch: TrajectoryBatch, device: torch.device) -> TrajectoryBatch:
+    return batch.to(device)

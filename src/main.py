@@ -1,14 +1,20 @@
 from __future__ import annotations
 
 import sys
+import csv
+import json
 import argparse
 from dataclasses import asdict
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Optional, TextIO
 
 import numpy as np
+import pandas as pd
 import torch
+
+
+
 from torch.utils.data import DataLoader, Dataset, Subset
 
 # Allow running as a script (e.g., `python src/main.py`) as well as a module (`python -m src.main`).
@@ -16,8 +22,27 @@ if __package__ in (None, ""):
     _repo_root_for_imports = Path(__file__).resolve().parents[1]
     if str(_repo_root_for_imports) not in sys.path:
         sys.path.insert(0, str(_repo_root_for_imports))
+    # Ensure imports like `import src.main` resolve to this running module (avoid a second import copy).
+    sys.modules.setdefault("src.main", sys.modules[__name__])
 
-from src.data import NPZSequenceDataset, SequenceBatch, move_batch
+from src.data import (
+    NPZSequenceDataset,
+    SequenceBatch,
+    TrajectoryBatch,
+    TrajectoryDataset,
+    compute_lengths,
+    make_trajectory_dataloader,
+    move_batch,
+    move_trajectory_batch,
+)
+from src.baselines import load_base_model_from_checkpoint
+from src.causal_estimators import GFormula, IPTWMSM
+from src.eval.causal_bias import compute_causal_bias, compute_policy_values
+from src.eval.tstr_trts import run_tstr_trts
+from src.privacy.mia_shadow import mia_to_dataframe, run_synth_membership_inference
+from src.privacy.nn_distance import compute_nn_distance
+from src.utils.manifest import add_artifact, write_manifest
+from src.vis import run_visualization
 from src.model.baselines import (
     CRN,
     CRNConfig,
@@ -25,8 +50,11 @@ from src.model.baselines import (
     RCGANGenerator,
     SeqDiffusion,
     SeqDiffusionConfig,
+    
     SeqVAE,
     SeqVAEConfig,
+    TimeGAN,
+    TimeGANConfig,
     load_rollout_model_from_checkpoint,
 )
 from src.model.discriminators import SequenceDiscriminator, SequenceDiscriminatorConfig
@@ -45,56 +73,81 @@ DATASET_PATHS = {
 
 # Choose which datasets / models to run
 ACTIVE_DATASETS = ["oulad"]  # options: ["assist09", "oulad", "statics"]
-ACTIVE_MODELS = ["scm", "rcgan", "crn", "diffusion", "vae"]  # options: ["scm", "rcgan", "vae", "diffusion", "crn"]
+ACTIVE_MODELS = ["scm", "rcgan", "vae", "diffusion", "crn", "timegan"]  # options: ["scm", "rcgan", "vae", "diffusion", "crn", "timegan"]
 
 # Common training knobs (defaults)
 COMMON_KNOBS = dict(
-    batch_size=512,
+
+
+    batch_size=256,
     seq_len=50,  # will truncate if npz is longer
     device="auto",
     seed=42,
+    
     test_ratio=0.2,  # split held-out set for predictive fidelity
+    keep_checkpoints=False,  # if False, delete *.pt after metrics/vis
 )
 
 # Model-specific knobs (override defaults)
 MODEL_KNOBS = {
+
+
     "scm": dict(
-        epochs_a=5,
-        epochs_b=5,
-        epochs_c=5,
+        epochs_a=30,
+        epochs_b=30,
+        epochs_c=15,
         dynamics="transformer",
         d_k=64,
         w_do=1.0,
-        w_advT=0.1,
-        w_cf=0.0,
+
+        w_advT=0.05,
+        w_cf=0.01,
+        cf_interval=10,
         grl_lambda=1.0,
         lr_advT=1e-4,
         do_time_sampling="random",
-        do_num_time_samples=1,
-        do_min_arm_samples=8,
+        do_num_time_samples=2,
+        do_min_arm_samples=16,
         do_actions="0,1",
         cf_num_time_samples=1,
     ),
     "rcgan": dict(
-        epochs_a=0,
-        epochs_b=10,
-        epochs_c=0,
+        epochs_a=30,
+        epochs_b=30,
+        epochs_c=10,
         rnn="gru",
         rcgan_hidden=128,
     ),
     "crn": dict(
-        epochs=10,
+        epochs=30,
         crn_hidden=128,
         crn_grl_lambda=1.0,
     ),
     "diffusion": dict(
-        epochs=10,
+        epochs=30,
         diff_steps=50,
         diff_backbone="transformer",
     ),
     "vae": dict(
-        epochs=10,
+        epochs=30,
         vae_z_dim=32,
+    ),
+    "timegan": dict(
+        epochs_embed=3,
+        epochs_supervisor=3,
+        epochs_joint=5,
+        timegan_hidden=64,
+        timegan_num_layers=2,
+        timegan_z_dim=16,
+        x_emb_dim=32,
+        lambda_sup=10.0,
+        lambda_mom=1.0,
+        lr_embed=1e-3,
+        lr_gen=1e-3,
+        lr_disc=1e-3,
+        max_batches_per_epoch=200,
+        reservoir_size=2048,
+        gen_samples=512,
     ),
 }
 # =================================
@@ -204,6 +257,236 @@ def _split_indices(n: int, *, test_ratio: float, seed: int) -> tuple[list[int], 
     return train_idx, test_idx
 
 
+def _batch_from_dataset(ds: NPZSequenceDataset) -> TrajectoryBatch:
+    X = torch.as_tensor(ds.X).float()
+    A = torch.as_tensor(ds.A)
+    T = torch.as_tensor(ds.T).long()
+    Y = torch.as_tensor(ds.Y).float()
+    M = torch.as_tensor(ds.M).float()
+    return TrajectoryBatch(X=X, A=A, T=T, Y=Y, mask=M, lengths=compute_lengths(M))
+
+
+def _perturb_batch_for_privacy(
+    batch: TrajectoryBatch,
+    ref_batch: TrajectoryBatch,
+    meta: dict[str, Any],
+    *,
+    x_noise_scale: float = 1.0,
+    a_flip_prob: float = 0.4,
+    t_flip_prob: float = 0.4,
+) -> TrajectoryBatch:
+    """Perturb X/A/T to create synthetic conditions that are distinct from originals."""
+    # Perturb X with Gaussian noise
+    X = batch.X.float()
+    x_std = ref_batch.X.float().std(dim=0, unbiased=False)
+    x_std = torch.where(x_std > 0, x_std, torch.ones_like(x_std))
+    X = X + torch.randn_like(X) * x_std * float(x_noise_scale)
+
+    # Perturb A
+    mask = batch.mask
+    A = batch.A
+    if A.ndim == 2:  # discrete
+        a_vocab = int(meta.get("a_vocab_size", 0) or int(ref_batch.A.max().item()) + 1)
+        a_vocab = max(1, a_vocab)
+        replace_mask = (torch.rand(A.shape, device=A.device) < a_flip_prob) & (mask > 0.5)
+        if replace_mask.any():
+            A = A.clone()
+            new_vals = torch.randint(0, a_vocab, size=A.shape, device=A.device, dtype=A.dtype)
+            A[replace_mask] = new_vals[replace_mask]
+    else:  # continuous
+        a_std = ref_batch.A.float().std(dim=(0, 1), unbiased=False)
+        a_std = torch.where(a_std > 0, a_std, torch.ones_like(a_std))
+        noise = torch.randn_like(A.float()) * a_std * float(x_noise_scale)
+        A = A.float() + noise * mask.unsqueeze(-1)
+
+    # Perturb T
+    T = batch.T
+    if bool(meta.get("t_is_discrete", True)):
+        t_vocab = int(meta.get("t_vocab_size", 0) or int(ref_batch.T.max().item()) + 1)
+        t_vocab = max(1, t_vocab)
+        replace_mask = (torch.rand(T.shape, device=T.device) < t_flip_prob) & (mask > 0.5)
+        if replace_mask.any():
+            T = T.clone()
+            new_vals = torch.randint(0, t_vocab, size=T.shape, device=T.device, dtype=T.dtype)
+            T[replace_mask] = new_vals[replace_mask]
+    else:
+        t_std = ref_batch.T.float().std(dim=0, unbiased=False)
+        t_scale = float(torch.mean(t_std).item()) if t_std.numel() else 1.0
+        T = T.float() + torch.randn_like(T.float()) * t_scale * float(x_noise_scale) * mask
+
+    lengths = compute_lengths(mask)
+    return TrajectoryBatch(X=X, A=A, T=T, Y=batch.Y, mask=mask, lengths=lengths)
+
+
+def _subset_batch(batch: TrajectoryBatch, indices: list[int]) -> TrajectoryBatch:
+    if not indices:
+        return TrajectoryBatch(
+            X=batch.X[:0],
+            A=batch.A[:0],
+            T=batch.T[:0],
+            Y=batch.Y[:0],
+            mask=batch.mask[:0],
+            lengths=batch.lengths[:0],
+        )
+    idx = torch.as_tensor(indices, dtype=torch.long)
+    return TrajectoryBatch(
+        X=batch.X[idx],
+        A=batch.A[idx],
+        T=batch.T[idx],
+        Y=batch.Y[idx],
+        mask=batch.mask[idx],
+        lengths=batch.lengths[idx],
+    )
+
+
+def _parse_int_list(text: str, *, default: list[int]) -> list[int]:
+    if text is None:
+        return list(default)
+    items = [s.strip() for s in str(text).split(",") if s.strip()]
+    return [int(x) for x in items] if items else list(default)
+
+
+def _parse_str_list(text: str, *, default: list[str]) -> list[str]:
+    if text is None:
+        return list(default)
+    items = [s.strip() for s in str(text).split(",") if s.strip()]
+    return items if items else list(default)
+
+
+def _build_subgroups(batch: TrajectoryBatch, names: list[str]) -> list[dict]:
+    subgroups = []
+    x0 = None
+    if batch.X.shape[1] > 0:
+        x0 = batch.X[:, 0].detach().cpu().numpy()
+    else:
+        y_mean = (batch.Y * batch.mask).sum(dim=1) / batch.mask.sum(dim=1).clamp(min=1.0)
+        x0 = y_mean.detach().cpu().numpy()
+
+    median = float(np.median(x0))
+    for name in names:
+        if name == "all":
+            subgroups.append({"name": "all"})
+        elif name == "low":
+            subgroups.append({"name": "low", "mask": x0 <= median})
+        elif name == "high":
+            subgroups.append({"name": "high", "mask": x0 > median})
+    return subgroups
+
+
+def _write_vis_summary_models(report_f: TextIO, *, vis_out_dir: Path) -> None:
+    """Append the visualizer's per-model summary metrics to the main report."""
+
+    summary_models_csv = Path(vis_out_dir) / "summary_models.csv"
+    if not summary_models_csv.exists():
+        report_f.write("  vis_summary_models_csv: (missing)\n")
+        return
+
+    def _format_path(value: str) -> str:
+        if not value:
+            return ""
+        try:
+            p = Path(value)
+            if not p.is_absolute():
+                p = (Path(vis_out_dir) / p).resolve()
+            else:
+                p = p.resolve()
+            try:
+                return p.relative_to(_REPO_ROOT).as_posix()
+            except Exception:
+                return p.as_posix()
+        except Exception:
+            return str(value)
+
+    report_f.write(f"  vis_summary_models_csv: {summary_models_csv.as_posix()}\n")
+    report_f.write("  vis_summary_models:\n")
+
+    try:
+        with summary_models_csv.open("r", encoding="utf-8", newline="") as f:
+            reader = csv.DictReader(f)
+            if reader.fieldnames is None:
+                report_f.write("    (empty)\n\n")
+                return
+
+            path_fields = {k for k in reader.fieldnames if k.endswith("_png") or k.endswith("_csv")}
+            for row in reader:
+                model = (row.get("model") or "").strip() or "UNKNOWN"
+                report_f.write(f"    [model={model}]\n")
+                for key in reader.fieldnames:
+                    if key == "model":
+                        continue
+                    value = (row.get(key) or "").strip()
+                    if key in path_fields:
+                        value = _format_path(value)
+                    report_f.write(f"      {key}: {value}\n")
+                report_f.write("\n")
+    except Exception as e:
+        report_f.write(f"  vis_summary_models_error: {e}\n\n")
+
+
+def write_results_summary(
+    metrics_tables: dict[str, pd.DataFrame],
+    out_txt: str,
+) -> None:
+    out_path = Path(out_txt)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    id_candidates = ["model", "dataset", "ref_estimator", "predictor", "setting", "policy", "metric"]
+    with out_path.open("w", encoding="utf-8") as f:
+        for name, df in metrics_tables.items():
+            f.write(f"{name}\n")
+            if df is None or df.empty:
+                f.write("(empty)\n\n")
+                continue
+            id_cols = [c for c in id_candidates if c in df.columns]
+            num_cols = list(df.select_dtypes(include=[np.number]).columns)
+            num_cols = [c for c in num_cols if c not in id_cols]
+            if not id_cols and not num_cols:
+                f.write("(empty)\n\n")
+                continue
+            out_df = df[id_cols + num_cols].copy()
+            sort_cols = [c for c in ["model", "predictor", "setting", "policy"] if c in out_df.columns]
+            if sort_cols:
+                out_df = out_df.sort_values(sort_cols)
+            f.write(out_df.to_string(index=False))
+            f.write("\n\n")
+
+
+def _safe_nanmean(values: np.ndarray) -> float:
+    arr = np.asarray(values, dtype=np.float64)
+    if arr.size == 0 or not np.isfinite(arr).any():
+        return float("nan")
+    return float(np.nanmean(arr))
+
+
+def _format_legacy_metric(value: object) -> str:
+    try:
+        num = float(value)
+    except Exception:
+        return "nan"
+    if not np.isfinite(num):
+        return "nan"
+    return f"{num:.6f}"
+
+
+def _append_legacy_line(path: Path, line: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as f:
+        f.write(line)
+        f.write("\n")
+
+
+def _extract_tstr_metrics(df: pd.DataFrame) -> dict[str, float]:
+    out = {"tstr_auc": float("nan"), "trts_auc": float("nan"), "tstr_rmse": float("nan"), "trts_rmse": float("nan")}
+    if df is None or df.empty:
+        return out
+    for setting, prefix in (("TSTR", "tstr"), ("TRTS", "trts")):
+        rows = df[df["setting"] == setting]
+        if rows.empty:
+            continue
+        out[f"{prefix}_auc"] = float(rows["auc"].iloc[0])
+        out[f"{prefix}_rmse"] = float(rows["rmse"].iloc[0])
+    return out
+
+
 def _roc_auc_score(y_true: np.ndarray, y_score: np.ndarray) -> float:
     y_true = np.asarray(y_true).astype(np.int64)
     y_score = np.asarray(y_score).astype(np.float64)
@@ -270,6 +553,13 @@ def _predictive_fidelity(
                 mu, _logvar = model.encode(x=X, a=A, t=T, y=Y, mask=M)  # type: ignore[attr-defined]
                 out = model.decode(  # type: ignore[attr-defined]
                     x=X, a=A, t=T, mask=M, z=mu, y=Y, teacher_forcing=True, stochastic_y=False
+                )
+                y_prob = torch.sigmoid(out["y_logits"])
+            elif model_name == "timegan":
+                z_dim = int(getattr(getattr(model, "cfg", None), "z_dim", 16))
+                z = torch.zeros(A.shape[0], A.shape[1], z_dim, device=device)
+                out = model.teacher_forcing(  # type: ignore[attr-defined]
+                    x=X, a=A, t=T, y=None, mask=M, z=z, stochastic_y=False
                 )
                 y_prob = torch.sigmoid(out["y_logits"])
             else:
@@ -432,6 +722,11 @@ def _train_scm_or_rcgan(
     w_cf = float(knobs.get("w_cf", 0.0))
     grl_lambda = float(knobs.get("grl_lambda", 1.0))
     lr_advT = float(knobs.get("lr_advT", 1e-4))
+    save_checkpoints = bool(knobs.get("save_checkpoints", True))
+    ckpt_every = max(1, int(knobs.get("ckpt_every", 1)))
+    disc_input = str(knobs.get("disc_input", "logits"))
+    do_horizon = int(knobs.get("do_horizon", 0))
+    ref_estimator = knobs.get("ref_estimator", None)
 
     # Causal knobs (ported from src/train.py)
     do_time_index = int(knobs.get("do_time_index", 5))
@@ -440,6 +735,7 @@ def _train_scm_or_rcgan(
     do_min_arm_samples = int(knobs.get("do_min_arm_samples", 8))
     do_actions_raw = knobs.get("do_actions", "0,1")
     cf_num_time_samples = int(knobs.get("cf_num_time_samples", 1))
+    cf_interval = max(1, int(knobs.get("cf_interval", 10)))
 
     log_every = int(knobs.get("log_every", 50))
     log_every = max(1, log_every)
@@ -542,6 +838,8 @@ def _train_scm_or_rcgan(
     opt_g = torch.optim.Adam(gen.parameters(), lr=lr_g)
     opt_d = torch.optim.Adam(disc.parameters(), lr=lr_d)
 
+    last_ckpt_payload: Optional[dict[str, Any]] = None
+
     def save_ckpt(stage: str, epoch: int) -> Path:
         ckpt = {
             "model": model_name,
@@ -553,7 +851,10 @@ def _train_scm_or_rcgan(
             "disc_state": disc.state_dict(),
         }
         path = out_dir / f"ckpt_{model_name}_{stage}_ep{epoch}.pt"
-        torch.save(ckpt, path)
+        nonlocal last_ckpt_payload
+        last_ckpt_payload = ckpt
+        if save_checkpoints and (int(epoch) % ckpt_every == 0):
+            torch.save(ckpt, path)
         return path
 
     last_ckpt = save_ckpt("A", 0)
@@ -637,9 +938,20 @@ def _train_scm_or_rcgan(
 
                 ro = gen.rollout(x=X, a=A, t_obs=T, mask=M, stochastic_y=False)  # type: ignore[attr-defined]
                 y_fake = ro["y"]
+                y_fake_in = y_fake
+                y_real_in = Y
+                if disc_input == "logits":
+                    y_fake_in = ro.get("y_logits", None)
+                    if y_fake_in is None:
+                        y_fake_in = torch.log(torch.clamp(y_fake, 0.01, 0.99) / torch.clamp(1.0 - y_fake, 0.01, 0.99))
+                    y_real_in = torch.log(torch.clamp(Y, 0.01, 0.99) / torch.clamp(1.0 - Y, 0.01, 0.99))
+                elif disc_input == "sampled":
+                    u = torch.rand_like(y_fake)
+                    y_hard = (y_fake > u).float()
+                    y_fake_in = y_hard + (y_fake - y_fake.detach())
 
-                real_seq = disc.encode_inputs(x=X, a=A, t=T, y=Y)
-                fake_seq = disc.encode_inputs(x=X, a=A, t=T, y=y_fake.detach())
+                real_seq = disc.encode_inputs(x=X, a=A, t=T, y=y_real_in)
+                fake_seq = disc.encode_inputs(x=X, a=A, t=T, y=y_fake_in.detach())
 
                 loss_d = wgan_gp_d_loss(disc, real_seq, fake_seq, gp_weight=gp_weight, mask=M)
                 opt_d.zero_grad(set_to_none=True)
@@ -674,8 +986,57 @@ def _train_scm_or_rcgan(
                     loss_sup = ((k_pred - k_tf[:, 1:, :]).pow(2).mean(dim=-1) * M).sum() / M.sum().clamp(min=1.0)
 
                     if enable_causal and bool(gen_cfg.t_is_discrete) and T.ndim == 2:
-                        # (A) do-alignment: MMD over features (X, K_t, Y_t) across arms
-                        if w_do > 0.0:
+                        if w_do > 0.0 and do_horizon > 0 and ref_estimator is not None:
+                            t0 = int(torch.randint(low=0, high=seq_len, size=(1,), device=device).item())
+                            action = int(
+                                do_actions[
+                                    int(torch.randint(low=0, high=len(do_actions), size=(1,), device=device).item())
+                                ]
+                            )
+                            horizon_eff = min(int(do_horizon), max(0, seq_len - t0 - 1))
+                            steps = t0 + horizon_eff + 1
+                            t_do = torch.full((bsz,), action, device=device, dtype=T.dtype)
+                            ro_do = gen.rollout(  # type: ignore[attr-defined]
+                                x=X,
+                                a=A,
+                                t_obs=T,
+                                do_t={t0: t_do},
+                                mask=M,
+                                eps=eps_seq,
+                                steps=steps,
+                                stochastic_y=False,
+                            )
+                            y_do = ro_do["y"]
+                            if y_do.ndim == 3 and y_do.shape[-1] == 1:
+                                y_do = y_do.squeeze(-1)
+                            y_slice = y_do[:, t0:steps]
+                            m_slice = M[:, t0:steps]
+                            gen_mu = (y_slice * m_slice).sum(dim=0) / m_slice.sum(dim=0).clamp(min=1.0)
+                            batch_ref = TrajectoryBatch(
+                                X=X.detach().cpu(),
+                                A=A.detach().cpu(),
+                                T=T.detach().cpu(),
+                                Y=Y.detach().cpu(),
+                                mask=M.detach().cpu(),
+                                lengths=compute_lengths(M.detach().cpu()),
+                            )
+                            ref = ref_estimator.estimate_do(
+                                batch_ref,
+                                t0=t0,
+                                horizon=int(horizon_eff),
+                                action=int(action),
+                                subgroup={"name": "all"},
+                                n_boot=1,
+                                seed=int(knobs.get("seed", 0)),
+                            )
+                            ref_mu = torch.as_tensor(ref["mu"], device=device).float()
+                            loss_do = torch.mean((gen_mu[: ref_mu.shape[0]] - ref_mu) ** 2)
+                            print(
+                                f"      loss_do_multistep={float(loss_do.item()):.4f} "
+                                f"do_horizon={int(horizon_eff)} t0_sampled={t0}"
+                            )
+                        elif w_do > 0.0:
+                            # Fallback: single-step MMD alignment (legacy).
                             if do_time_sampling == "fixed":
                                 do_time_indices = [int(do_time_index)]
                             elif do_time_sampling == "random":
@@ -729,7 +1090,10 @@ def _train_scm_or_rcgan(
                             loss_advT = treatment_ce_loss(t_logits_adv, T.long(), mask=M)
 
                         # (C) counterfactual consistency: K_{0:t} must not change when intervening at t
-                        if w_cf > 0.0:
+                        # This is expensive for autoregressive rollouts (especially with transformer dynamics),
+                        # so we optionally compute it only every `cf_interval` steps.
+                        do_cf_now = (steps % cf_interval == 0) if cf_interval > 1 else True
+                        if w_cf > 0.0 and do_cf_now:
                             num_actions = max(1, int(t_vocab_size))
                             cf_time_indices = torch.randint(
                                 low=0, high=seq_len, size=(int(cf_num_time_samples),), device=device
@@ -765,7 +1129,7 @@ def _train_scm_or_rcgan(
                     loss_y = bernoulli_nll_from_logits(tf["y_logits"], Y, mask=M)
                     loss_sup = torch.tensor(0.0, device=device)
 
-                fake_seq_g = disc.encode_inputs(x=X, a=A, t=T, y=y_fake)
+                fake_seq_g = disc.encode_inputs(x=X, a=A, t=T, y=y_fake_in)
                 loss_adv = wgan_g_loss(disc, fake_seq_g, mask=M)
 
                 loss_g = w_y * loss_y + w_sup * loss_sup + w_adv * loss_adv
@@ -806,6 +1170,12 @@ def _train_scm_or_rcgan(
             print(msg)
             last_ckpt = save_ckpt(stage_name, ep)
 
+    if not save_checkpoints:
+        if last_ckpt_payload is None:
+            raise RuntimeError("No checkpoint payload captured; training loop may have not executed.")
+        # Materialize a single checkpoint for downstream evaluation/visualization.
+        torch.save(last_ckpt_payload, last_ckpt)
+
     return last_ckpt
 
 
@@ -822,6 +1192,7 @@ def _train_vae(
     lr = float(knobs.get("lr", 1e-3))
     kl_weight = float(knobs.get("vae_kl_weight", 0.1))
     dropout = float(knobs.get("dropout", 0.1))
+    save_checkpoints = bool(knobs.get("save_checkpoints", True))
     a_emb_dim = int(knobs.get("a_emb_dim", 32))
     t_emb_dim = int(knobs.get("t_emb_dim", 16))
 
@@ -845,10 +1216,15 @@ def _train_vae(
     opt = torch.optim.Adam(model.parameters(), lr=lr)
     log_every = max(1, int(knobs.get("log_every", 50)))
 
+    last_ckpt_payload: Optional[dict[str, Any]] = None
+
     def save_ckpt(epoch: int) -> Path:
         ckpt = {"model": "vae", "epoch": int(epoch), "model_cfg": asdict(cfg), "model_state": model.state_dict()}
         path = out_dir / f"ckpt_vae_ep{epoch}.pt"
-        torch.save(ckpt, path)
+        nonlocal last_ckpt_payload
+        last_ckpt_payload = ckpt
+        if save_checkpoints:
+            torch.save(ckpt, path)
         return path
 
     last_ckpt = save_ckpt(0)
@@ -874,6 +1250,11 @@ def _train_vae(
         print(f"      VAE | Epoch {ep}/{epochs} | AvgLoss {total_loss / max(1, steps):.4f}")
         last_ckpt = save_ckpt(ep)
 
+    if not save_checkpoints:
+        if last_ckpt_payload is None:
+            raise RuntimeError("No checkpoint payload captured; training loop may have not executed.")
+        torch.save(last_ckpt_payload, last_ckpt)
+
     return last_ckpt
 
 
@@ -889,6 +1270,7 @@ def _train_diffusion(
     epochs = int(knobs.get("epochs", 10))
     lr = float(knobs.get("lr", 1e-3))
     dropout = float(knobs.get("dropout", 0.1))
+    save_checkpoints = bool(knobs.get("save_checkpoints", True))
     a_emb_dim = int(knobs.get("a_emb_dim", 32))
     t_emb_dim = int(knobs.get("t_emb_dim", 16))
 
@@ -917,6 +1299,8 @@ def _train_diffusion(
     opt = torch.optim.Adam(model.parameters(), lr=lr)
     log_every = max(1, int(knobs.get("log_every", 50)))
 
+    last_ckpt_payload: Optional[dict[str, Any]] = None
+
     def save_ckpt(epoch: int) -> Path:
         ckpt = {
             "model": "diffusion",
@@ -925,7 +1309,10 @@ def _train_diffusion(
             "model_state": model.state_dict(),
         }
         path = out_dir / f"ckpt_diffusion_ep{epoch}.pt"
-        torch.save(ckpt, path)
+        nonlocal last_ckpt_payload
+        last_ckpt_payload = ckpt
+        if save_checkpoints:
+            torch.save(ckpt, path)
         return path
 
     last_ckpt = save_ckpt(0)
@@ -953,6 +1340,11 @@ def _train_diffusion(
         print(f"      Diffusion | Epoch {ep}/{epochs} | AvgLoss {total_loss / max(1, steps):.4f}")
         last_ckpt = save_ckpt(ep)
 
+    if not save_checkpoints:
+        if last_ckpt_payload is None:
+            raise RuntimeError("No checkpoint payload captured; training loop may have not executed.")
+        torch.save(last_ckpt_payload, last_ckpt)
+
     return last_ckpt
 
 
@@ -968,6 +1360,7 @@ def _train_crn(
     epochs = int(knobs.get("epochs", 10))
     lr = float(knobs.get("lr", 1e-3))
     dropout = float(knobs.get("dropout", 0.1))
+    save_checkpoints = bool(knobs.get("save_checkpoints", True))
     a_emb_dim = int(knobs.get("a_emb_dim", 32))
     t_emb_dim = int(knobs.get("t_emb_dim", 16))
     w_treat = float(knobs.get("crn_w_treat", 1.0))
@@ -990,10 +1383,15 @@ def _train_crn(
     opt = torch.optim.Adam(model.parameters(), lr=lr)
     log_every = max(1, int(knobs.get("log_every", 50)))
 
+    last_ckpt_payload: Optional[dict[str, Any]] = None
+
     def save_ckpt(epoch: int) -> Path:
         ckpt = {"model": "crn", "epoch": int(epoch), "model_cfg": asdict(cfg), "model_state": model.state_dict()}
         path = out_dir / f"ckpt_crn_ep{epoch}.pt"
-        torch.save(ckpt, path)
+        nonlocal last_ckpt_payload
+        last_ckpt_payload = ckpt
+        if save_checkpoints:
+            torch.save(ckpt, path)
         return path
 
     last_ckpt = save_ckpt(0)
@@ -1019,32 +1417,166 @@ def _train_crn(
         print(f"      CRN | Epoch {ep}/{epochs} | AvgLoss {total_loss / max(1, steps):.4f}")
         last_ckpt = save_ckpt(ep)
 
+    if not save_checkpoints:
+        if last_ckpt_payload is None:
+            raise RuntimeError("No checkpoint payload captured; training loop may have not executed.")
+        torch.save(last_ckpt_payload, last_ckpt)
+
     return last_ckpt
 
 
+def _train_timegan(
+    *,
+    train_dl: DataLoader,
+    meta: dict[str, Any],
+    device: torch.device,
+    out_dir: Path,
+    knobs: dict[str, Any],
+) -> Path:
+    from baselines.timegan import TimeGANTrainConfig, fit_timegan  # noqa: WPS433
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    epochs_embed = int(knobs.get("epochs_embed", 3))
+    epochs_supervisor = int(knobs.get("epochs_supervisor", 3))
+    epochs_joint = int(knobs.get("epochs_joint", 5))
+    save_checkpoints = bool(knobs.get("save_checkpoints", True))
+
+    a_emb_dim = int(knobs.get("a_emb_dim", 32))
+    t_emb_dim = int(knobs.get("t_emb_dim", 16))
+    x_emb_dim = int(knobs.get("x_emb_dim", 32))
+    dropout = float(knobs.get("dropout", 0.1))
+
+    a_vocab_size = int(meta["a_vocab_size"] or 100)
+    t_vocab_size = int(meta["t_vocab_size"] or 2)
+
+    cfg = TimeGANConfig(
+        d_x=int(meta["d_x"]),
+        seq_len=int(meta["seq_len"]),
+        a_is_discrete=bool(meta["a_is_discrete"]),
+        a_vocab_size=a_vocab_size,
+        a_emb_dim=a_emb_dim,
+        d_a=int(meta["d_a"]),
+        t_is_discrete=bool(meta["t_is_discrete"]),
+        t_vocab_size=t_vocab_size,
+        t_emb_dim=t_emb_dim,
+        d_t=int(meta["d_t"]),
+        d_y=int(meta["d_y"]),
+        x_emb_dim=x_emb_dim,
+        hidden_dim=int(knobs.get("timegan_hidden", 64)),
+        num_layers=int(knobs.get("timegan_num_layers", 2)),
+        z_dim=int(knobs.get("timegan_z_dim", 16)),
+        dropout=dropout,
+    )
+    model = TimeGAN(cfg).to(device)
+
+    train_cfg = TimeGANTrainConfig(
+        epochs_embed=epochs_embed,
+        epochs_supervisor=epochs_supervisor,
+        epochs_joint=epochs_joint,
+        lr_embed=float(knobs.get("lr_embed", 1e-3)),
+        lr_gen=float(knobs.get("lr_gen", 1e-3)),
+        lr_disc=float(knobs.get("lr_disc", 1e-3)),
+        lambda_sup=float(knobs.get("lambda_sup", 10.0)),
+        lambda_mom=float(knobs.get("lambda_mom", 1.0)),
+        g_steps=int(knobs.get("g_steps", 1)),
+        d_steps=int(knobs.get("d_steps", 1)),
+        log_every=int(knobs.get("log_every", 50)),
+        max_batches_per_epoch=knobs.get("max_batches_per_epoch", 200),
+        reservoir_size=int(knobs.get("reservoir_size", 2048)),
+    )
+
+    print(
+        f"    [TimeGAN] embed={epochs_embed} sup={epochs_supervisor} joint={epochs_joint} "
+        f"hidden={cfg.hidden_dim} z={cfg.z_dim} layers={cfg.num_layers}"
+    )
+    fit_info = fit_timegan(model, train_dl, device=device, train_cfg=train_cfg)
+
+    ckpt = {
+        "model": "timegan",
+        "epoch": int(epochs_joint),
+        "model_cfg": asdict(cfg),
+        "model_state": model.state_dict(),
+        "train_cfg": asdict(train_cfg),
+        "train_history": fit_info.get("history", {}),
+    }
+    if getattr(model, "_reservoir", None) is not None:
+        # Store as torch tensors (not numpy) so PyTorch 2.6+ `torch.load(..., weights_only=True)` can load safely.
+        ckpt["reservoir"] = {k: v.detach().cpu() for k, v in model._reservoir.items()}  # type: ignore[attr-defined]
+    if getattr(model, "_x_mean", None) is not None:
+        ckpt["x_mean"] = model._x_mean.detach().cpu()  # type: ignore[attr-defined]
+    if getattr(model, "_x_std", None) is not None:
+        ckpt["x_std"] = model._x_std.detach().cpu()  # type: ignore[attr-defined]
+
+    ckpt_path = out_dir / "ckpt_timegan.pt"
+    if save_checkpoints:
+        torch.save(ckpt, ckpt_path)
+    else:
+        # Always keep the final payload for downstream evaluation.
+        torch.save(ckpt, ckpt_path)
+
+    # Save a small generated sample for downstream eval pipelines (TSTR, privacy, etc.).
+    try:
+        n_gen = int(knobs.get("gen_samples", 512))
+        sample = model.generate(n_gen, max_len=int(meta["seq_len"]), conditions=None)
+        sample_path = out_dir / "samples_timegan.npz"
+        np.savez_compressed(
+            sample_path,
+            X=sample["X"].numpy(),
+            A=sample["A"].numpy(),
+            T=sample["T"].numpy(),
+            Y=sample["Y"].numpy(),
+            M=sample["mask"].numpy(),
+        )
+        print(f"    [TimeGAN] saved samples: {sample_path.as_posix()}")
+    except Exception as e:
+        print(f"    [TimeGAN] sample generation failed: {e}")
+
+    return ckpt_path
+
+
 def main(argv: Optional[list[str]] = None) -> int:
-    p = argparse.ArgumentParser(description="AIED2026 config-driven experiment runner")
-    p.add_argument("--datasets", type=str, default=None, help="Comma-separated dataset keys (override ACTIVE_DATASETS)")
-    p.add_argument("--models", type=str, default=None, help="Comma-separated model keys (override ACTIVE_MODELS)")
+    p = argparse.ArgumentParser(description="AIED2026 experiment runner (causal + synthesis)")
+    p.add_argument("--datasets", type=str, default=None, help="Comma-separated dataset keys")
+    p.add_argument("--models", type=str, default=None, help="Comma-separated model keys")
+    p.add_argument("--baseline", type=str, default=None, help="Alias for --models with a single key")
     p.add_argument("--out_root", type=str, default="runs/exp_runner", help="Root directory for checkpoints")
-    p.add_argument("--report_path", type=str, default="results_summary.txt", help="Write summary to this .txt file")
-    p.add_argument("--device", type=str, default=None, help="Override COMMON_KNOBS.device (e.g., auto|cpu|cuda)")
+    p.add_argument("--report_path", type=str, default="results_summary.txt", help="Write numeric summary here")
+    p.add_argument(
+        "--legacy_report_path",
+        type=str,
+        default="results/legacy_report.txt",
+        help="Write legacy per-model summary lines here (empty or 'none' disables)",
+    )
+    p.add_argument("--device", type=str, default=None, help="Override COMMON_KNOBS.device (auto|cpu|cuda)")
     p.add_argument("--seed", type=int, default=None, help="Override COMMON_KNOBS.seed")
     p.add_argument("--batch_size", type=int, default=None, help="Override COMMON_KNOBS.batch_size")
     p.add_argument("--seq_len", type=int, default=None, help="Override COMMON_KNOBS.seq_len (truncate if needed)")
     p.add_argument("--test_ratio", type=float, default=None, help="Override COMMON_KNOBS.test_ratio")
+    p.add_argument("--ref_estimator", type=str, default="gformula", choices=["iptw_msm", "gformula"])
+    p.add_argument("--do_horizon", type=int, default=5)
+    p.add_argument("--t0_list", type=str, default="0,5,10")
+    p.add_argument("--actions", type=str, default="0,1")
+    p.add_argument("--subgroups", type=str, default="all,low,high")
+    p.add_argument("--policy_set", type=str, default="fixed", choices=["fixed", "ablation"])
+    p.add_argument("--eval_tstr", action="store_true", default=True)
+    p.add_argument("--predictors", type=str, default="logreg,mlp,sakt")
+    p.add_argument("--eval_calibration", action="store_true", default=True)
+    p.add_argument("--eval_privacy", action="store_true", default=True)
+    p.add_argument("--disc_input", type=str, default="logits", choices=["logits", "sampled"])
     args, unknown = p.parse_known_args(argv)
     if unknown:
-        # Jupyter / IPython kernels inject extra flags like `-f <connection.json>` or `--f=...`.
-        # When running via `%run src/main.py`, treat those as out-of-scope and ignore them.
         is_kernel = ("ipykernel" in sys.modules) or (Path(sys.argv[0]).name == "ipykernel_launcher.py")
         if argv is None and is_kernel:
             pass
         else:
             p.error(f"unrecognized arguments: {' '.join(unknown)}")
 
-    datasets = ACTIVE_DATASETS if args.datasets is None else [x.strip() for x in args.datasets.split(",") if x.strip()]
-    models = ACTIVE_MODELS if args.models is None else [x.strip() for x in args.models.split(",") if x.strip()]
+    datasets = _parse_str_list(args.datasets, default=ACTIVE_DATASETS)
+    if args.baseline is not None:
+        models = [str(args.baseline).strip()]
+    else:
+        models = _parse_str_list(args.models, default=ACTIVE_MODELS)
 
     common = dict(COMMON_KNOBS)
     if args.device is not None:
@@ -1062,115 +1594,637 @@ def main(argv: Optional[list[str]] = None) -> int:
     device = _device_from_arg(str(common["device"]))
 
     out_root = _resolve_path(args.out_root)
+    out_root.mkdir(parents=True, exist_ok=True)
+    results_dir = _resolve_path("results")
+    results_dir.mkdir(parents=True, exist_ok=True)
     report_path = _resolve_path(args.report_path)
-    report_path.parent.mkdir(parents=True, exist_ok=True)
+    legacy_report_path: Optional[Path] = None
+    legacy_path_text = str(args.legacy_report_path or "").strip()
+    if legacy_path_text and legacy_path_text.lower() not in {"none", "null", "off", "disable", "disabled"}:
+        legacy_report_path = _resolve_path(legacy_path_text)
+        legacy_report_path.parent.mkdir(parents=True, exist_ok=True)
+        legacy_report_path.write_text("", encoding="utf-8")
 
-    started = datetime.now().isoformat(timespec="seconds")
+    t0_list = _parse_int_list(args.t0_list, default=[0, 5, 10])
+    actions = _parse_int_list(args.actions, default=[0, 1])
+    subgroup_names = _parse_str_list(args.subgroups, default=["all", "low", "high"])
+    predictors = _parse_str_list(args.predictors, default=["logreg", "mlp", "sakt"])
 
-    with report_path.open("w", encoding="utf-8") as f:
-        f.write("AIED2026 Experiment Summary\n")
-        f.write(f"Started: {started}\n")
-        f.write(f"Device: {device}\n")
-        f.write(f"COMMON_KNOBS: {common}\n\n")
+    effects_frames = []
+    bias_frames = []
+    policy_frames = []
+    tstr_frames = []
+    nn_frames = []
+    mia_frames = []
+    privacy_reports = []
 
-        for ds_name in datasets:
-            if ds_name not in DATASET_PATHS:
-                raise KeyError(f"Unknown dataset key: {ds_name}. Available: {sorted(DATASET_PATHS.keys())}")
+    manifest = {
+        "run_id": datetime.now().strftime("%Y%m%d_%H%M%S"),
+        "dataset": ",".join(datasets),
+        "created_at": datetime.now().isoformat(timespec="seconds"),
+        "artifacts": [],
+    }
 
-            ds_path = _resolve_path(DATASET_PATHS[ds_name])
-            if not ds_path.exists():
-                raise FileNotFoundError(f"Dataset not found: {ds_path}")
+    for ds_name in datasets:
+        if ds_name not in DATASET_PATHS:
+            raise KeyError(f"Unknown dataset key: {ds_name}. Available: {sorted(DATASET_PATHS.keys())}")
+        ds_path = _resolve_path(DATASET_PATHS[ds_name])
+        ds_raw = NPZSequenceDataset(ds_path)
+        desired_seq_len = int(common.get("seq_len", ds_raw.seq_len))
+        if desired_seq_len < int(ds_raw.seq_len):
+            ds_raw.X = ds_raw.X
+            ds_raw.A = ds_raw.A[:, :desired_seq_len]
+            ds_raw.T = ds_raw.T[:, :desired_seq_len]
+            ds_raw.Y = ds_raw.Y[:, :desired_seq_len]
+            ds_raw.M = ds_raw.M[:, :desired_seq_len]
+            ds_raw.seq_len = desired_seq_len
 
-            ds_raw = NPZSequenceDataset(ds_path)
-            desired_seq_len = int(common.get("seq_len", ds_raw.seq_len))
-            if desired_seq_len >= int(ds_raw.seq_len):
-                ds: Dataset = ds_raw
+        full_batch = _batch_from_dataset(ds_raw)
+        train_idx, test_idx = _split_indices(len(ds_raw), test_ratio=float(common["test_ratio"]), seed=int(common["seed"]))
+        train_batch = _subset_batch(full_batch, train_idx)
+        test_batch = _subset_batch(full_batch, test_idx)
+        subgroups = _build_subgroups(test_batch, subgroup_names)
+        for sg in subgroups:
+            sg["dataset"] = ds_name
+
+        if args.ref_estimator == "iptw_msm":
+            ref_estimator = IPTWMSM()
+        else:
+            ref_estimator = GFormula()
+        ref_estimator.fit(train_batch)
+
+        train_ds = TrajectoryDataset(
+            X=train_batch.X, A=train_batch.A, T=train_batch.T, Y=train_batch.Y, mask=train_batch.mask
+        )
+        train_dl = _make_dataloader(train_ds, batch_size=int(common["batch_size"]), shuffle=True, drop_last=True)
+
+        meta = _dataset_meta(ds_raw)
+
+        for model_key in models:
+            knobs = dict(MODEL_KNOBS.get(model_key, {}))
+            knobs["save_checkpoints"] = bool(common.get("keep_checkpoints", True))
+            knobs["disc_input"] = str(args.disc_input)
+            knobs["do_horizon"] = int(args.do_horizon)
+            knobs["ref_estimator"] = ref_estimator
+            knobs["seed"] = int(common["seed"])
+            legacy_ate_mae = float("nan")
+            legacy_value_err = float("nan")
+            legacy_policy_gen = float("nan")
+            legacy_privacy_auc = float("nan")
+            legacy_nn_mean = float("nan")
+            legacy_tstr_metrics: dict[str, dict[str, float]] = {}
+
+            run_dir = out_root / ds_name / model_key / f"seed{int(common['seed'])}"
+            run_dir.mkdir(parents=True, exist_ok=True)
+
+            if model_key in {"scm", "rcgan"}:
+                ckpt_path = _train_scm_or_rcgan(
+                    model_key, train_dl=train_dl, meta=meta, device=device, out_dir=run_dir, knobs=knobs
+                )
+            elif model_key == "crn":
+                ckpt_path = _train_crn(train_dl=train_dl, meta=meta, device=device, out_dir=run_dir, knobs=knobs)
+            elif model_key == "vae":
+                ckpt_path = _train_vae(train_dl=train_dl, meta=meta, device=device, out_dir=run_dir, knobs=knobs)
+            elif model_key == "diffusion":
+                ckpt_path = _train_diffusion(train_dl=train_dl, meta=meta, device=device, out_dir=run_dir, knobs=knobs)
+            elif model_key == "timegan":
+                ckpt_path = _train_timegan(train_dl=train_dl, meta=meta, device=device, out_dir=run_dir, knobs=knobs)
             else:
-                ds = _TruncatedSequenceDataset(ds_raw, seq_len=desired_seq_len)
+                raise ValueError(f"Unknown model={model_key}")
 
-            meta = _dataset_meta(ds)
-            train_idx, test_idx = _split_indices(
-                len(ds), test_ratio=float(common["test_ratio"]), seed=int(common["seed"])
-            )
-            train_ds: Dataset = Subset(ds, train_idx) if train_idx else ds
-            test_ds: Dataset = Subset(ds, test_idx) if test_idx else Subset(ds, [])
+            ckpt = torch.load(ckpt_path, map_location=device)
+            gen_model = load_base_model_from_checkpoint(ckpt, device=device)
+            gen_model.name = model_key
 
-            train_dl = _make_dataloader(train_ds, batch_size=int(common["batch_size"]), shuffle=True, drop_last=True)
-            test_dl = _make_dataloader(test_ds, batch_size=int(common["batch_size"]), shuffle=False, drop_last=False)
-
-            ds_header = (
-                f"[dataset={ds_name}] path={ds_path.as_posix()} n={len(ds)} "
-                f"seq_len={meta['seq_len']} d_x={meta['d_x']} a_vocab={meta['a_vocab_size']} t_vocab={meta['t_vocab_size']}\n"
-            )
-            print(ds_header.strip())
-            f.write(ds_header)
-
-            for model_key in models:
-                knobs = dict(MODEL_KNOBS.get(model_key, {}))
-                run_dir = out_root / ds_name / model_key / f"seed{int(common['seed'])}"
-                run_dir.mkdir(parents=True, exist_ok=True)
-
-                _set_seed(int(common["seed"]))
-                print(f"  -> Training model={model_key} (out={run_dir.as_posix()})")
-
-                if model_key in {"scm", "rcgan"}:
-                    ckpt_path = _train_scm_or_rcgan(
-                        model_key, train_dl=train_dl, meta=meta, device=device, out_dir=run_dir, knobs=knobs
-                    )
-                elif model_key == "crn":
-                    ckpt_path = _train_crn(train_dl=train_dl, meta=meta, device=device, out_dir=run_dir, knobs=knobs)
-                elif model_key == "vae":
-                    ckpt_path = _train_vae(train_dl=train_dl, meta=meta, device=device, out_dir=run_dir, knobs=knobs)
-                elif model_key == "diffusion":
-                    ckpt_path = _train_diffusion(
-                        train_dl=train_dl, meta=meta, device=device, out_dir=run_dir, knobs=knobs
-                    )
-                else:
-                    raise ValueError(
-                        f"Unknown model={model_key}. Expected one of {['scm','rcgan','vae','diffusion','crn']}"
-                    )
-
-                ckpt = torch.load(ckpt_path, map_location=device)
-                gen, loaded_name = load_rollout_model_from_checkpoint(ckpt, device=device)
-
-                pred = _predictive_fidelity(gen, loaded_name, test_dl, device=device)
-
-                t_vocab = int(getattr(getattr(gen, "cfg", None), "t_vocab_size", meta["t_vocab_size"] or 2))
-                actions = [0, 1] if t_vocab >= 2 else [0]
-                time_indices = [0, 5, 10]
-                mmd = _interventional_fidelity_mmd(
-                    gen,
-                    loaded_name,
-                    test_dl,
-                    device=device,
-                    seq_len=int(meta["seq_len"]),
+            try:
+                df_effects, summary = compute_causal_bias(
+                    gen_model=gen_model,
+                    ref_estimator=ref_estimator,
+                    data=test_batch,
+                    t0_list=t0_list,
+                    horizon=int(args.do_horizon),
                     actions=actions,
-                    time_indices=time_indices,
+                    subgroups=subgroups,
+                    n_gen=20,
+                    seed=int(common["seed"]),
+                    policy_set=str(args.policy_set),
                 )
-                pv = _policy_value_random(gen, loaded_name, test_dl, device=device, num_actions=t_vocab)
+                df_effects["dataset"] = ds_name
+                effects_frames.append(df_effects)
+                bias_frames.append(pd.DataFrame([summary]))
+                legacy_ate_mae = float(summary.get("ate_mae_mean", np.nan))
+                legacy_value_err = float(summary.get("value_abs_error", np.nan))
+                if summary.get("policy_supported") == 0 and summary.get("policy_skip_reason"):
+                    add_artifact(
+                        manifest,
+                        kind="policy_curve",
+                        model=model_key,
+                        dataset=ds_name,
+                        path="results/causal_bias_summary.csv",
+                        meta={"supported": False, "skip_reason": summary.get("policy_skip_reason", "")},
+                    )
 
-                metrics_line = (
-                    f"    metrics: auc={float(pred['auc']):.4f} rmse={float(pred['rmse']):.4f} "
-                    f"mmd={float(mmd['mmd']):.4f} policyY={float(pv['value']):.4f}\n"
+                try:
+                    df_policies, policy_supported, policy_skip_reason = compute_policy_values(
+                        gen_model=gen_model,
+                        ref_estimator=ref_estimator,
+                        data=test_batch,
+                        actions=actions,
+                        horizon=int(args.do_horizon),
+                        dataset=ds_name,
+                        n_boot=200,
+                        seed=int(common["seed"]),
+                        policy_set=str(args.policy_set),
+                    )
+                    policy_frames.append(df_policies)
+                    if "gen_value" in df_policies.columns:
+                        legacy_policy_gen = _safe_nanmean(df_policies["gen_value"].to_numpy(dtype=np.float64))
+                    if not policy_supported and policy_skip_reason:
+                        add_artifact(
+                            manifest,
+                            kind="policy_curve",
+                            model=model_key,
+                            dataset=ds_name,
+                            path="results/policy_values.csv",
+                            meta={"supported": False, "skip_reason": policy_skip_reason},
+                        )
+                except Exception as e:
+                    add_artifact(
+                        manifest,
+                        kind="policy_curve",
+                        model=model_key,
+                        dataset=ds_name,
+                        path="results/policy_values.csv",
+                        meta={"supported": False, "skip_reason": str(e)},
+                    )
+                    policy_frames.append(
+                        pd.DataFrame(
+                            [
+                                {
+                                    "model": model_key,
+                                    "ref_estimator": ref_estimator.name,
+                                    "dataset": ds_name,
+                                    "policy": "unknown",
+                                    "horizon": int(args.do_horizon),
+                                    "ref_value": np.nan,
+                                    "ref_ci_low": np.nan,
+                                    "ref_ci_high": np.nan,
+                                    "gen_value": np.nan,
+                                    "supported": 0.0,
+                                    "skip_reason": str(e),
+                                }
+                            ]
+                        )
+                    )
+            except Exception as e:
+                add_artifact(
+                    manifest,
+                    kind="table",
+                    model=model_key,
+                    dataset=ds_name,
+                    path="results/causal_effects.csv",
+                    meta={"supported": False, "skip_reason": str(e)},
                 )
-                print(metrics_line.strip())
+                nan_row = {
+                    "model": model_key,
+                    "ref_estimator": ref_estimator.name,
+                    "dataset": ds_name,
+                    "t0": int(t0_list[0]) if t0_list else 0,
+                    "horizon": int(args.do_horizon),
+                    "subgroup": "all",
+                    "action": int(actions[0]) if actions else 0,
+                    "n_effective": 0,
+                }
+                for h in range(int(args.do_horizon) + 1):
+                    nan_row[f"ref_mu_{h}"] = np.nan
+                    nan_row[f"ref_ci_low_{h}"] = np.nan
+                    nan_row[f"ref_ci_high_{h}"] = np.nan
+                    nan_row[f"gen_mu_{h}"] = np.nan
+                    nan_row[f"gen_std_{h}"] = np.nan
+                effects_frames.append(pd.DataFrame([nan_row]))
+                bias_frames.append(
+                    pd.DataFrame(
+                        [
+                            {
+                                "model": model_key,
+                                "ref_estimator": ref_estimator.name,
+                                "dataset": ds_name,
+                                "horizon": int(args.do_horizon),
+                                "ate_mae_mean": np.nan,
+                                "ate_rmse_mean": np.nan,
+                                "cate_mae_mean": np.nan,
+                                "value_abs_error": np.nan,
+                                "regret_error": np.nan,
+                                "n_t0": int(len(t0_list)),
+                                "n_subgroups": int(len(subgroups)),
+                                "policy_supported": 0.0,
+                            }
+                        ]
+                    )
+                )
+                policy_frames.append(
+                    pd.DataFrame(
+                        [
+                            {
+                                "model": model_key,
+                                "ref_estimator": ref_estimator.name,
+                                "dataset": ds_name,
+                                "policy": "unknown",
+                                "horizon": int(args.do_horizon),
+                                "ref_value": np.nan,
+                                "ref_ci_low": np.nan,
+                                "ref_ci_high": np.nan,
+                                "gen_value": np.nan,
+                                "supported": 0.0,
+                                "skip_reason": str(e),
+                            }
+                        ]
+                    )
+                )
 
-                f.write(f"  [model={loaded_name}] ckpt={ckpt_path.as_posix()}\n")
-                f.write(metrics_line)
-                if pred.get("note"):
-                    f.write(f"    predictive_note: {pred['note']}\n")
-                if mmd.get("note"):
-                    f.write(f"    interventional_note: {mmd['note']}\n")
-                if pv.get("note"):
-                    f.write(f"    policy_note: {pv['note']}\n")
-                f.write("\n")
+            if args.eval_tstr:
+                for predictor in predictors:
+                    try:
+                        df_tstr = run_tstr_trts(
+                            gen_model=gen_model,
+                            real_train=train_batch,
+                            real_test=test_batch,
+                            n_synth=min(2048, int(train_batch.X.shape[0])),
+                            predictor=predictor,
+                            seed=int(common["seed"]),
+                        )
+                        df_tstr["dataset"] = ds_name
+                        tstr_frames.append(df_tstr)
+                        legacy_tstr_metrics[predictor] = _extract_tstr_metrics(df_tstr)
+                    except Exception as e:
+                        add_artifact(
+                            manifest,
+                            kind="table",
+                            model=model_key,
+                            dataset=ds_name,
+                            path="results/tstr_trts.csv",
+                            meta={"supported": False, "skip_reason": str(e)},
+                        )
+                        df_fallback = pd.DataFrame(
+                            [
+                                {
+                                    "model": model_key,
+                                    "dataset": ds_name,
+                                    "predictor": predictor,
+                                    "setting": "TRTS",
+                                    "auc": np.nan,
+                                    "rmse": np.nan,
+                                    "brier": np.nan,
+                                    "ece": np.nan,
+                                    "n_train": int(train_batch.X.shape[0]),
+                                    "n_test": int(test_batch.X.shape[0]),
+                                }
+                            ]
+                        )
+                        tstr_frames.append(df_fallback)
+                        legacy_tstr_metrics[predictor] = _extract_tstr_metrics(df_fallback)
 
-            f.write("\n")
+            if args.eval_privacy:
+                try:
+                    # CRITICAL FIX: Sample from BOTH train and test (50/50) and perturb X/A/T
+                    # This creates synthetic data that can be used to test if the model memorized training data
+                    rng = np.random.default_rng(int(common["seed"]))
+                    n_synth_total = min(1024, int(train_batch.X.shape[0]))
+                    n_from_train = n_synth_total // 2
+                    n_from_test = n_synth_total - n_from_train
 
-        finished = datetime.now().isoformat(timespec="seconds")
-        f.write(f"Finished: {finished}\n")
+                    # Sample and perturb from train
+                    n_from_train = min(n_from_train, train_batch.X.shape[0])
+                    train_idx = rng.integers(0, train_batch.X.shape[0], size=n_from_train)
+                    train_synth = _subset_batch(train_batch, train_idx.tolist())
+                    train_synth = _perturb_batch_for_privacy(train_synth, train_batch, meta)
 
-    print(f"Wrote summary: {report_path.as_posix()}")
+                    # Sample and perturb from test
+                    n_from_test = min(n_from_test, test_batch.X.shape[0])
+                    test_idx = rng.integers(0, test_batch.X.shape[0], size=n_from_test)
+                    test_synth = _subset_batch(test_batch, test_idx.tolist())
+                    test_synth = _perturb_batch_for_privacy(test_synth, train_batch, meta)
+
+                    # Combine perturbed batches
+                    synth_batch = TrajectoryBatch(
+                        X=torch.cat([train_synth.X, test_synth.X], dim=0),
+                        A=torch.cat([train_synth.A, test_synth.A], dim=0),
+                        T=torch.cat([train_synth.T, test_synth.T], dim=0),
+                        Y=torch.cat([train_synth.Y, test_synth.Y], dim=0),
+                        mask=torch.cat([train_synth.mask, test_synth.mask], dim=0),
+                        lengths=torch.cat([train_synth.lengths, test_synth.lengths], dim=0),
+                    )
+
+                    # Generate synthetic Y using the model
+                    ro = gen_model.rollout(synth_batch, do_t=None, policy=None, horizon=None, t0=0)
+                    y_prob = ro["Y_prob"].detach().cpu().numpy()
+                    y_sample = rng.binomial(n=1, p=np.clip(y_prob, 1e-4, 1.0 - 1e-4)).astype(np.float32)
+                    synth_batch = TrajectoryBatch(
+                        X=synth_batch.X,
+                        A=synth_batch.A,
+                        T=synth_batch.T,
+                        Y=torch.as_tensor(y_sample),
+                        mask=synth_batch.mask,
+                        lengths=synth_batch.lengths,
+                    )
+                    nn_df = compute_nn_distance(
+                        real=train_batch,
+                        synth=synth_batch,
+                        metric="embedding_l2",
+                        embed_space="all"
+                    )
+                    nn_df["model"] = model_key
+                    nn_df["dataset"] = ds_name
+                    nn_frames.append(nn_df)
+
+                    mia = run_synth_membership_inference(
+                        real_train=train_batch,
+                        real_holdout=test_batch,
+                        synth=synth_batch,
+                        embed_space="all",
+                        seed=int(common["seed"]),
+                        attack_features=["synth_nn_distance"],
+                    )
+                    mia_df = mia_to_dataframe(
+                        mia,
+                        model=model_key,
+                        dataset=ds_name,
+                        attack_features=["recon_error", "avg_confidence", "nn_distance"],
+                        n_in=int(train_batch.X.shape[0]),
+                        n_out=int(test_batch.X.shape[0]),
+                    )
+                    mia_frames.append(mia_df)
+
+                    distances = nn_df["distance"].to_numpy(dtype=np.float64)
+                    legacy_nn_mean = float(np.mean(distances)) if distances.size else float("nan")
+                    legacy_privacy_auc = float(mia.get("attack_auc", np.nan))
+                    report = {
+                        "dataset": ds_name,
+                        "model": model_key,
+                        "nn_distance": {
+                            "metric": "embedding_l2",
+                            "mean": float(np.mean(distances)) if distances.size else float("nan"),
+                            "p01": float(np.quantile(distances, 0.01)) if distances.size else float("nan"),
+                            "p05": float(np.quantile(distances, 0.05)) if distances.size else float("nan"),
+                            "p10": float(np.quantile(distances, 0.10)) if distances.size else float("nan"),
+                        },
+                        "mia": {
+                            "attack_auc": float(mia.get("attack_auc", np.nan)),
+                            "attack_acc": float(mia.get("attack_acc", np.nan)),
+                            "features": ["recon_error", "avg_confidence", "nn_distance"],
+                        },
+                    }
+                    privacy_reports.append(report)
+                except Exception as e:
+                    legacy_privacy_auc = float("nan")
+                    legacy_nn_mean = float("nan")
+                    add_artifact(
+                        manifest,
+                        kind="table",
+                        model=model_key,
+                        dataset=ds_name,
+                        path="results/privacy_report.json",
+                        meta={"supported": False, "skip_reason": str(e)},
+                    )
+                    nn_frames.append(
+                        pd.DataFrame(
+                            [
+                                {
+                                    "model": model_key,
+                                    "dataset": ds_name,
+                                    "metric": "embedding_l2",
+                                    "synth_id": -1,
+                                    "nn_real_id": -1,
+                                    "distance": np.nan,
+                                }
+                            ]
+                        )
+                    )
+                    mia_frames.append(
+                        pd.DataFrame(
+                            [
+                                {
+                                    "model": model_key,
+                                    "dataset": ds_name,
+                                    "attack_features": "recon_error,avg_confidence,nn_distance",
+                                    "attack_auc": np.nan,
+                                    "attack_acc": np.nan,
+                                    "n_in": int(train_batch.X.shape[0]),
+                                    "n_out": int(test_batch.X.shape[0]),
+                                }
+                            ]
+                        )
+                    )
+                    privacy_reports.append(
+                        {
+                            "dataset": ds_name,
+                            "model": model_key,
+                            "nn_distance": {
+                                "metric": "embedding_l2",
+                                "mean": float("nan"),
+                                "p01": float("nan"),
+                                "p05": float("nan"),
+                                "p10": float("nan"),
+                            },
+                            "mia": {
+                                "attack_auc": float("nan"),
+                                "attack_acc": float("nan"),
+                                "features": ["recon_error", "avg_confidence", "nn_distance"],
+                            },
+                        }
+                    )
+
+            if legacy_report_path is not None:
+                tstr_auc = float("nan")
+                trts_auc = float("nan")
+                tstr_rmse = float("nan")
+                trts_rmse = float("nan")
+                if legacy_tstr_metrics:
+                    preferred_pred = None
+                    for pred in predictors:
+                        if pred in legacy_tstr_metrics:
+                            preferred_pred = pred
+                            break
+                    if preferred_pred is None:
+                        preferred_pred = next(iter(legacy_tstr_metrics))
+                    sel_metrics = legacy_tstr_metrics.get(preferred_pred, {})
+                    tstr_auc = sel_metrics.get("tstr_auc", float("nan"))
+                    trts_auc = sel_metrics.get("trts_auc", float("nan"))
+                    tstr_rmse = sel_metrics.get("tstr_rmse", float("nan"))
+                    trts_rmse = sel_metrics.get("trts_rmse", float("nan"))
+
+                line = (
+                    f"[model={model_key}] metrics: "
+                    f"tstr_auc={_format_legacy_metric(tstr_auc)} "
+                    f"trts_auc={_format_legacy_metric(trts_auc)} "
+                    f"tstr_rmse={_format_legacy_metric(tstr_rmse)} "
+                    f"trts_rmse={_format_legacy_metric(trts_rmse)} "
+                    f"ate_mae={_format_legacy_metric(legacy_ate_mae)} "
+                    f"value_err={_format_legacy_metric(legacy_value_err)} "
+                    f"policyY={_format_legacy_metric(legacy_policy_gen)} "
+                    f"privacy_auc={_format_legacy_metric(legacy_privacy_auc)} "
+                    f"nn_mean={_format_legacy_metric(legacy_nn_mean)}"
+                )
+                _append_legacy_line(legacy_report_path, line)
+
+    effects_df = pd.concat(effects_frames, ignore_index=True) if effects_frames else pd.DataFrame()
+    bias_df = pd.concat(bias_frames, ignore_index=True) if bias_frames else pd.DataFrame()
+    policy_df = pd.concat(policy_frames, ignore_index=True) if policy_frames else pd.DataFrame()
+    tstr_df = pd.concat(tstr_frames, ignore_index=True) if tstr_frames else pd.DataFrame()
+    nn_df = pd.concat(nn_frames, ignore_index=True) if nn_frames else pd.DataFrame()
+    mia_df = pd.concat(mia_frames, ignore_index=True) if mia_frames else pd.DataFrame()
+
+    horizon = int(args.do_horizon)
+    effect_cols = (
+        ["model", "ref_estimator", "dataset", "t0", "horizon", "subgroup", "action"]
+        + [f"ref_mu_{h}" for h in range(horizon + 1)]
+        + [f"ref_ci_low_{h}" for h in range(horizon + 1)]
+        + [f"ref_ci_high_{h}" for h in range(horizon + 1)]
+        + [f"gen_mu_{h}" for h in range(horizon + 1)]
+        + [f"gen_std_{h}" for h in range(horizon + 1)]
+        + ["n_effective"]
+    )
+    if effects_df.empty:
+        effects_df = pd.DataFrame(columns=effect_cols)
+    else:
+        effects_df = effects_df.reindex(columns=effect_cols)
+
+    bias_cols = [
+        "model",
+        "ref_estimator",
+        "dataset",
+        "horizon",
+        "ate_mae_mean",
+        "ate_rmse_mean",
+        "cate_mae_mean",
+        "value_abs_error",
+        "regret_error",
+        "n_t0",
+        "n_subgroups",
+        "policy_supported",
+    ]
+    if bias_df.empty:
+        bias_df = pd.DataFrame(columns=bias_cols)
+    else:
+        bias_df = bias_df.reindex(columns=bias_cols + [c for c in bias_df.columns if c not in bias_cols])
+
+    policy_cols = [
+        "model",
+        "ref_estimator",
+        "dataset",
+        "policy",
+        "horizon",
+        "ref_value",
+        "ref_ci_low",
+        "ref_ci_high",
+        "gen_value",
+        "supported",
+        "skip_reason",
+    ]
+    if policy_df.empty:
+        policy_df = pd.DataFrame(columns=policy_cols)
+    else:
+        policy_df = policy_df.reindex(columns=policy_cols + [c for c in policy_df.columns if c not in policy_cols])
+
+    tstr_cols = ["model", "dataset", "predictor", "setting", "auc", "rmse", "brier", "ece", "n_train", "n_test"]
+    if tstr_df.empty:
+        tstr_df = pd.DataFrame(columns=tstr_cols)
+    else:
+        tstr_df = tstr_df.reindex(columns=tstr_cols)
+
+    nn_cols = ["model", "dataset", "metric", "synth_id", "nn_real_id", "distance"]
+    if nn_df.empty:
+        nn_df = pd.DataFrame(columns=nn_cols)
+    else:
+        nn_df = nn_df.reindex(columns=nn_cols)
+
+    mia_cols = ["model", "dataset", "attack_features", "attack_auc", "attack_acc", "n_in", "n_out"]
+    if mia_df.empty:
+        mia_df = pd.DataFrame(columns=mia_cols)
+    else:
+        mia_df = mia_df.reindex(columns=mia_cols)
+
+    effects_df.to_csv(results_dir / "causal_effects.csv", index=False)
+    bias_df.to_csv(results_dir / "causal_bias_summary.csv", index=False)
+    policy_df.to_csv(results_dir / "policy_values.csv", index=False)
+    tstr_df.to_csv(results_dir / "tstr_trts.csv", index=False)
+    nn_df.to_csv(results_dir / "privacy_nn_distance.csv", index=False)
+    mia_df.to_csv(results_dir / "privacy_mia.csv", index=False)
+
+    with (results_dir / "privacy_report.json").open("w", encoding="utf-8") as f:
+        json.dump(privacy_reports, f, indent=2)
+
+    for ds_name in datasets:
+        suffix = f"_{ds_name}"
+        if not effects_df.empty and "dataset" in effects_df.columns:
+            effects_df[effects_df["dataset"] == ds_name].to_csv(
+                results_dir / f"causal_effects{suffix}.csv", index=False
+            )
+        if not bias_df.empty and "dataset" in bias_df.columns:
+            bias_df[bias_df["dataset"] == ds_name].to_csv(
+                results_dir / f"causal_bias_summary{suffix}.csv", index=False
+            )
+        if not policy_df.empty and "dataset" in policy_df.columns:
+            policy_df[policy_df["dataset"] == ds_name].to_csv(
+                results_dir / f"policy_values{suffix}.csv", index=False
+            )
+        if not tstr_df.empty and "dataset" in tstr_df.columns:
+            tstr_df[tstr_df["dataset"] == ds_name].to_csv(results_dir / f"tstr_trts{suffix}.csv", index=False)
+        if not nn_df.empty and "dataset" in nn_df.columns:
+            nn_df[nn_df["dataset"] == ds_name].to_csv(
+                results_dir / f"privacy_nn_distance{suffix}.csv", index=False
+            )
+        if not mia_df.empty and "dataset" in mia_df.columns:
+            mia_df[mia_df["dataset"] == ds_name].to_csv(
+                results_dir / f"privacy_mia{suffix}.csv", index=False
+            )
+        report_ds = [r for r in privacy_reports if r.get("dataset") == ds_name]
+        with (results_dir / f"privacy_report{suffix}.json").open("w", encoding="utf-8") as f:
+            json.dump(report_ds, f, indent=2)
+
+    privacy_summary_rows = []
+    for report in privacy_reports:
+        privacy_summary_rows.append(
+            {
+                "dataset": report["dataset"],
+                "model": report["model"],
+                "nn_mean": report["nn_distance"]["mean"],
+                "nn_p01": report["nn_distance"]["p01"],
+                "nn_p05": report["nn_distance"]["p05"],
+                "nn_p10": report["nn_distance"]["p10"],
+                "attack_auc": report["mia"]["attack_auc"],
+                "attack_acc": report["mia"]["attack_acc"],
+            }
+        )
+    privacy_summary_df = pd.DataFrame(privacy_summary_rows)
+
+    metrics_tables = {
+        "causal_bias_summary": bias_df,
+        "tstr_trts": tstr_df,
+        "privacy_summary": privacy_summary_df,
+    }
+    write_results_summary(metrics_tables, str(report_path))
+    report_base = Path(report_path)
+    for ds_name in datasets:
+        per_tables = {}
+        for key, df in metrics_tables.items():
+            if df is None or df.empty:
+                per_tables[key] = df
+            elif "dataset" in df.columns:
+                per_tables[key] = df[df["dataset"] == ds_name].copy()
+            else:
+                per_tables[key] = df.copy()
+        ds_report = report_base.with_name(f"{report_base.stem}_{ds_name}{report_base.suffix}")
+        write_results_summary(per_tables, str(ds_report))
+
+    run_visualization(
+        results_dir=str(results_dir),
+        out_dir=str(_resolve_path("artifacts")),
+        dataset=",".join(datasets),
+        manifest_path=str(_resolve_path("artifacts.json")),
+        manifest=manifest,
+        plot_calibration=bool(args.eval_calibration),
+    )
     return 0
 
 

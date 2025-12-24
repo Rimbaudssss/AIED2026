@@ -7,7 +7,16 @@ from typing import Optional
 
 import torch
 
-from .data import IRTSyntheticDataset, NPZSequenceDataset, SyntheticEduDataset, make_dataloader, move_batch
+from .data import (
+    IRTSyntheticDataset,
+    NPZSequenceDataset,
+    SyntheticEduDataset,
+    TrajectoryBatch,
+    compute_lengths,
+    make_dataloader,
+    move_batch,
+)
+from .causal_estimators import GFormula, IPTWMSM
 from .model.discriminators import SequenceDiscriminator, SequenceDiscriminatorConfig
 from .model.losses import (
     bernoulli_nll_from_logits,
@@ -145,6 +154,9 @@ def main(argv: Optional[list[str]] = None) -> int:
     p.add_argument("--do_min_arm_samples", type=int, default=8)
     p.add_argument("--do_actions", type=str, default="0,1", help="comma-separated action ids")
     p.add_argument("--cf_num_time_samples", type=int, default=1, help="counterfactual time samples per batch")
+    p.add_argument("--do_horizon", type=int, default=5, help="multi-step do-alignment horizon")
+    p.add_argument("--ref_estimator", type=str, default="gformula", choices=["gformula", "iptw_msm"])
+    p.add_argument("--disc_input", type=str, default="logits", choices=["logits", "sampled"])
 
     args = p.parse_args(argv)
 
@@ -207,6 +219,22 @@ def main(argv: Optional[list[str]] = None) -> int:
 
     do_actions = [int(x.strip()) for x in args.do_actions.split(",") if x.strip()]
 
+    ref_estimator = None
+    if args.w_do > 0.0 and int(args.do_horizon) > 0:
+        X_full = torch.as_tensor(ds.X).float()
+        A_full = torch.as_tensor(ds.A)
+        T_full = torch.as_tensor(ds.T)
+        Y_full = torch.as_tensor(ds.Y).float()
+        M_full = torch.as_tensor(ds.M).float()
+        full_batch = TrajectoryBatch(
+            X=X_full, A=A_full, T=T_full, Y=Y_full, mask=M_full, lengths=compute_lengths(M_full)
+        )
+        if args.ref_estimator == "iptw_msm":
+            ref_estimator = IPTWMSM()
+        else:
+            ref_estimator = GFormula()
+        ref_estimator.fit(full_batch)
+
     def run_stage(name: str, epochs: int, *, use_gan: bool, use_causal: bool) -> None:
         gen.train()
         d_seq.train()
@@ -252,8 +280,20 @@ def main(argv: Optional[list[str]] = None) -> int:
                     ro = gen.rollout(x=X, a=A, t_obs=T, mask=M, stochastic_y=False)
                     y_fake = ro["y"]  # probabilities
 
-                    real_seq = d_seq.encode_inputs(x=X, a=A, t=T, y=Y)
-                    fake_seq = d_seq.encode_inputs(x=X, a=A, t=T, y=y_fake.detach())
+                    y_fake_in = y_fake
+                    y_real_in = Y
+                    if args.disc_input == "logits":
+                        y_fake_in = ro.get("y_logits", None)
+                        if y_fake_in is None:
+                            y_fake_in = torch.log(torch.clamp(y_fake, 0.01, 0.99) / torch.clamp(1.0 - y_fake, 0.01, 0.99))
+                        y_real_in = torch.log(torch.clamp(Y, 0.01, 0.99) / torch.clamp(1.0 - Y, 0.01, 0.99))
+                    elif args.disc_input == "sampled":
+                        u = torch.rand_like(y_fake)
+                        y_hard = (y_fake > u).float()
+                        y_fake_in = y_hard + (y_fake - y_fake.detach())
+
+                    real_seq = d_seq.encode_inputs(x=X, a=A, t=T, y=y_real_in)
+                    fake_seq = d_seq.encode_inputs(x=X, a=A, t=T, y=y_fake_in.detach())
 
                     # 3) Update discriminator
                     loss_d = wgan_gp_d_loss(d_seq, real_seq, fake_seq, gp_weight=args.gp_weight, mask=M)
@@ -262,7 +302,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                     opt_d.step()
 
                     # 4) Generator adversarial loss (use y_fake WITHOUT detach)
-                    fake_seq_g = d_seq.encode_inputs(x=X, a=A, t=T, y=y_fake)
+                    fake_seq_g = d_seq.encode_inputs(x=X, a=A, t=T, y=y_fake_in)
                     loss_adv = wgan_g_loss(d_seq, fake_seq_g, mask=M)
 
                 loss_do = torch.tensor(0.0, device=device)
@@ -273,49 +313,98 @@ def main(argv: Optional[list[str]] = None) -> int:
                         # do-alignment and advT are implemented for discrete actions in this scaffold.
                         pass
                     else:
-                        # Interventional alignment (MMD) across time.
-                        # Use features (X, K_t, Y_t) to avoid degeneracy on binary Y.
-                        if args.do_time_sampling == "fixed":
-                            do_time_indices = [int(args.do_time_index)]
-                        elif args.do_time_sampling == "random":
-                            do_time_indices = (
-                                torch.randint(low=0, high=seq_len, size=(int(args.do_num_time_samples),), device=device)
-                                .tolist()
+                        if args.w_do > 0.0 and int(args.do_horizon) > 0 and ref_estimator is not None:
+                            t0 = int(torch.randint(low=0, high=seq_len, size=(1,), device=device).item())
+                            action = int(
+                                do_actions[
+                                    int(torch.randint(low=0, high=len(do_actions), size=(1,), device=device).item())
+                                ]
                             )
-                        else:
-                            do_time_indices = list(range(seq_len))
+                            horizon_eff = min(int(args.do_horizon), max(0, seq_len - t0 - 1))
+                            steps = t0 + horizon_eff + 1
+                            t_do = torch.full((bsz,), action, device=device, dtype=T.dtype)
+                            ro_do = gen.rollout(  # type: ignore[attr-defined]
+                                x=X,
+                                a=A,
+                                t_obs=T,
+                                do_t={t0: t_do},
+                                mask=M,
+                                eps=eps_seq,
+                                steps=steps,
+                                stochastic_y=False,
+                            )
+                            y_do = ro_do["y"]
+                            if y_do.ndim == 3 and y_do.shape[-1] == 1:
+                                y_do = y_do.squeeze(-1)
+                            y_slice = y_do[:, t0:steps]
+                            m_slice = M[:, t0:steps]
+                            gen_mu = (y_slice * m_slice).sum(dim=0) / m_slice.sum(dim=0).clamp(min=1.0)
 
-                        x_feat = gen.x_proj(X.float())
-                        do_terms = 0
-                        for t_idx in do_time_indices:
-                            if not (0 <= t_idx < seq_len):
-                                continue
-                            valid = M[:, t_idx] > 0.5
-                            if valid.sum().item() < args.do_min_arm_samples:
-                                continue
+                            batch_ref = TrajectoryBatch(
+                                X=X.detach().cpu(),
+                                A=A.detach().cpu(),
+                                T=T.detach().cpu(),
+                                Y=Y.detach().cpu(),
+                                mask=M.detach().cpu(),
+                                lengths=compute_lengths(M.detach().cpu()),
+                            )
+                            ref = ref_estimator.estimate_do(
+                                batch_ref,
+                                t0=t0,
+                                horizon=int(horizon_eff),
+                                action=int(action),
+                                subgroup={"name": "all"},
+                                n_boot=1,
+                                seed=int(args.seed),
+                            )
+                            ref_mu = torch.as_tensor(ref["mu"], device=device).float()
+                            loss_do = torch.mean((gen_mu[: ref_mu.shape[0]] - ref_mu) ** 2)
+                            print(
+                                f"      loss_do_multistep={float(loss_do.item()):.4f} "
+                                f"do_horizon={int(horizon_eff)} t0_sampled={t0}"
+                            )
+                        elif args.w_do > 0.0:
+                            # Fallback: single-step MMD alignment (legacy).
+                            if args.do_time_sampling == "fixed":
+                                do_time_indices = [int(args.do_time_index)]
+                            elif args.do_time_sampling == "random":
+                                do_time_indices = (
+                                    torch.randint(low=0, high=seq_len, size=(int(args.do_num_time_samples),), device=device)
+                                    .tolist()
+                                )
+                            else:
+                                do_time_indices = list(range(seq_len))
 
-                            k_t = k_tf[:, t_idx, :]  # [B,d_k] (pre-treatment state)
-                            a_enc_t = gen.encode_a(A[:, t_idx])
-
-                            for a_val in do_actions:
-                                a_val = int(a_val)
-                                t_do = torch.full((bsz,), a_val, device=device, dtype=T.dtype)
-                                t_enc_do = gen.encode_t(t_do)
-                                y_inp_do = torch.cat([k_t, a_enc_t, t_enc_do, x_feat], dim=-1)
-                                y_prob_do = torch.sigmoid(gen.y_head(y_inp_do))  # [B,1]
-                                feat_do = torch.cat([x_feat, k_t, y_prob_do], dim=-1)[valid]
-
-                                # Empirical arm subset (unbiased only under randomization).
-                                sel = (T[:, t_idx].long() == a_val) & valid
-                                if sel.sum().item() < args.do_min_arm_samples:
+                            x_feat = gen.x_proj(X.float())
+                            do_terms = 0
+                            for t_idx in do_time_indices:
+                                if not (0 <= t_idx < seq_len):
                                     continue
-                                y_real = Y[sel, t_idx].float().view(-1, 1)
-                                feat_real = torch.cat([x_feat[sel], k_t[sel], y_real], dim=-1)
-                                loss_do = loss_do + mmd_rbf(feat_real, feat_do)
-                                do_terms += 1
+                                valid = M[:, t_idx] > 0.5
+                                if valid.sum().item() < args.do_min_arm_samples:
+                                    continue
 
-                        if do_terms > 0:
-                            loss_do = loss_do / float(do_terms)
+                                k_t = k_tf[:, t_idx, :]  # [B,d_k] (pre-treatment state)
+                                a_enc_t = gen.encode_a(A[:, t_idx])
+
+                                for a_val in do_actions:
+                                    a_val = int(a_val)
+                                    t_do = torch.full((bsz,), a_val, device=device, dtype=T.dtype)
+                                    t_enc_do = gen.encode_t(t_do)
+                                    y_inp_do = torch.cat([k_t, a_enc_t, t_enc_do, x_feat], dim=-1)
+                                    y_prob_do = torch.sigmoid(gen.y_head(y_inp_do))  # [B,1]
+                                    feat_do = torch.cat([x_feat, k_t, y_prob_do], dim=-1)[valid]
+
+                                    sel = (T[:, t_idx].long() == a_val) & valid
+                                    if sel.sum().item() < args.do_min_arm_samples:
+                                        continue
+                                    y_real = Y[sel, t_idx].float().view(-1, 1)
+                                    feat_real = torch.cat([x_feat[sel], k_t[sel], y_real], dim=-1)
+                                    loss_do = loss_do + mmd_rbf(feat_real, feat_do)
+                                    do_terms += 1
+
+                            if do_terms > 0:
+                                loss_do = loss_do / float(do_terms)
 
                         # Adversarial deconfounding (GRL): make latent K_t less predictive of T_t.
                         # 1) Update classifier to predict T_t from K_t (factual path).

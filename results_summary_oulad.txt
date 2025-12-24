@@ -1,0 +1,58 @@
+
+causal_bias_summary
+    model dataset ref_estimator  horizon  ate_mae_mean  ate_rmse_mean  cate_mae_mean  value_abs_error  regret_error  n_t0  n_subgroups  policy_supported
+      crn   oulad      gformula        5      0.007018       0.011455       0.007079         0.396175      0.414208     3            3               1.0
+diffusion   oulad      gformula        5      0.015365       0.023156       0.016805              NaN           NaN     3            3               0.0
+    rcgan   oulad      gformula        5      0.000594       0.000945       0.000586         0.423388      0.423005     3            3               1.0
+      scm   oulad      gformula        5      0.000542       0.000688       0.000524         0.430102      0.429645     3            3               1.0
+  timegan   oulad      gformula        5      0.004780       0.010564       0.004754         0.407822      0.419277     3            3               1.0
+      vae   oulad      gformula        5      0.006249       0.008466       0.006235         0.405877      0.421324     3            3               1.0
+
+tstr_trts
+    model dataset predictor setting      auc     rmse    brier      ece  n_train  n_test
+      crn   oulad    logreg    TRTS 0.690177 0.194125 0.037685 0.000830    16934    4233
+      crn   oulad    logreg    TSTR 0.677287 0.194785 0.037941 0.001089     2048    4233
+      crn   oulad       mlp    TRTS 0.481849 0.478261 0.228733 0.434871    16934    4233
+      crn   oulad       mlp    TSTR 0.558221 0.395788 0.156648 0.342489     2048    4233
+      crn   oulad      sakt    TRTS 0.508557 0.196781 0.038723 0.008226    16934    4233
+      crn   oulad      sakt    TSTR 0.533153 0.196989 0.038805 0.012816     2048    4233
+diffusion   oulad    logreg    TRTS 0.690177 0.194125 0.037685 0.000830    16934    4233
+diffusion   oulad    logreg    TSTR 0.676522 0.346613 0.120140 0.282113     2048    4233
+diffusion   oulad       mlp    TRTS 0.413084 0.480273 0.230662 0.432990    16934    4233
+diffusion   oulad       mlp    TSTR 0.572840 0.464201 0.215482 0.420341     2048    4233
+diffusion   oulad      sakt    TRTS 0.550902 0.197280 0.038919 0.016965    16934    4233
+diffusion   oulad      sakt    TSTR 0.571162 0.511156 0.261280 0.471320     2048    4233
+    rcgan   oulad    logreg    TRTS 0.690179 0.194125 0.037685 0.000830    16934    4233
+    rcgan   oulad    logreg    TSTR 0.464336 0.198567 0.039429 0.023267     2048    4233
+    rcgan   oulad       mlp    TRTS 0.484556 0.486683 0.236860 0.443271    16934    4233
+    rcgan   oulad       mlp    TSTR 0.623937 0.439809 0.193432 0.391790     2048    4233
+    rcgan   oulad      sakt    TRTS 0.538832 0.197217 0.038895 0.015987    16934    4233
+    rcgan   oulad      sakt    TSTR 0.512316 0.198272 0.039312 0.025705     2048    4233
+      scm   oulad    logreg    TRTS 0.690177 0.194125 0.037685 0.000830    16934    4233
+      scm   oulad    logreg    TSTR 0.530128 0.198594 0.039440 0.026919     2048    4233
+      scm   oulad       mlp    TRTS 0.556421 0.464796 0.216036 0.421095    16934    4233
+      scm   oulad       mlp    TSTR 0.574117 0.467818 0.218854 0.423177     2048    4233
+      scm   oulad      sakt    TRTS 0.546537 0.197744 0.039103 0.021650    16934    4233
+      scm   oulad      sakt    TSTR 0.499931 0.198453 0.039384 0.026994     2048    4233
+  timegan   oulad    logreg    TRTS 0.690178 0.194125 0.037685 0.000830    16934    4233
+  timegan   oulad    logreg    TSTR 0.638285 0.195797 0.038336 0.005837     2048    4233
+  timegan   oulad       mlp    TRTS 0.557477 0.428313 0.183452 0.378109    16934    4233
+  timegan   oulad       mlp    TSTR 0.515692 0.421106 0.177331 0.369624     2048    4233
+  timegan   oulad      sakt    TRTS 0.546405 0.197482 0.038999 0.019047    16934    4233
+  timegan   oulad      sakt    TSTR 0.527286 0.197591 0.039042 0.019940     2048    4233
+      vae   oulad    logreg    TRTS 0.690180 0.194125 0.037685 0.000830    16934    4233
+      vae   oulad    logreg    TSTR 0.684503 0.194663 0.037894 0.004712     2048    4233
+      vae   oulad       mlp    TRTS 0.527597 0.452531 0.204784 0.405568    16934    4233
+      vae   oulad       mlp    TSTR 0.491669 0.446575 0.199429 0.399864     2048    4233
+      vae   oulad      sakt    TRTS 0.553095 0.197074 0.038838 0.014534    16934    4233
+      vae   oulad      sakt    TSTR 0.560600 0.197541 0.039023 0.019900     2048    4233
+
+privacy_summary
+    model dataset  nn_mean   nn_p01   nn_p05   nn_p10  attack_auc  attack_acc
+      crn   oulad 0.539345 0.187693 0.258037 0.290045    0.496948     0.79641
+diffusion   oulad 0.610711 0.212797 0.281867 0.336964    0.514761     0.79641
+    rcgan   oulad 0.547828 0.165817 0.231112 0.268007    0.497934     0.79641
+      scm   oulad 0.539625 0.162636 0.222631 0.273336    0.492313     0.79641
+  timegan   oulad 0.530523 0.170178 0.220161 0.262956    0.490470     0.79641
+      vae   oulad 0.540714 0.164510 0.233359 0.271857    0.505284     0.79641
+

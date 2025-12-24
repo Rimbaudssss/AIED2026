@@ -1,0 +1,7 @@
+model,dataset,attack_features,attack_auc,attack_acc,n_in,n_out
+scm,oulad,"recon_error,avg_confidence,nn_distance",0.4923130663422627,0.7964100141709967,16934,4233
+rcgan,oulad,"recon_error,avg_confidence,nn_distance",0.4979340959640024,0.7964100141709967,16934,4233
+vae,oulad,"recon_error,avg_confidence,nn_distance",0.5052837968964498,0.7964100141709967,16934,4233
+diffusion,oulad,"recon_error,avg_confidence,nn_distance",0.5147613285272127,0.7964100141709967,16934,4233
+crn,oulad,"recon_error,avg_confidence,nn_distance",0.4969480858850941,0.7964100141709967,16934,4233
+timegan,oulad,"recon_error,avg_confidence,nn_distance",0.490469945385271,0.7964100141709967,16934,4233
