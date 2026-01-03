@@ -1,7 +1,7 @@
 {
-  "run_id": "20251223_201452",
+  "run_id": "20260102_192828",
   "dataset": "oulad",
-  "created_at": "2025-12-23T20:14:52",
+  "created_at": "2026-01-02T19:28:28",
   "artifacts": [
     {
       "kind": "policy_curve",
@@ -24,12 +24,28 @@
       }
     },
     {
+      "kind": "table",
+      "model": "all",
+      "path": "results/oracle_ite_metrics.csv",
+      "meta": {
+        "dataset": "oulad"
+      }
+    },
+    {
+      "kind": "table",
+      "model": "all",
+      "path": "results/oracle_policy_metrics.csv",
+      "meta": {
+        "dataset": "oulad"
+      }
+    },
+    {
       "kind": "ate_curve",
       "model": "scm",
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_scm_all.png",
       "meta": {
         "subgroup": "all",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -39,7 +55,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_scm_low.png",
       "meta": {
         "subgroup": "low",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -49,7 +65,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_scm_low.png",
       "meta": {
         "subgroup": "low",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -59,7 +75,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_scm_high.png",
       "meta": {
         "subgroup": "high",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -69,7 +85,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_scm_high.png",
       "meta": {
         "subgroup": "high",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -79,7 +95,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_rcgan_all.png",
       "meta": {
         "subgroup": "all",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -89,7 +105,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_rcgan_low.png",
       "meta": {
         "subgroup": "low",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -99,7 +115,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_rcgan_low.png",
       "meta": {
         "subgroup": "low",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -109,7 +125,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_rcgan_high.png",
       "meta": {
         "subgroup": "high",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -119,7 +135,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_rcgan_high.png",
       "meta": {
         "subgroup": "high",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -129,7 +145,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_vae_all.png",
       "meta": {
         "subgroup": "all",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -139,7 +155,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_vae_low.png",
       "meta": {
         "subgroup": "low",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -149,7 +165,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_vae_low.png",
       "meta": {
         "subgroup": "low",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -159,7 +175,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_vae_high.png",
       "meta": {
         "subgroup": "high",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -169,7 +185,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_vae_high.png",
       "meta": {
         "subgroup": "high",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -179,7 +195,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_diffusion_all.png",
       "meta": {
         "subgroup": "all",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -189,7 +205,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_diffusion_low.png",
       "meta": {
         "subgroup": "low",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -199,7 +215,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_diffusion_low.png",
       "meta": {
         "subgroup": "low",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -209,7 +225,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_diffusion_high.png",
       "meta": {
         "subgroup": "high",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -219,7 +235,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_diffusion_high.png",
       "meta": {
         "subgroup": "high",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -229,7 +245,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_crn_all.png",
       "meta": {
         "subgroup": "all",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -239,7 +255,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_crn_low.png",
       "meta": {
         "subgroup": "low",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -249,7 +265,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_crn_low.png",
       "meta": {
         "subgroup": "low",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -259,7 +275,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_crn_high.png",
       "meta": {
         "subgroup": "high",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -269,7 +285,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_crn_high.png",
       "meta": {
         "subgroup": "high",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -279,7 +295,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_timegan_all.png",
       "meta": {
         "subgroup": "all",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -289,7 +305,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_timegan_low.png",
       "meta": {
         "subgroup": "low",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -299,7 +315,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_timegan_low.png",
       "meta": {
         "subgroup": "low",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -309,7 +325,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_timegan_high.png",
       "meta": {
         "subgroup": "high",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },
@@ -319,7 +335,7 @@
       "path": "C:\\Users\\Administrator\\Desktop\\AIED2026\\artifacts\\ate_timegan_high.png",
       "meta": {
         "subgroup": "high",
-        "horizon": 5,
+        "horizon": 29,
         "dataset": "oulad"
       }
     },

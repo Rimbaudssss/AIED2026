@@ -5,7 +5,7 @@ from typing import List
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, roc_auc_score
+from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_score
 from sklearn.neighbors import NearestNeighbors
 
 from src.baselines import BaseSeqModel
@@ -61,14 +61,20 @@ def _nn_distance_feature(
     return dist.astype(np.float32)
 
 
-def _fit_attack_classifier(X_in: np.ndarray, X_out: np.ndarray, *, seed: int) -> dict:
+def _fit_attack_classifier(
+    X_in: np.ndarray,
+    X_out: np.ndarray,
+    *,
+    seed: int,
+    class_weight: str | dict | None = "balanced",
+) -> dict:
     if X_in.size == 0 or X_out.size == 0:
-        return {"attack_auc": float("nan"), "attack_acc": float("nan")}
+        return {"attack_auc": float("nan"), "attack_acc": float("nan"), "attack_balanced_acc": float("nan")}
 
     X = np.concatenate([X_in, X_out], axis=0)
     y = np.concatenate([np.ones(X_in.shape[0]), np.zeros(X_out.shape[0])], axis=0)
     if X.shape[0] < 2:
-        return {"attack_auc": float("nan"), "attack_acc": float("nan")}
+        return {"attack_auc": float("nan"), "attack_acc": float("nan"), "attack_balanced_acc": float("nan")}
 
     rng = np.random.default_rng(int(seed))
     idx = rng.permutation(X.shape[0])
@@ -81,7 +87,7 @@ def _fit_attack_classifier(X_in: np.ndarray, X_out: np.ndarray, *, seed: int) ->
     test_idx = idx[split:]
 
     try:
-        clf = LogisticRegression(max_iter=200)
+        clf = LogisticRegression(max_iter=200, class_weight=class_weight)
         clf.fit(X[train_idx], y[train_idx])
         prob = clf.predict_proba(X[test_idx])[:, 1]
         pred = (prob >= 0.5).astype(int)
@@ -90,11 +96,16 @@ def _fit_attack_classifier(X_in: np.ndarray, X_out: np.ndarray, *, seed: int) ->
         except Exception:
             auc = float("nan")
         acc = float(accuracy_score(y[test_idx], pred))
+        try:
+            bal_acc = float(balanced_accuracy_score(y[test_idx], pred))
+        except Exception:
+            bal_acc = float("nan")
     except Exception:
         auc = float("nan")
         acc = float("nan")
+        bal_acc = float("nan")
 
-    return {"attack_auc": auc, "attack_acc": acc}
+    return {"attack_auc": auc, "attack_acc": acc, "attack_balanced_acc": bal_acc}
 
 
 def run_membership_inference(
@@ -120,7 +131,12 @@ def run_membership_inference(
         feats_out.append(_nn_distance_feature(real_train, real_holdout, leave_one_out=False, embed_space=embed_space))
 
     if not feats_in:
-        return {"attack_auc": float("nan"), "attack_acc": float("nan"), "features": attack_features}
+        return {
+            "attack_auc": float("nan"),
+            "attack_acc": float("nan"),
+            "attack_balanced_acc": float("nan"),
+            "features": attack_features,
+        }
 
     X_in = np.stack(feats_in, axis=1)
     X_out = np.stack(feats_out, axis=1)
@@ -157,6 +173,7 @@ def mia_to_dataframe(result: dict, *, model: str, dataset: str, attack_features:
                 "attack_features": ",".join(attack_features),
                 "attack_auc": float(result.get("attack_auc", np.nan)),
                 "attack_acc": float(result.get("attack_acc", np.nan)),
+                "attack_balanced_acc": float(result.get("attack_balanced_acc", np.nan)),
                 "n_in": int(n_in),
                 "n_out": int(n_out),
             }

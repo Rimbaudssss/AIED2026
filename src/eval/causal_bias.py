@@ -137,7 +137,8 @@ def compute_causal_bias(
         summary["ate_rmse_mean"] = ate_rmse
         summary["cate_mae_mean"] = cate_mae
 
-    policies: List[Policy] = get_default_policies(seq_len, actions, policy_set=policy_set)
+    T_for_policy = min(seq_len, horizon + 1)
+    policies: List[Policy] = get_default_policies(T_for_policy, actions, policy_set=policy_set)
     ref_vals = []
     gen_vals = []
     policy_supported = True
@@ -188,7 +189,9 @@ def compute_policy_values(
     policy_set: str = "fixed",
 ) -> Tuple[pd.DataFrame, bool, str]:
     seq_len = int(data.T.shape[1])
-    policies: List[Policy] = get_default_policies(seq_len, actions, policy_set=policy_set)
+    horizon = int(horizon)
+    T_for_policy = min(seq_len, horizon + 1)
+    policies: List[Policy] = get_default_policies(T_for_policy, actions, policy_set=policy_set)
     rows = []
     policy_supported = True
     policy_skip_reason = ""

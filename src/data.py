@@ -28,6 +28,7 @@ class TrajectoryBatch:
     Y: torch.Tensor  # [B, T] outcome (0/1 for binary)
     mask: torch.Tensor  # [B, T] bool/float
     lengths: torch.Tensor  # [B] int64
+    ids: Optional[torch.Tensor] = None  # [B] original indices (optional)
 
     def to(self, device: torch.device) -> "TrajectoryBatch":
         return TrajectoryBatch(
@@ -37,6 +38,7 @@ class TrajectoryBatch:
             Y=_as_tensor(self.Y, device=device),
             mask=_as_tensor(self.mask, device=device),
             lengths=_as_tensor(self.lengths, device=device),
+            ids=_as_tensor(self.ids, device=device) if self.ids is not None else None,
         )
 
 
@@ -184,6 +186,13 @@ class IRTSyntheticDataset(Dataset):
         seed: int = 0,
     ):
         rng = np.random.default_rng(seed)
+        self.gamma = float(gamma)
+        self.lr = float(lr)
+        self.delta = float(delta)
+        self.confounding = float(confounding)
+        self.noise_std = float(noise_std)
+        self.seed = int(seed)
+
         self.n = int(n)
         self.seq_len = int(seq_len)
         self.d_x = int(d_x)
@@ -193,6 +202,7 @@ class IRTSyntheticDataset(Dataset):
         self.X = rng.normal(size=(self.n, self.d_x)).astype(np.float32)
 
         beta = rng.normal(loc=0.0, scale=1.0, size=(self.a_vocab_size,)).astype(np.float32)
+        self.beta = beta
         self.A = rng.integers(low=0, high=self.a_vocab_size, size=(self.n, self.seq_len), dtype=np.int64)
 
         theta = (0.6 * self.X[:, 0] + 0.2 * self.X[:, 1] + rng.normal(scale=0.4, size=self.n)).astype(np.float32)

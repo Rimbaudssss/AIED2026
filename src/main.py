@@ -26,6 +26,7 @@ if __package__ in (None, ""):
     sys.modules.setdefault("src.main", sys.modules[__name__])
 
 from src.data import (
+    IRTSyntheticDataset,
     NPZSequenceDataset,
     SequenceBatch,
     TrajectoryBatch,
@@ -36,10 +37,11 @@ from src.data import (
     move_trajectory_batch,
 )
 from src.baselines import load_base_model_from_checkpoint
-from src.causal_estimators import GFormula, IPTWMSM
+from src.causal_estimators import GFormula, IPTWMSM, OracleIRT
 from src.eval.causal_bias import compute_causal_bias, compute_policy_values
+from src.eval.oracle_metrics import compute_oracle_metrics
 from src.eval.tstr_trts import run_tstr_trts
-from src.privacy.mia_shadow import mia_to_dataframe, run_synth_membership_inference
+from src.privacy.mia_shadow import mia_to_dataframe, run_membership_inference
 from src.privacy.nn_distance import compute_nn_distance
 from src.utils.manifest import add_artifact, write_manifest
 from src.vis import run_visualization
@@ -69,6 +71,7 @@ DATASET_PATHS = {
     "assist09": "DataSet/assist2009/assist09_processed.npz",
     "oulad": "DataSet/OULAD/oulad_processed.npz",
     "statics": "DataSet/Statics2011/statics2011_step_level.npz",
+    "irt_synth": "",
 }
 
 # Choose which datasets / models to run
@@ -88,6 +91,19 @@ COMMON_KNOBS = dict(
     keep_checkpoints=False,  # if False, delete *.pt after metrics/vis
 )
 
+# IRT synthetic dataset defaults
+IRT_SYNTH_KNOBS = dict(
+    n=4096,
+    d_x=8,
+    a_vocab_size=200,
+    t_vocab_size=2,
+    gamma=0.8,
+    lr=0.05,
+    delta=0.02,
+    confounding=1.0,
+    noise_std=0.02,
+)
+
 # Model-specific knobs (override defaults)
 MODEL_KNOBS = {
 
@@ -95,12 +111,12 @@ MODEL_KNOBS = {
     "scm": dict(
         epochs_a=30,
         epochs_b=30,
-        epochs_c=15,
+        epochs_c=20,
         dynamics="transformer",
         d_k=64,
         w_do=1.0,
 
-        w_advT=0.05,
+        w_advT=0.02,
         w_cf=0.01,
         cf_interval=10,
         grl_lambda=1.0,
@@ -257,13 +273,14 @@ def _split_indices(n: int, *, test_ratio: float, seed: int) -> tuple[list[int], 
     return train_idx, test_idx
 
 
-def _batch_from_dataset(ds: NPZSequenceDataset) -> TrajectoryBatch:
+def _batch_from_dataset(ds: Any) -> TrajectoryBatch:
     X = torch.as_tensor(ds.X).float()
     A = torch.as_tensor(ds.A)
     T = torch.as_tensor(ds.T).long()
     Y = torch.as_tensor(ds.Y).float()
     M = torch.as_tensor(ds.M).float()
-    return TrajectoryBatch(X=X, A=A, T=T, Y=Y, mask=M, lengths=compute_lengths(M))
+    ids = torch.arange(X.shape[0], dtype=torch.long)
+    return TrajectoryBatch(X=X, A=A, T=T, Y=Y, mask=M, lengths=compute_lengths(M), ids=ids)
 
 
 def _perturb_batch_for_privacy(
@@ -315,7 +332,7 @@ def _perturb_batch_for_privacy(
         T = T.float() + torch.randn_like(T.float()) * t_scale * float(x_noise_scale) * mask
 
     lengths = compute_lengths(mask)
-    return TrajectoryBatch(X=X, A=A, T=T, Y=batch.Y, mask=mask, lengths=lengths)
+    return TrajectoryBatch(X=X, A=A, T=T, Y=batch.Y, mask=mask, lengths=lengths, ids=batch.ids)
 
 
 def _subset_batch(batch: TrajectoryBatch, indices: list[int]) -> TrajectoryBatch:
@@ -327,6 +344,7 @@ def _subset_batch(batch: TrajectoryBatch, indices: list[int]) -> TrajectoryBatch
             Y=batch.Y[:0],
             mask=batch.mask[:0],
             lengths=batch.lengths[:0],
+            ids=batch.ids[:0] if batch.ids is not None else None,
         )
     idx = torch.as_tensor(indices, dtype=torch.long)
     return TrajectoryBatch(
@@ -336,6 +354,7 @@ def _subset_batch(batch: TrajectoryBatch, indices: list[int]) -> TrajectoryBatch
         Y=batch.Y[idx],
         mask=batch.mask[idx],
         lengths=batch.lengths[idx],
+        ids=batch.ids[idx] if batch.ids is not None else None,
     )
 
 
@@ -351,6 +370,19 @@ def _parse_str_list(text: str, *, default: list[str]) -> list[str]:
         return list(default)
     items = [s.strip() for s in str(text).split(",") if s.strip()]
     return items if items else list(default)
+
+
+def _resolve_horizon(horizon_arg: Optional[int], *, seq_len: int) -> int:
+    seq_len = int(seq_len)
+    if seq_len <= 0:
+        return 0
+    if horizon_arg is None:
+        horizon = seq_len - 1
+    else:
+        horizon = int(horizon_arg)
+    if horizon < 0:
+        horizon = seq_len - 1
+    return max(0, min(seq_len - 1, horizon))
 
 
 def _build_subgroups(batch: TrajectoryBatch, names: list[str]) -> list[dict]:
@@ -1554,7 +1586,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     p.add_argument("--seq_len", type=int, default=None, help="Override COMMON_KNOBS.seq_len (truncate if needed)")
     p.add_argument("--test_ratio", type=float, default=None, help="Override COMMON_KNOBS.test_ratio")
     p.add_argument("--ref_estimator", type=str, default="gformula", choices=["iptw_msm", "gformula"])
-    p.add_argument("--do_horizon", type=int, default=5)
+    p.add_argument("--do_horizon", type=int, default=-1, help="Do/policy horizon (-1 uses seq_len-1).")
     p.add_argument("--t0_list", type=str, default="0,5,10")
     p.add_argument("--actions", type=str, default="0,1")
     p.add_argument("--subgroups", type=str, default="all,low,high")
@@ -1613,10 +1645,13 @@ def main(argv: Optional[list[str]] = None) -> int:
     effects_frames = []
     bias_frames = []
     policy_frames = []
+    oracle_ite_frames = []
+    oracle_policy_frames = []
     tstr_frames = []
     nn_frames = []
     mia_frames = []
     privacy_reports = []
+    max_horizon = 0
 
     manifest = {
         "run_id": datetime.now().strftime("%Y%m%d_%H%M%S"),
@@ -1626,18 +1661,34 @@ def main(argv: Optional[list[str]] = None) -> int:
     }
 
     for ds_name in datasets:
-        if ds_name not in DATASET_PATHS:
-            raise KeyError(f"Unknown dataset key: {ds_name}. Available: {sorted(DATASET_PATHS.keys())}")
-        ds_path = _resolve_path(DATASET_PATHS[ds_name])
-        ds_raw = NPZSequenceDataset(ds_path)
-        desired_seq_len = int(common.get("seq_len", ds_raw.seq_len))
-        if desired_seq_len < int(ds_raw.seq_len):
-            ds_raw.X = ds_raw.X
-            ds_raw.A = ds_raw.A[:, :desired_seq_len]
-            ds_raw.T = ds_raw.T[:, :desired_seq_len]
-            ds_raw.Y = ds_raw.Y[:, :desired_seq_len]
-            ds_raw.M = ds_raw.M[:, :desired_seq_len]
-            ds_raw.seq_len = desired_seq_len
+        if ds_name == "irt_synth":
+            synth_cfg = dict(IRT_SYNTH_KNOBS)
+            ds_raw = IRTSyntheticDataset(
+                n=int(synth_cfg["n"]),
+                seq_len=int(common["seq_len"]),
+                d_x=int(synth_cfg["d_x"]),
+                a_vocab_size=int(synth_cfg["a_vocab_size"]),
+                t_vocab_size=int(synth_cfg["t_vocab_size"]),
+                gamma=float(synth_cfg["gamma"]),
+                lr=float(synth_cfg["lr"]),
+                delta=float(synth_cfg["delta"]),
+                confounding=float(synth_cfg["confounding"]),
+                noise_std=float(synth_cfg["noise_std"]),
+                seed=int(common["seed"]),
+            )
+        else:
+            if ds_name not in DATASET_PATHS:
+                raise KeyError(f"Unknown dataset key: {ds_name}. Available: {sorted(DATASET_PATHS.keys())}")
+            ds_path = _resolve_path(DATASET_PATHS[ds_name])
+            ds_raw = NPZSequenceDataset(ds_path)
+            desired_seq_len = int(common.get("seq_len", ds_raw.seq_len))
+            if desired_seq_len < int(ds_raw.seq_len):
+                ds_raw.X = ds_raw.X
+                ds_raw.A = ds_raw.A[:, :desired_seq_len]
+                ds_raw.T = ds_raw.T[:, :desired_seq_len]
+                ds_raw.Y = ds_raw.Y[:, :desired_seq_len]
+                ds_raw.M = ds_raw.M[:, :desired_seq_len]
+                ds_raw.seq_len = desired_seq_len
 
         full_batch = _batch_from_dataset(ds_raw)
         train_idx, test_idx = _split_indices(len(ds_raw), test_ratio=float(common["test_ratio"]), seed=int(common["seed"]))
@@ -1647,11 +1698,14 @@ def main(argv: Optional[list[str]] = None) -> int:
         for sg in subgroups:
             sg["dataset"] = ds_name
 
-        if args.ref_estimator == "iptw_msm":
+        if ds_name == "irt_synth":
+            ref_estimator = OracleIRT(simulator=ds_raw)
+        elif args.ref_estimator == "iptw_msm":
             ref_estimator = IPTWMSM()
         else:
             ref_estimator = GFormula()
         ref_estimator.fit(train_batch)
+        has_oracle = bool(getattr(ref_estimator, "is_oracle", False))
 
         train_ds = TrajectoryDataset(
             X=train_batch.X, A=train_batch.A, T=train_batch.T, Y=train_batch.Y, mask=train_batch.mask
@@ -1659,12 +1713,14 @@ def main(argv: Optional[list[str]] = None) -> int:
         train_dl = _make_dataloader(train_ds, batch_size=int(common["batch_size"]), shuffle=True, drop_last=True)
 
         meta = _dataset_meta(ds_raw)
+        do_horizon = _resolve_horizon(args.do_horizon, seq_len=int(meta["seq_len"]))
+        max_horizon = max(max_horizon, do_horizon)
 
         for model_key in models:
             knobs = dict(MODEL_KNOBS.get(model_key, {}))
             knobs["save_checkpoints"] = bool(common.get("keep_checkpoints", True))
             knobs["disc_input"] = str(args.disc_input)
-            knobs["do_horizon"] = int(args.do_horizon)
+            knobs["do_horizon"] = int(do_horizon)
             knobs["ref_estimator"] = ref_estimator
             knobs["seed"] = int(common["seed"])
             legacy_ate_mae = float("nan")
@@ -1702,7 +1758,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                     ref_estimator=ref_estimator,
                     data=test_batch,
                     t0_list=t0_list,
-                    horizon=int(args.do_horizon),
+                    horizon=int(do_horizon),
                     actions=actions,
                     subgroups=subgroups,
                     n_gen=20,
@@ -1730,7 +1786,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                         ref_estimator=ref_estimator,
                         data=test_batch,
                         actions=actions,
-                        horizon=int(args.do_horizon),
+                        horizon=int(do_horizon),
                         dataset=ds_name,
                         n_boot=200,
                         seed=int(common["seed"]),
@@ -1765,7 +1821,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                                     "ref_estimator": ref_estimator.name,
                                     "dataset": ds_name,
                                     "policy": "unknown",
-                                    "horizon": int(args.do_horizon),
+                                    "horizon": int(do_horizon),
                                     "ref_value": np.nan,
                                     "ref_ci_low": np.nan,
                                     "ref_ci_high": np.nan,
@@ -1790,12 +1846,12 @@ def main(argv: Optional[list[str]] = None) -> int:
                     "ref_estimator": ref_estimator.name,
                     "dataset": ds_name,
                     "t0": int(t0_list[0]) if t0_list else 0,
-                    "horizon": int(args.do_horizon),
+                    "horizon": int(do_horizon),
                     "subgroup": "all",
                     "action": int(actions[0]) if actions else 0,
                     "n_effective": 0,
                 }
-                for h in range(int(args.do_horizon) + 1):
+                for h in range(int(do_horizon) + 1):
                     nan_row[f"ref_mu_{h}"] = np.nan
                     nan_row[f"ref_ci_low_{h}"] = np.nan
                     nan_row[f"ref_ci_high_{h}"] = np.nan
@@ -1809,7 +1865,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                                 "model": model_key,
                                 "ref_estimator": ref_estimator.name,
                                 "dataset": ds_name,
-                                "horizon": int(args.do_horizon),
+                                "horizon": int(do_horizon),
                                 "ate_mae_mean": np.nan,
                                 "ate_rmse_mean": np.nan,
                                 "cate_mae_mean": np.nan,
@@ -1830,17 +1886,63 @@ def main(argv: Optional[list[str]] = None) -> int:
                                 "ref_estimator": ref_estimator.name,
                                 "dataset": ds_name,
                                 "policy": "unknown",
-                                "horizon": int(args.do_horizon),
+                                "horizon": int(do_horizon),
                                 "ref_value": np.nan,
                                 "ref_ci_low": np.nan,
                                 "ref_ci_high": np.nan,
                                 "gen_value": np.nan,
                                 "supported": 0.0,
                                 "skip_reason": str(e),
+                                }
+                            ]
+                        )
+                    )
+
+            df_oracle_ite = None
+            df_oracle_policy = None
+            if has_oracle:
+                try:
+                    df_oracle_ite, df_oracle_policy = compute_oracle_metrics(
+                        gen_model=gen_model,
+                        oracle_estimator=ref_estimator,
+                        data=test_batch,
+                        t0_list=t0_list,
+                        horizon=int(do_horizon),
+                        actions=actions,
+                        subgroups=subgroups,
+                        policy_set=str(args.policy_set),
+                        seed=int(common["seed"]),
+                        n_gen=20,
+                    )
+                except Exception as e:
+                    df_oracle_ite = pd.DataFrame(
+                        [
+                            {
+                                "model": model_key,
+                                "dataset": ds_name,
+                                "t0": int(t0_list[0]) if t0_list else 0,
+                                "subgroup": "all",
+                                "horizon": int(do_horizon),
+                                "skip_reason": str(e),
                             }
                         ]
                     )
-                )
+                    df_oracle_policy = pd.DataFrame(
+                        [
+                            {
+                                "model": model_key,
+                                "dataset": ds_name,
+                                "policy": "unknown",
+                                "horizon": int(do_horizon),
+                                "skip_reason": str(e),
+                            }
+                        ]
+                    )
+
+            if df_oracle_ite is not None:
+                oracle_ite_frames.append(df_oracle_ite)
+            if df_oracle_policy is not None:
+                oracle_policy_frames.append(df_oracle_policy)
 
             if args.eval_tstr:
                 for predictor in predictors:
@@ -1886,34 +1988,12 @@ def main(argv: Optional[list[str]] = None) -> int:
 
             if args.eval_privacy:
                 try:
-                    # CRITICAL FIX: Sample from BOTH train and test (50/50) and perturb X/A/T
-                    # This creates synthetic data that can be used to test if the model memorized training data
+                    # Sample from train only to keep a stronger membership signal.
                     rng = np.random.default_rng(int(common["seed"]))
                     n_synth_total = min(1024, int(train_batch.X.shape[0]))
-                    n_from_train = n_synth_total // 2
-                    n_from_test = n_synth_total - n_from_train
-
-                    # Sample and perturb from train
-                    n_from_train = min(n_from_train, train_batch.X.shape[0])
-                    train_idx = rng.integers(0, train_batch.X.shape[0], size=n_from_train)
-                    train_synth = _subset_batch(train_batch, train_idx.tolist())
-                    train_synth = _perturb_batch_for_privacy(train_synth, train_batch, meta)
-
-                    # Sample and perturb from test
-                    n_from_test = min(n_from_test, test_batch.X.shape[0])
-                    test_idx = rng.integers(0, test_batch.X.shape[0], size=n_from_test)
-                    test_synth = _subset_batch(test_batch, test_idx.tolist())
-                    test_synth = _perturb_batch_for_privacy(test_synth, train_batch, meta)
-
-                    # Combine perturbed batches
-                    synth_batch = TrajectoryBatch(
-                        X=torch.cat([train_synth.X, test_synth.X], dim=0),
-                        A=torch.cat([train_synth.A, test_synth.A], dim=0),
-                        T=torch.cat([train_synth.T, test_synth.T], dim=0),
-                        Y=torch.cat([train_synth.Y, test_synth.Y], dim=0),
-                        mask=torch.cat([train_synth.mask, test_synth.mask], dim=0),
-                        lengths=torch.cat([train_synth.lengths, test_synth.lengths], dim=0),
-                    )
+                    train_idx = rng.integers(0, train_batch.X.shape[0], size=n_synth_total)
+                    synth_batch = _subset_batch(train_batch, train_idx.tolist())
+                    synth_batch = _perturb_batch_for_privacy(synth_batch, train_batch, meta)
 
                     # Generate synthetic Y using the model
                     ro = gen_model.rollout(synth_batch, do_t=None, policy=None, horizon=None, t0=0)
@@ -1937,19 +2017,20 @@ def main(argv: Optional[list[str]] = None) -> int:
                     nn_df["dataset"] = ds_name
                     nn_frames.append(nn_df)
 
-                    mia = run_synth_membership_inference(
+                    attack_features = ["recon_error", "avg_confidence", "nn_distance"]
+                    mia = run_membership_inference(
+                        gen_model=gen_model,
                         real_train=train_batch,
                         real_holdout=test_batch,
-                        synth=synth_batch,
+                        attack_features=attack_features,
                         embed_space="all",
                         seed=int(common["seed"]),
-                        attack_features=["synth_nn_distance"],
                     )
                     mia_df = mia_to_dataframe(
                         mia,
                         model=model_key,
                         dataset=ds_name,
-                        attack_features=["recon_error", "avg_confidence", "nn_distance"],
+                        attack_features=attack_features,
                         n_in=int(train_batch.X.shape[0]),
                         n_out=int(test_batch.X.shape[0]),
                     )
@@ -1971,7 +2052,8 @@ def main(argv: Optional[list[str]] = None) -> int:
                         "mia": {
                             "attack_auc": float(mia.get("attack_auc", np.nan)),
                             "attack_acc": float(mia.get("attack_acc", np.nan)),
-                            "features": ["recon_error", "avg_confidence", "nn_distance"],
+                            "attack_balanced_acc": float(mia.get("attack_balanced_acc", np.nan)),
+                            "features": attack_features,
                         },
                     }
                     privacy_reports.append(report)
@@ -2009,6 +2091,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                                     "attack_features": "recon_error,avg_confidence,nn_distance",
                                     "attack_auc": np.nan,
                                     "attack_acc": np.nan,
+                                    "attack_balanced_acc": np.nan,
                                     "n_in": int(train_batch.X.shape[0]),
                                     "n_out": int(test_batch.X.shape[0]),
                                 }
@@ -2029,6 +2112,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                             "mia": {
                                 "attack_auc": float("nan"),
                                 "attack_acc": float("nan"),
+                                "attack_balanced_acc": float("nan"),
                                 "features": ["recon_error", "avg_confidence", "nn_distance"],
                             },
                         }
@@ -2070,11 +2154,13 @@ def main(argv: Optional[list[str]] = None) -> int:
     effects_df = pd.concat(effects_frames, ignore_index=True) if effects_frames else pd.DataFrame()
     bias_df = pd.concat(bias_frames, ignore_index=True) if bias_frames else pd.DataFrame()
     policy_df = pd.concat(policy_frames, ignore_index=True) if policy_frames else pd.DataFrame()
+    oracle_ite_df = pd.concat(oracle_ite_frames, ignore_index=True) if oracle_ite_frames else pd.DataFrame()
+    oracle_policy_df = pd.concat(oracle_policy_frames, ignore_index=True) if oracle_policy_frames else pd.DataFrame()
     tstr_df = pd.concat(tstr_frames, ignore_index=True) if tstr_frames else pd.DataFrame()
     nn_df = pd.concat(nn_frames, ignore_index=True) if nn_frames else pd.DataFrame()
     mia_df = pd.concat(mia_frames, ignore_index=True) if mia_frames else pd.DataFrame()
 
-    horizon = int(args.do_horizon)
+    horizon = int(max_horizon)
     effect_cols = (
         ["model", "ref_estimator", "dataset", "t0", "horizon", "subgroup", "action"]
         + [f"ref_mu_{h}" for h in range(horizon + 1)]
@@ -2126,6 +2212,50 @@ def main(argv: Optional[list[str]] = None) -> int:
     else:
         policy_df = policy_df.reindex(columns=policy_cols + [c for c in policy_df.columns if c not in policy_cols])
 
+    oracle_ite_cols = [
+        "model",
+        "dataset",
+        "t0",
+        "subgroup",
+        "horizon",
+        "pehe",
+        "ite_rmse",
+        "ate_true",
+        "ate_hat",
+        "ate_abs_error",
+        "ate_rmse",
+        "n_effective",
+        "tau_true_mean",
+        "tau_hat_mean",
+        "n_gen",
+        "skip_reason",
+    ]
+    if oracle_ite_df.empty:
+        oracle_ite_df = pd.DataFrame(columns=oracle_ite_cols)
+    else:
+        oracle_ite_df = oracle_ite_df.reindex(
+            columns=oracle_ite_cols + [c for c in oracle_ite_df.columns if c not in oracle_ite_cols]
+        )
+
+    oracle_policy_cols = [
+        "model",
+        "dataset",
+        "policy",
+        "horizon",
+        "oracle_value",
+        "gen_value",
+        "value_abs_error",
+        "regret_oracle",
+        "supported",
+        "skip_reason",
+    ]
+    if oracle_policy_df.empty:
+        oracle_policy_df = pd.DataFrame(columns=oracle_policy_cols)
+    else:
+        oracle_policy_df = oracle_policy_df.reindex(
+            columns=oracle_policy_cols + [c for c in oracle_policy_df.columns if c not in oracle_policy_cols]
+        )
+
     tstr_cols = ["model", "dataset", "predictor", "setting", "auc", "rmse", "brier", "ece", "n_train", "n_test"]
     if tstr_df.empty:
         tstr_df = pd.DataFrame(columns=tstr_cols)
@@ -2138,7 +2268,16 @@ def main(argv: Optional[list[str]] = None) -> int:
     else:
         nn_df = nn_df.reindex(columns=nn_cols)
 
-    mia_cols = ["model", "dataset", "attack_features", "attack_auc", "attack_acc", "n_in", "n_out"]
+    mia_cols = [
+        "model",
+        "dataset",
+        "attack_features",
+        "attack_auc",
+        "attack_acc",
+        "attack_balanced_acc",
+        "n_in",
+        "n_out",
+    ]
     if mia_df.empty:
         mia_df = pd.DataFrame(columns=mia_cols)
     else:
@@ -2147,12 +2286,31 @@ def main(argv: Optional[list[str]] = None) -> int:
     effects_df.to_csv(results_dir / "causal_effects.csv", index=False)
     bias_df.to_csv(results_dir / "causal_bias_summary.csv", index=False)
     policy_df.to_csv(results_dir / "policy_values.csv", index=False)
+    oracle_ite_df.to_csv(results_dir / "oracle_ite_metrics.csv", index=False)
+    oracle_policy_df.to_csv(results_dir / "oracle_policy_metrics.csv", index=False)
     tstr_df.to_csv(results_dir / "tstr_trts.csv", index=False)
     nn_df.to_csv(results_dir / "privacy_nn_distance.csv", index=False)
     mia_df.to_csv(results_dir / "privacy_mia.csv", index=False)
 
     with (results_dir / "privacy_report.json").open("w", encoding="utf-8") as f:
         json.dump(privacy_reports, f, indent=2)
+
+    add_artifact(
+        manifest,
+        kind="table",
+        model="all",
+        dataset=",".join(datasets),
+        path="results/oracle_ite_metrics.csv",
+        meta={},
+    )
+    add_artifact(
+        manifest,
+        kind="table",
+        model="all",
+        dataset=",".join(datasets),
+        path="results/oracle_policy_metrics.csv",
+        meta={},
+    )
 
     for ds_name in datasets:
         suffix = f"_{ds_name}"
@@ -2167,6 +2325,14 @@ def main(argv: Optional[list[str]] = None) -> int:
         if not policy_df.empty and "dataset" in policy_df.columns:
             policy_df[policy_df["dataset"] == ds_name].to_csv(
                 results_dir / f"policy_values{suffix}.csv", index=False
+            )
+        if not oracle_ite_df.empty and "dataset" in oracle_ite_df.columns:
+            oracle_ite_df[oracle_ite_df["dataset"] == ds_name].to_csv(
+                results_dir / f"oracle_ite_metrics{suffix}.csv", index=False
+            )
+        if not oracle_policy_df.empty and "dataset" in oracle_policy_df.columns:
+            oracle_policy_df[oracle_policy_df["dataset"] == ds_name].to_csv(
+                results_dir / f"oracle_policy_metrics{suffix}.csv", index=False
             )
         if not tstr_df.empty and "dataset" in tstr_df.columns:
             tstr_df[tstr_df["dataset"] == ds_name].to_csv(results_dir / f"tstr_trts{suffix}.csv", index=False)
@@ -2194,12 +2360,15 @@ def main(argv: Optional[list[str]] = None) -> int:
                 "nn_p10": report["nn_distance"]["p10"],
                 "attack_auc": report["mia"]["attack_auc"],
                 "attack_acc": report["mia"]["attack_acc"],
+                "attack_balanced_acc": report["mia"]["attack_balanced_acc"],
             }
         )
     privacy_summary_df = pd.DataFrame(privacy_summary_rows)
 
     metrics_tables = {
         "causal_bias_summary": bias_df,
+        "oracle_ite_metrics": oracle_ite_df,
+        "oracle_policy_metrics": oracle_policy_df,
         "tstr_trts": tstr_df,
         "privacy_summary": privacy_summary_df,
     }

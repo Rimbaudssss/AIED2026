@@ -36,8 +36,8 @@ class _FitConfig:
     outcome_model: str = "mlp"
     state_update: str = "autoregressive"
     lr: float = 1e-3
-    epochs: int = 5
-    hidden: int = 64
+    epochs: int = 50
+    hidden: int = 128
     dropout: float = 0.1
 
 

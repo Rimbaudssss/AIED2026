@@ -49,6 +49,7 @@ class StagePolicy(Policy):
     t_switch: int
     a_before: int
     a_after: int
+    T: Optional[int] = None
     name: str = "stage"
 
     def act(
@@ -62,7 +63,10 @@ class StagePolicy(Policy):
         mask: Optional[torch.Tensor] = None,
     ) -> torch.Tensor:
         _ = (X, A_hist, T_hist, Y_hist, mask)
-        action = self.a_before if int(t) < int(self.t_switch) else self.a_after
+        t = int(t)
+        if self.T is not None:
+            t = min(t, max(0, int(self.T) - 1))
+        action = self.a_before if t < int(self.t_switch) else self.a_after
         return torch.full((X.shape[0],), int(action), device=X.device, dtype=torch.long)
 
 
@@ -156,8 +160,8 @@ def get_default_policies(T: int, action_space: list[int], *, policy_set: str = "
     policies: list[Policy] = [
         ConstantPolicy(action=action_off, name="never"),
         ConstantPolicy(action=action_on, name="always"),
-        StagePolicy(t_switch=early_switch, a_before=action_on, a_after=action_off, name="early_on"),
-        StagePolicy(t_switch=late_switch, a_before=action_off, a_after=action_on, name="late_on"),
+        StagePolicy(t_switch=early_switch, a_before=action_on, a_after=action_off, T=seq_len, name="early_on"),
+        StagePolicy(t_switch=late_switch, a_before=action_off, a_after=action_on, T=seq_len, name="late_on"),
     ]
 
     if policy_set == "ablation":
