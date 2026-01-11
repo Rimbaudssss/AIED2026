@@ -112,6 +112,7 @@ def main(argv: Optional[list[str]] = None) -> int:
 
     # Model sizes
     p.add_argument("--d_k", type=int, default=64)
+    p.add_argument("--k_c_ratio", type=float, default=0.5)
     p.add_argument("--d_eps", type=int, default=16)
     p.add_argument("--a_emb_dim", type=int, default=32)
     p.add_argument("--t_emb_dim", type=int, default=16)
@@ -144,6 +145,8 @@ def main(argv: Optional[list[str]] = None) -> int:
     p.add_argument("--w_adv", type=float, default=0.5)
     p.add_argument("--w_do", type=float, default=0.5)
     p.add_argument("--w_advT", type=float, default=0.1)
+    p.add_argument("--w_advT_causal", type=float, default=None)
+    p.add_argument("--w_t_pred_spurious", type=float, default=0.1)
     p.add_argument("--w_cf", type=float, default=0.0)
     p.add_argument("--grl_lambda", type=float, default=1.0)
 
@@ -159,6 +162,8 @@ def main(argv: Optional[list[str]] = None) -> int:
     p.add_argument("--disc_input", type=str, default="logits", choices=["logits", "sampled"])
 
     args = p.parse_args(argv)
+    w_advT_causal = float(args.w_advT if args.w_advT_causal is None else args.w_advT_causal)
+    w_t_pred_spurious = float(args.w_t_pred_spurious)
 
     torch.manual_seed(args.seed)
     device = _device_from_arg(args.device)
@@ -172,6 +177,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     gen_cfg = SCMGeneratorConfig(
         d_x=meta["d_x"],
         d_k=args.d_k,
+        k_c_ratio=float(args.k_c_ratio),
         d_eps=args.d_eps,
         a_is_discrete=meta["a_is_discrete"],
         a_vocab_size=int(meta["a_vocab_size"] or args.a_vocab_size),
@@ -210,12 +216,26 @@ def main(argv: Optional[list[str]] = None) -> int:
     )
     d_seq = SequenceDiscriminator(disc_cfg).to(device)
 
-    # Deconfounding regularizer module (Stage C): predict T_t from latent K_t.
-    t_clf = TreatmentClassifier(d_h=args.d_k, num_actions=int(meta["t_vocab_size"] or args.t_vocab_size)).to(device)
+    # Deconfounding regularizer module (Stage C): predict T_t from latent K_c / K_s.
+    t_clf = getattr(gen, "t_head", None)
+    t_policy_clf = getattr(gen, "t_policy_head", None)
+    opt_tclf = None
+    opt_tpolicy = None
+    if w_advT_causal > 0.0 and t_clf is not None:
+        opt_tclf = torch.optim.Adam(t_clf.parameters(), lr=args.lr_advT)
+    if w_t_pred_spurious > 0.0 and t_policy_clf is not None:
+        opt_tpolicy = torch.optim.Adam(t_policy_clf.parameters(), lr=args.lr_advT)
 
-    opt_g = torch.optim.Adam(gen.parameters(), lr=args.lr_g)
+    head_params = []
+    if t_clf is not None:
+        head_params.extend(list(t_clf.parameters()))
+    if t_policy_clf is not None:
+        head_params.extend(list(t_policy_clf.parameters()))
+    head_param_ids = {id(p) for p in head_params}
+    gen_params = [p for p in gen.parameters() if id(p) not in head_param_ids]
+
+    opt_g = torch.optim.Adam(gen_params, lr=args.lr_g)
     opt_d = torch.optim.Adam(d_seq.parameters(), lr=args.lr_d)
-    opt_tclf = torch.optim.Adam(t_clf.parameters(), lr=args.lr_advT)
 
     do_actions = [int(x.strip()) for x in args.do_actions.split(",") if x.strip()]
 
@@ -238,7 +258,10 @@ def main(argv: Optional[list[str]] = None) -> int:
     def run_stage(name: str, epochs: int, *, use_gan: bool, use_causal: bool) -> None:
         gen.train()
         d_seq.train()
-        t_clf.train()
+        if t_clf is not None:
+            t_clf.train()
+        if t_policy_clf is not None:
+            t_policy_clf.train()
 
         for ep in range(1, epochs + 1):
             for batch in dl:
@@ -257,6 +280,10 @@ def main(argv: Optional[list[str]] = None) -> int:
                 tf = gen.teacher_forcing(x=X, a=A, t=T, y=Y, mask=M, eps=eps_seq, eps_mode=tf_eps_mode)
                 y_logits_tf = tf["y_logits"]  # [B,T,1]
                 k_tf = tf["k"]  # [B,T+1,d_k]
+                k_c = tf.get("k_c")
+                k_s = tf.get("k_s")
+                if k_c is None or k_s is None:
+                    k_c, k_s = gen.split_k(k_tf)
 
                 loss_y = bernoulli_nll_from_logits(y_logits_tf, Y, mask=M)
 
@@ -307,6 +334,7 @@ def main(argv: Optional[list[str]] = None) -> int:
 
                 loss_do = torch.tensor(0.0, device=device)
                 loss_advT = torch.tensor(0.0, device=device)
+                loss_t_pred = torch.tensor(0.0, device=device)
                 loss_cf = torch.tensor(0.0, device=device)
                 if use_causal:
                     if not (gen_cfg.t_is_discrete and T.ndim == 2):
@@ -332,6 +360,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                                 eps=eps_seq,
                                 steps=steps,
                                 stochastic_y=False,
+                                causal_only=True,
                             )
                             y_do = ro_do["y"]
                             if y_do.ndim == 3 and y_do.shape[-1] == 1:
@@ -391,7 +420,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                                     a_val = int(a_val)
                                     t_do = torch.full((bsz,), a_val, device=device, dtype=T.dtype)
                                     t_enc_do = gen.encode_t(t_do)
-                                    y_inp_do = torch.cat([k_t, a_enc_t, t_enc_do, x_feat], dim=-1)
+                                    y_inp_do = gen.build_y_input(k_t, a_enc_t, t_enc_do, x_feat, causal_only=True)
                                     y_prob_do = torch.sigmoid(gen.y_head(y_inp_do))  # [B,1]
                                     feat_do = torch.cat([x_feat, k_t, y_prob_do], dim=-1)[valid]
 
@@ -406,19 +435,36 @@ def main(argv: Optional[list[str]] = None) -> int:
                             if do_terms > 0:
                                 loss_do = loss_do / float(do_terms)
 
-                        # Adversarial deconfounding (GRL): make latent K_t less predictive of T_t.
-                        # 1) Update classifier to predict T_t from K_t (factual path).
-                        with torch.no_grad():
-                            k_repr_detached = k_tf[:, :-1, :].detach()
-                        t_logits_clf = t_clf(k_repr_detached)
-                        loss_tclf = treatment_ce_loss(t_logits_clf, T.long(), mask=M)
-                        opt_tclf.zero_grad(set_to_none=True)
-                        loss_tclf.backward()
-                        opt_tclf.step()
+                        # Adversarial deconfounding (GRL): make latent K_c less predictive of T_t.
+                        if w_advT_causal > 0.0 and t_clf is not None and opt_tclf is not None and k_c.shape[-1] > 0:
+                            with torch.no_grad():
+                                k_repr_detached = k_c[:, :-1, :].detach()
+                            t_logits_clf = t_clf(k_repr_detached)
+                            loss_tclf = treatment_ce_loss(t_logits_clf, T.long(), mask=M)
+                            opt_tclf.zero_grad(set_to_none=True)
+                            loss_tclf.backward()
+                            opt_tclf.step()
 
-                        # 2) For generator update: reverse gradients through K_t.
-                        t_logits_adv = t_clf(grad_reverse(k_tf[:, :-1, :], lambd=args.grl_lambda))
-                        loss_advT = treatment_ce_loss(t_logits_adv, T.long(), mask=M)
+                            # For generator update: reverse gradients through K_c.
+                            t_logits_adv = t_clf(grad_reverse(k_c[:, :-1, :], lambd=args.grl_lambda))
+                            loss_advT = treatment_ce_loss(t_logits_adv, T.long(), mask=M)
+
+                        if (
+                            w_t_pred_spurious > 0.0
+                            and t_policy_clf is not None
+                            and opt_tpolicy is not None
+                            and k_s.shape[-1] > 0
+                        ):
+                            with torch.no_grad():
+                                k_s_detached = k_s[:, :-1, :].detach()
+                            t_logits_policy = t_policy_clf(k_s_detached)
+                            loss_tpolicy = treatment_ce_loss(t_logits_policy, T.long(), mask=M)
+                            opt_tpolicy.zero_grad(set_to_none=True)
+                            loss_tpolicy.backward()
+                            opt_tpolicy.step()
+
+                            t_logits_policy = t_policy_clf(k_s[:, :-1, :])
+                            loss_t_pred = treatment_ce_loss(t_logits_policy, T.long(), mask=M)
 
                         # Counterfactual consistency: intervening at time t must not change K_{0:t}.
                         if args.w_cf > 0.0:
@@ -456,7 +502,8 @@ def main(argv: Optional[list[str]] = None) -> int:
                     loss_g = loss_g + args.w_adv * loss_adv
                 if use_causal:
                     loss_g = loss_g + args.w_do * loss_do
-                    loss_g = loss_g + args.w_advT * loss_advT
+                    loss_g = loss_g + w_advT_causal * loss_advT
+                    loss_g = loss_g + w_t_pred_spurious * loss_t_pred
                     loss_g = loss_g + args.w_cf * loss_cf
 
                 opt_g.zero_grad(set_to_none=True)

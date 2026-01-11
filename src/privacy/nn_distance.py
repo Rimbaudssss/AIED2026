@@ -42,7 +42,28 @@ def _embed(batch: TrajectoryBatch, *, embed_space: str = "y_only") -> np.ndarray
         lengths_int = np.maximum(M.sum(axis=1).astype(np.int64), 1)
         last_idx = lengths_int - 1
         y_last = Y[np.arange(Y.shape[0]), last_idx][:, None]
-        return np.concatenate([y_mean, y_std, y_last, lengths], axis=1).astype(np.float32)
+
+        y0 = Y[:, :-1]
+        y1 = Y[:, 1:]
+        m_pair = M[:, :-1] * M[:, 1:]
+        denom_pair = np.maximum(1.0, m_pair.sum(axis=1, keepdims=True))
+        mean0 = (y0 * m_pair).sum(axis=1, keepdims=True) / denom_pair
+        mean1 = (y1 * m_pair).sum(axis=1, keepdims=True) / denom_pair
+        cov = ((y0 - mean0) * (y1 - mean1) * m_pair).sum(axis=1, keepdims=True) / denom_pair
+        var0 = ((y0 - mean0) ** 2 * m_pair).sum(axis=1, keepdims=True) / denom_pair
+        var1 = ((y1 - mean1) ** 2 * m_pair).sum(axis=1, keepdims=True) / denom_pair
+        denom_corr = np.sqrt(np.maximum(var0 * var1, 1e-6))
+        y_ac1 = cov / denom_corr
+
+        last_k = 3
+        y_lastk = np.zeros((Y.shape[0], 1), dtype=np.float32)
+        for i in range(Y.shape[0]):
+            L = int(lengths_int[i])
+            start = max(0, L - last_k)
+            if L > 0:
+                y_lastk[i, 0] = float(np.mean(Y[i, start:L]))
+
+        return np.concatenate([y_mean, y_std, y_last, y_lastk, y_ac1, lengths], axis=1).astype(np.float32)
 
     if A.ndim == 2:
         a_feat = (A * M).sum(axis=1, keepdims=True) / denom

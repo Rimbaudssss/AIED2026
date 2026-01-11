@@ -290,8 +290,10 @@ def _oracle_skip_frames(
     skip_reason: str,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     ite_rows = []
-    for t0 in t0_list:
-        for subgroup in subgroups:
+    t0_vals = t0_list if t0_list else [0]
+    subgroup_vals = subgroups if subgroups else [{"name": "all"}]
+    for t0 in t0_vals:
+        for subgroup in subgroup_vals:
             ite_rows.append(
                 {
                     "model": model_name,
@@ -309,6 +311,7 @@ def _oracle_skip_frames(
                     "tau_true_mean": np.nan,
                     "tau_hat_mean": np.nan,
                     "n_gen": 0,
+                    "supported": False,
                     "skip_reason": skip_reason,
                 }
             )
@@ -340,6 +343,7 @@ def compute_oracle_metrics(
     gen_model,
     oracle_estimator,
     data: TrajectoryBatch,
+    dataset_name: str,
     t0_list: list[int],
     horizon: int,
     actions: list[int],
@@ -348,9 +352,10 @@ def compute_oracle_metrics(
     seed: int,
     n_gen: int = 20,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
-    dataset = subgroups[0].get("dataset", "unknown") if subgroups else "unknown"
+    dataset = str(dataset_name)
     model_name = getattr(gen_model, "name", "model")
     seq_len = int(data.T.shape[1])
+    bsz = int(data.X.shape[0])
 
     if oracle_estimator is None or not getattr(oracle_estimator, "is_oracle", False):
         return _oracle_skip_frames(
@@ -363,6 +368,19 @@ def compute_oracle_metrics(
             policy_set=policy_set,
             seq_len=seq_len,
             skip_reason="oracle_not_available",
+        )
+
+    if bsz <= 0:
+        return _oracle_skip_frames(
+            model_name=model_name,
+            dataset=dataset,
+            t0_list=t0_list,
+            horizon=horizon,
+            actions=actions,
+            subgroups=subgroups,
+            policy_set=policy_set,
+            seq_len=seq_len,
+            skip_reason="empty_oracle_batch",
         )
 
     if len(actions) < 2:
@@ -382,41 +400,63 @@ def compute_oracle_metrics(
     n_gen_eff = int(max(1, n_gen))
     ite_rows = []
 
+    subgroup_vals = subgroups if subgroups else [{"name": "all"}]
     for t0 in [int(x) for x in t0_list]:
         if not (0 <= t0 < seq_len):
+            for subgroup in subgroup_vals:
+                ite_rows.append(
+                    {
+                        "model": model_name,
+                        "dataset": dataset,
+                        "t0": int(t0),
+                        "subgroup": str(subgroup.get("name", "all")),
+                        "horizon": int(horizon),
+                        "pehe": np.nan,
+                        "ite_rmse": np.nan,
+                        "ate_true": np.nan,
+                        "ate_hat": np.nan,
+                        "ate_abs_error": np.nan,
+                        "ate_rmse": np.nan,
+                        "n_effective": 0,
+                        "tau_true_mean": np.nan,
+                        "tau_hat_mean": np.nan,
+                        "n_gen": n_gen_eff,
+                        "supported": False,
+                        "skip_reason": "t0_out_of_range",
+                    }
+                )
             continue
         steps = min(int(horizon), seq_len - t0 - 1)
         H = max(0, int(steps))
         sl = slice(t0, t0 + H + 1)
 
         try:
-            y_true0, m_slice = oracle_estimator.expected_outcomes_do(
-                data, t0=t0, horizon=H, action=a0
-            )
-            y_true1, _ = oracle_estimator.expected_outcomes_do(
-                data, t0=t0, horizon=H, action=a1
-            )
+            tau_true_all = oracle_estimator.estimate_tau_per_sample(data, t0=t0, horizon=H)
+            y_true0, m_slice = oracle_estimator.expected_outcomes_do(data, t0=t0, horizon=H, action=a0)
+            y_true1, _ = oracle_estimator.expected_outcomes_do(data, t0=t0, horizon=H, action=a1)
         except Exception as e:
-            ite_rows.append(
-                {
-                    "model": model_name,
-                    "dataset": dataset,
-                    "t0": int(t0),
-                    "subgroup": "all",
-                    "horizon": int(H),
-                    "pehe": np.nan,
-                    "ite_rmse": np.nan,
-                    "ate_true": np.nan,
-                    "ate_hat": np.nan,
-                    "ate_abs_error": np.nan,
-                    "ate_rmse": np.nan,
-                    "n_effective": 0,
-                    "tau_true_mean": np.nan,
-                    "tau_hat_mean": np.nan,
-                    "n_gen": n_gen_eff,
-                    "skip_reason": str(e),
-                }
-            )
+            for subgroup in subgroup_vals:
+                ite_rows.append(
+                    {
+                        "model": model_name,
+                        "dataset": dataset,
+                        "t0": int(t0),
+                        "subgroup": str(subgroup.get("name", "all")),
+                        "horizon": int(H),
+                        "pehe": np.nan,
+                        "ite_rmse": np.nan,
+                        "ate_true": np.nan,
+                        "ate_hat": np.nan,
+                        "ate_abs_error": np.nan,
+                        "ate_rmse": np.nan,
+                        "n_effective": 0,
+                        "tau_true_mean": np.nan,
+                        "tau_hat_mean": np.nan,
+                        "n_gen": n_gen_eff,
+                        "supported": False,
+                        "skip_reason": str(e),
+                    }
+                )
             continue
 
         def _gen_mean(action: int) -> np.ndarray:
@@ -438,8 +478,9 @@ def compute_oracle_metrics(
 
         diff_true = y_true1 - y_true0
         diff_hat = y_hat1 - y_hat0
+        tau_hat_all = _masked_mean_np(diff_hat, m_slice, axis=1)
 
-        for subgroup in subgroups:
+        for subgroup in subgroup_vals:
             name = str(subgroup.get("name", "all"))
             if "mask" in subgroup:
                 sel = np.asarray(subgroup["mask"]).astype(bool)
@@ -474,8 +515,8 @@ def compute_oracle_metrics(
             diff_hat_s = diff_hat[sel]
             m_slice_s = m_slice[sel]
 
-            tau_true = _masked_mean_np(diff_true_s, m_slice_s, axis=1)
-            tau_hat = _masked_mean_np(diff_hat_s, m_slice_s, axis=1)
+            tau_true = tau_true_all[sel]
+            tau_hat = tau_hat_all[sel]
             ate_true_curve = _masked_mean_np(diff_true_s, m_slice_s, axis=0)
             ate_hat_curve = _masked_mean_np(diff_hat_s, m_slice_s, axis=0)
 
@@ -485,11 +526,11 @@ def compute_oracle_metrics(
             ate_true = float(np.nanmean(tau_true))
             ate_hat = float(np.nanmean(tau_hat))
             ate_abs_error = float(abs(ate_hat - ate_true))
-            ate_rmse = float(np.sqrt(np.nanmean((ate_hat_curve - ate_true_curve) ** 2)))
+        ate_rmse = float(np.sqrt(np.nanmean((ate_hat_curve - ate_true_curve) ** 2)))
 
-            ite_rows.append(
-                {
-                    "model": model_name,
+        ite_rows.append(
+            {
+                "model": model_name,
                     "dataset": dataset,
                     "t0": int(t0),
                     "subgroup": name,
@@ -499,14 +540,28 @@ def compute_oracle_metrics(
                     "ate_true": ate_true,
                     "ate_hat": ate_hat,
                     "ate_abs_error": ate_abs_error,
-                    "ate_rmse": ate_rmse,
-                    "n_effective": n_eff,
-                    "tau_true_mean": float(np.nanmean(tau_true)),
-                    "tau_hat_mean": float(np.nanmean(tau_hat)),
-                    "n_gen": n_gen_eff,
-                    "skip_reason": "",
-                }
-            )
+                "ate_rmse": ate_rmse,
+                "n_effective": n_eff,
+                "tau_true_mean": float(np.nanmean(tau_true)),
+                "tau_hat_mean": float(np.nanmean(tau_hat)),
+                "n_gen": n_gen_eff,
+                "supported": True,
+                "skip_reason": "",
+            }
+        )
+
+    if not ite_rows:
+        return _oracle_skip_frames(
+            model_name=model_name,
+            dataset=dataset,
+            t0_list=t0_list,
+            horizon=horizon,
+            actions=actions,
+            subgroups=subgroups,
+            policy_set=policy_set,
+            seq_len=seq_len,
+            skip_reason="oracle_t0_out_of_range",
+        )
 
     df_ite = pd.DataFrame(ite_rows)
 

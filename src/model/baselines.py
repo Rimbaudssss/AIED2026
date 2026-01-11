@@ -913,9 +913,11 @@ def build_discriminator_from_meta(
 def load_rollout_model_from_checkpoint(ckpt: dict, *, device: torch.device) -> Tuple[nn.Module, str]:
     # Legacy SCM checkpoints from src/train.py
     if "model" not in ckpt and "gen_cfg" in ckpt:
-        cfg = SCMGeneratorConfig(**ckpt["gen_cfg"])
+        cfg_dict = dict(ckpt["gen_cfg"])
+        cfg_dict.setdefault("k_c_ratio", 1.0)
+        cfg = SCMGeneratorConfig(**cfg_dict)
         model = SCMGenerator(cfg).to(device)
-        model.load_state_dict(ckpt["gen"])
+        model.load_state_dict(ckpt["gen"], strict=False)
         model.eval()
         return model, "scm"
 
@@ -925,7 +927,9 @@ def load_rollout_model_from_checkpoint(ckpt: dict, *, device: torch.device) -> T
     if cfg_dict is None or state is None:
         raise ValueError("Checkpoint missing model config/state.")
 
-    if model_name == "scm":
+    if model_name in {"scm", "scm_fidelity", "scm_causal"}:
+        cfg_dict = dict(cfg_dict)
+        cfg_dict.setdefault("k_c_ratio", 1.0)
         cfg = SCMGeneratorConfig(**cfg_dict)
         model = SCMGenerator(cfg).to(device)
     elif model_name == "rcgan":
@@ -946,7 +950,8 @@ def load_rollout_model_from_checkpoint(ckpt: dict, *, device: torch.device) -> T
     else:
         raise ValueError(f"Unknown model={model_name}")
 
-    model.load_state_dict(state)
+    strict = model_name not in {"scm", "scm_fidelity", "scm_causal"}
+    model.load_state_dict(state, strict=strict)
     if model_name == "timegan":
         # Optional: attach generation helpers without pushing large tensors to GPU.
         if "reservoir" in ckpt and getattr(model, "_reservoir", None) is None:

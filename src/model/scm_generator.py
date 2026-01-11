@@ -12,6 +12,7 @@ import torch.nn.functional as F
 class SCMGeneratorConfig:
     d_x: int
     d_k: int = 64
+    k_c_ratio: float = 0.5
     d_eps: int = 16
 
     # A_t (item / skill / difficulty)
@@ -174,6 +175,10 @@ class SCMGenerator(nn.Module):
     def __init__(self, cfg: SCMGeneratorConfig):
         super().__init__()
         self.cfg = cfg
+        ratio = float(cfg.k_c_ratio)
+        ratio = min(max(ratio, 0.0), 1.0)
+        self.d_k_c = min(max(int(cfg.d_k * ratio), 0), int(cfg.d_k))
+        self.d_k_s = int(cfg.d_k) - self.d_k_c
 
         self.x_proj = nn.Linear(cfg.d_x, cfg.d_x)
 
@@ -237,6 +242,23 @@ class SCMGenerator(nn.Module):
             raise ValueError(f"Unknown y_dist={cfg.y_dist}")
 
         self.supervisor = Supervisor(cfg.d_k, self.d_inp, hidden=cfg.mlp_hidden, dropout=cfg.dropout)
+        self.t_head: Optional[TreatmentClassifier] = None
+        self.t_policy_head: Optional[TreatmentClassifier] = None
+        if cfg.t_is_discrete and int(cfg.t_vocab_size) > 1:
+            if self.d_k_c > 0:
+                self.t_head = TreatmentClassifier(
+                    d_h=self.d_k_c,
+                    num_actions=int(cfg.t_vocab_size),
+                    hidden=cfg.mlp_hidden,
+                    dropout=cfg.dropout,
+                )
+            if self.d_k_s > 0:
+                self.t_policy_head = TreatmentClassifier(
+                    d_h=self.d_k_s,
+                    num_actions=int(cfg.t_vocab_size),
+                    hidden=cfg.mlp_hidden,
+                    dropout=cfg.dropout,
+                )
 
     def encode_a(self, a_t: torch.Tensor) -> torch.Tensor:
         if self.cfg.a_is_discrete:
@@ -280,6 +302,31 @@ class SCMGenerator(nn.Module):
             return y.float()
         raise ValueError(f"y must be [B,T] or [B,T,{self.d_y_dyn}], got {tuple(y.shape)}")
 
+    def split_k(self, k: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
+        k_c = k[..., : self.d_k_c] if self.d_k_c > 0 else k[..., :0]
+        k_s = k[..., self.d_k_c :] if self.d_k_s > 0 else k[..., :0]
+        return k_c, k_s
+
+    def _k_for_y(self, k: torch.Tensor, *, causal_only: bool) -> torch.Tensor:
+        if not causal_only or self.d_k_s == 0:
+            return k
+        k_c, k_s = self.split_k(k)
+        if k_s.numel() == 0:
+            return k_c
+        return torch.cat([k_c, torch.zeros_like(k_s)], dim=-1)
+
+    def build_y_input(
+        self,
+        k_t: torch.Tensor,
+        a_enc: torch.Tensor,
+        t_enc: torch.Tensor,
+        x_enc: torch.Tensor,
+        *,
+        causal_only: bool = False,
+    ) -> torch.Tensor:
+        k_use = self._k_for_y(k_t, causal_only=causal_only)
+        return torch.cat([k_use, a_enc, t_enc, x_enc], dim=-1)
+
     def init_k(self, x: torch.Tensor) -> torch.Tensor:
         return self.k0(x.float())
 
@@ -312,6 +359,7 @@ class SCMGenerator(nn.Module):
         t_t: torch.Tensor,
         eps: Optional[torch.Tensor] = None,
         y_dyn: Optional[torch.Tensor] = None,
+        causal_only: bool = False,
     ) -> Tuple[torch.Tensor, torch.Tensor]:
         """One SCM transition step: returns (k_{t+1}, y_logits_t)."""
         if self.cfg.dynamics == "transformer":
@@ -320,7 +368,7 @@ class SCMGenerator(nn.Module):
         t_enc = self.encode_t(t_t)
 
         x_enc = self.x_proj(x.float())
-        y_inp = torch.cat([k_t, a_enc, t_enc, x_enc], dim=-1)
+        y_inp = self.build_y_input(k_t, a_enc, t_enc, x_enc, causal_only=causal_only)
         y_logits = self.y_head(y_inp)
 
         if self.cfg.use_y_in_dynamics:
@@ -363,10 +411,20 @@ class SCMGenerator(nn.Module):
         mask: Optional[torch.Tensor] = None,
         eps: Optional[torch.Tensor] = None,  # [B,T,d_eps]
         eps_mode: str = "zero",  # zero | random
+        causal_only: bool = False,
     ) -> Dict[str, torch.Tensor]:
         """Unrolls the SCM under observed (A,T) and returns latent + logits."""
         if self.cfg.dynamics == "transformer":
-            return self._teacher_forcing_transformer(x=x, a=a, t=t, y=y, mask=mask, eps=eps, eps_mode=eps_mode)
+            return self._teacher_forcing_transformer(
+                x=x,
+                a=a,
+                t=t,
+                y=y,
+                mask=mask,
+                eps=eps,
+                eps_mode=eps_mode,
+                causal_only=causal_only,
+            )
         bsz, seq_len = a.shape[0], a.shape[1]
         device = x.device
         if mask is None:
@@ -392,7 +450,15 @@ class SCMGenerator(nn.Module):
                 eps_t = eps[:, ti, :]
 
             y_t = None if y is None else y[:, ti]
-            k_next, y_logits = self.step(k_t, x=x, a_t=a[:, ti], t_t=t[:, ti], eps=eps_t, y_dyn=y_t)
+            k_next, y_logits = self.step(
+                k_t,
+                x=x,
+                a_t=a[:, ti],
+                t_t=t[:, ti],
+                eps=eps_t,
+                y_dyn=y_t,
+                causal_only=causal_only,
+            )
 
             # Keep padded steps stable (avoid leaking padding into training).
             m = mask[:, ti].view(bsz, 1)
@@ -402,8 +468,12 @@ class SCMGenerator(nn.Module):
             y_logits_seq.append(y_logits)
             k_t = k_next
 
+        k_seq = torch.stack(k_seq, dim=1)
+        k_c, k_s = self.split_k(k_seq)
         return {
-            "k": torch.stack(k_seq, dim=1),  # [B, T+1, d_k]
+            "k": k_seq,  # [B, T+1, d_k]
+            "k_c": k_c,
+            "k_s": k_s,
             "y_logits": torch.stack(y_logits_seq, dim=1),  # [B, T, ...]
         }
 
@@ -417,6 +487,7 @@ class SCMGenerator(nn.Module):
         mask: Optional[torch.Tensor],
         eps: Optional[torch.Tensor],
         eps_mode: str,
+        causal_only: bool,
     ) -> Dict[str, torch.Tensor]:
         bsz, seq_len = a.shape[0], a.shape[1]
         device = x.device
@@ -460,10 +531,11 @@ class SCMGenerator(nn.Module):
             k_seq.append(k_next)
         k_seq = torch.stack(k_seq, dim=1)  # [B,T+1,d_k]
 
-        y_inp = torch.cat([k_seq[:, :-1, :], a_enc, t_enc, x_rep], dim=-1)
+        y_inp = self.build_y_input(k_seq[:, :-1, :], a_enc, t_enc, x_rep, causal_only=causal_only)
         y_logits = self.y_head(y_inp)
         y_logits = mask[:, :, None] * y_logits + (1.0 - mask[:, :, None]) * y_logits.detach()
-        return {"k": k_seq, "y_logits": y_logits}
+        k_c, k_s = self.split_k(k_seq)
+        return {"k": k_seq, "k_c": k_c, "k_s": k_s, "y_logits": y_logits}
 
     def rollout(
         self,
@@ -477,11 +549,21 @@ class SCMGenerator(nn.Module):
         eps: Optional[torch.Tensor] = None,  # [B,T,d_eps]
         steps: Optional[int] = None,
         stochastic_y: bool = False,
+        causal_only: bool = False,
     ) -> Dict[str, torch.Tensor]:
         """Rolls out a trajectory, optionally with do(T_t=...) or a policy."""
         if self.cfg.dynamics == "transformer":
             return self._rollout_transformer(
-                x=x, a=a, t_obs=t_obs, do_t=do_t, policy=policy, mask=mask, eps=eps, steps=steps, stochastic_y=stochastic_y
+                x=x,
+                a=a,
+                t_obs=t_obs,
+                do_t=do_t,
+                policy=policy,
+                mask=mask,
+                eps=eps,
+                steps=steps,
+                stochastic_y=stochastic_y,
+                causal_only=causal_only,
             )
         bsz, seq_len = a.shape[0], a.shape[1]
         device = x.device
@@ -514,7 +596,7 @@ class SCMGenerator(nn.Module):
                     raise ValueError(f"eps must be [B,>=T,d_eps]=[{bsz},>={steps},{self.cfg.d_eps}], got {tuple(eps.shape)}")
                 eps_t = eps[:, ti, :]
 
-            k_next, y_logits = self.step(k_t, x=x, a_t=a[:, ti], t_t=t_t, eps=eps_t)
+            k_next, y_logits = self.step(k_t, x=x, a_t=a[:, ti], t_t=t_t, eps=eps_t, causal_only=causal_only)
 
             if self.cfg.y_dist == "bernoulli":
                 y_prob = torch.sigmoid(y_logits)
@@ -538,8 +620,12 @@ class SCMGenerator(nn.Module):
             t_used_seq.append(t_t)
             k_t = k_next
 
+        k_seq = torch.stack(k_seq, dim=1)
+        k_c, k_s = self.split_k(k_seq)
         return {
-            "k": torch.stack(k_seq, dim=1),
+            "k": k_seq,
+            "k_c": k_c,
+            "k_s": k_s,
             "y_logits": torch.stack(y_logits_seq, dim=1),
             "y": torch.stack(y_out_seq, dim=1),
             "t": torch.stack(t_used_seq, dim=1),
@@ -557,6 +643,7 @@ class SCMGenerator(nn.Module):
         eps: Optional[torch.Tensor],
         steps: Optional[int],
         stochastic_y: bool,
+        causal_only: bool,
     ) -> Dict[str, torch.Tensor]:
         bsz, seq_len = a.shape[0], a.shape[1]
         device = x.device
@@ -597,7 +684,7 @@ class SCMGenerator(nn.Module):
             a_enc = self.encode_a(a[:, ti])
             t_enc = self.encode_t(t_t)
             # Observation at time t depends on current K_t and current (A_t, T_t, X).
-            y_inp_t = torch.cat([k_t, a_enc, t_enc, x_rep_t], dim=-1)
+            y_inp_t = self.build_y_input(k_t, a_enc, t_enc, x_rep_t, causal_only=causal_only)
             y_logits = self.y_head(y_inp_t)
 
             if self.cfg.y_dist == "bernoulli":
@@ -633,12 +720,16 @@ class SCMGenerator(nn.Module):
             t_used_seq.append(t_t)
             k_t = k_next
 
+        k_seq = torch.stack(k_seq, dim=1)
+        k_c, k_s = self.split_k(k_seq)
         return {
-            "k": torch.stack(k_seq, dim=1),
+            "k": k_seq,
+            "k_c": k_c,
+            "k_s": k_s,
             "y_logits": torch.stack(y_logits_seq, dim=1),
             "y": torch.stack(y_out_seq, dim=1),
             "t": torch.stack(t_used_seq, dim=1),
         }
 
 
-from .policy import Policy  # noqa: E402  (placed at end intentionally)
+from .policy import Policy, TreatmentClassifier  # noqa: E402  (placed at end intentionally)

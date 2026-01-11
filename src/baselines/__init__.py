@@ -78,6 +78,7 @@ class TorchSeqModel(BaseSeqModel):
         T = batch.T.to(device)
         mask = batch.mask.to(device)
         seq_len = int(T.shape[1])
+        use_causal_only = self.name.startswith("scm")
         end = seq_len if horizon is None else min(seq_len, int(t0) + int(horizon) + 1)
         end = max(0, min(seq_len, int(end)))
         t0 = max(0, min(seq_len, int(t0)))
@@ -125,7 +126,10 @@ class TorchSeqModel(BaseSeqModel):
                 do_val = _resolve_do_value(t)
                 if do_val is not None:
                     t_used[:, t] = _to_action_tensor(do_val)
-            ro = self.model.rollout(x=X, a=A, t_obs=t_used, mask=mask, steps=t0, stochastic_y=False)  # type: ignore[attr-defined]
+            ro_kwargs = dict(x=X, a=A, t_obs=t_used, mask=mask, steps=t0, stochastic_y=False)
+            if use_causal_only:
+                ro_kwargs["causal_only"] = True
+            ro = self.model.rollout(**ro_kwargs)  # type: ignore[attr-defined]
             ro_last = ro
             y_prefix = _squeeze_y(ro["y"]).float()
             y_prob[:, :t0] = y_prefix[:, :t0]
@@ -151,7 +155,7 @@ class TorchSeqModel(BaseSeqModel):
                 act = act.to(device).long()
             t_used[:, t] = act
 
-            ro = self.model.rollout(  # type: ignore[attr-defined]
+            ro_kwargs = dict(
                 x=X,
                 a=A,
                 t_obs=t_used,
@@ -159,6 +163,9 @@ class TorchSeqModel(BaseSeqModel):
                 steps=t + 1,
                 stochastic_y=False,
             )
+            if use_causal_only:
+                ro_kwargs["causal_only"] = True
+            ro = self.model.rollout(**ro_kwargs)  # type: ignore[attr-defined]
             ro_last = ro
             y_prefix = _squeeze_y(ro["y"]).float()
             y_prob[:, t] = y_prefix[:, t]
@@ -169,7 +176,7 @@ class TorchSeqModel(BaseSeqModel):
                     y_logit[:, t] = _prob_to_logit(y_prefix[:, t])
 
         if end < seq_len:
-            ro = self.model.rollout(  # type: ignore[attr-defined]
+            ro_kwargs = dict(
                 x=X,
                 a=A,
                 t_obs=t_used,
@@ -177,6 +184,9 @@ class TorchSeqModel(BaseSeqModel):
                 steps=seq_len,
                 stochastic_y=False,
             )
+            if use_causal_only:
+                ro_kwargs["causal_only"] = True
+            ro = self.model.rollout(**ro_kwargs)  # type: ignore[attr-defined]
             ro_last = ro
             y_full = _squeeze_y(ro["y"]).float()
             y_prob[:, end:] = y_full[:, end:]
@@ -240,7 +250,10 @@ class TorchSeqModel(BaseSeqModel):
         if do_t is not None:
             t_used = self._apply_do(t_used, do_t, t0=t0, horizon=horizon)
 
-        ro = self.model.rollout(x=X, a=A, t_obs=t_used, mask=mask, stochastic_y=False)  # type: ignore[attr-defined]
+        ro_kwargs = dict(x=X, a=A, t_obs=t_used, mask=mask, stochastic_y=False)
+        if self.name.startswith("scm") and do_t is not None:
+            ro_kwargs["causal_only"] = True
+        ro = self.model.rollout(**ro_kwargs)  # type: ignore[attr-defined]
         y_prob = ro["y"]
         if y_prob.ndim == 3 and y_prob.shape[-1] == 1:
             y_prob = y_prob.squeeze(-1)

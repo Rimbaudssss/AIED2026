@@ -13,6 +13,15 @@ from ..model.baselines import load_rollout_model_from_checkpoint
 from ..model.policy import ConstantPolicy, RandomPolicy
 
 
+def _rollout(gen, *, causal_only: bool, **kwargs):
+    if causal_only and hasattr(gen, "d_k_c"):
+        try:
+            return gen.rollout(**kwargs, causal_only=True)
+        except TypeError:
+            pass
+    return gen.rollout(**kwargs)
+
+
 def main(argv: Optional[list[str]] = None) -> int:
     p = argparse.ArgumentParser(description="Policy simulation on learned SCM generator")
     p.add_argument("--ckpt", type=str, required=True)
@@ -48,7 +57,16 @@ def main(argv: Optional[list[str]] = None) -> int:
             for batch in dl:
                 batch = move_batch(batch, device)
                 X, A, T, Y, M = batch.X, batch.A, batch.T, batch.Y, batch.mask
-                ro = gen.rollout(x=X, a=A, t_obs=None, policy=policy, mask=M, stochastic_y=False)
+            ro = _rollout(
+                gen,
+                causal_only=True,
+                x=X,
+                a=A,
+                t_obs=None,
+                policy=policy,
+                mask=M,
+                stochastic_y=False,
+            )
                 y = ro["y"]  # [B,T,1] probs
                 if y.ndim == 2:
                     y = y[..., None]
@@ -95,8 +113,26 @@ def main(argv: Optional[list[str]] = None) -> int:
                 X, A, T, Y, M = batch.X, batch.A, batch.T, batch.Y, batch.mask
 
                 gid = group_id(X[:, int(args.x_index)])  # [B]
-                ro_c = gen.rollout(x=X, a=A, t_obs=None, policy=policy_c, mask=M, stochastic_y=False)
-                ro_t = gen.rollout(x=X, a=A, t_obs=None, policy=policy_t, mask=M, stochastic_y=False)
+                ro_c = _rollout(
+                    gen,
+                    causal_only=True,
+                    x=X,
+                    a=A,
+                    t_obs=None,
+                    policy=policy_c,
+                    mask=M,
+                    stochastic_y=False,
+                )
+                ro_t = _rollout(
+                    gen,
+                    causal_only=True,
+                    x=X,
+                    a=A,
+                    t_obs=None,
+                    policy=policy_t,
+                    mask=M,
+                    stochastic_y=False,
+                )
 
                 y_c = ro_c["y"]
                 y_treat = ro_t["y"]

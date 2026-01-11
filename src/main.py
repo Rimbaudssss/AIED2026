@@ -75,8 +75,16 @@ DATASET_PATHS = {
 }
 
 # Choose which datasets / models to run
-ACTIVE_DATASETS = ["oulad"]  # options: ["assist09", "oulad", "statics"]
-ACTIVE_MODELS = ["scm", "rcgan", "vae", "diffusion", "crn", "timegan"]  # options: ["scm", "rcgan", "vae", "diffusion", "crn", "timegan"]
+ACTIVE_DATASETS = ["oulad", "irt_synth"]  # options: ["assist09", "oulad", "statics"]
+ACTIVE_MODELS = [
+    "scm_fidelity",
+    "scm_causal",
+    "rcgan",
+    "vae",
+    "diffusion",
+    "crn",
+    "timegan",
+]  # options: ["scm", "scm_fidelity", "scm_causal", "rcgan", "vae", "diffusion", "crn", "timegan"]
 
 # Common training knobs (defaults)
 COMMON_KNOBS = dict(
@@ -105,28 +113,35 @@ IRT_SYNTH_KNOBS = dict(
 )
 
 # Model-specific knobs (override defaults)
+_SCM_BASE_KNOBS = dict(
+    epochs_a=30,
+    epochs_b=30,
+    epochs_c=20,
+    dynamics="transformer",
+    d_k=64,
+    k_c_ratio=0.5,
+    w_do=0,
+    w_cf=0,
+    cf_interval=20,
+    grl_lambda=1.0,
+    lr_advT=1e-4,
+    do_time_sampling="random",
+    do_num_time_samples=2,
+    do_min_arm_samples=16,
+    do_actions="0,1",
+    cf_num_time_samples=1,
+)
+
 MODEL_KNOBS = {
-
-
-    "scm": dict(
-        epochs_a=30,
-        epochs_b=30,
-        epochs_c=20,
-        dynamics="transformer",
-        d_k=64,
-        w_do=1.0,
-
-        w_advT=0.02,
-        w_cf=0.01,
-        cf_interval=10,
-        grl_lambda=1.0,
-        lr_advT=1e-4,
-        do_time_sampling="random",
-        do_num_time_samples=2,
-        do_min_arm_samples=16,
-        do_actions="0,1",
-        cf_num_time_samples=1,
+    "scm": dict(_SCM_BASE_KNOBS, w_advT_causal=0.02, w_t_pred_spurious=0.1),
+    "scm_fidelity": dict(
+        _SCM_BASE_KNOBS,
+        w_do=0.0,
+        w_cf=0.0,
+        w_advT_causal=0.0,
+        w_t_pred_spurious=0.0,
     ),
+    "scm_causal": dict(_SCM_BASE_KNOBS, w_advT_causal=0.02, w_t_pred_spurious=0.1),
     "rcgan": dict(
         epochs_a=30,
         epochs_b=30,
@@ -139,6 +154,7 @@ MODEL_KNOBS = {
         crn_hidden=128,
         crn_grl_lambda=1.0,
     ),
+    
     "diffusion": dict(
         epochs=30,
         diff_steps=50,
@@ -288,9 +304,9 @@ def _perturb_batch_for_privacy(
     ref_batch: TrajectoryBatch,
     meta: dict[str, Any],
     *,
-    x_noise_scale: float = 1.0,
-    a_flip_prob: float = 0.4,
-    t_flip_prob: float = 0.4,
+    x_noise_scale: float = 0.0,
+    a_flip_prob: float = 0.0,
+    t_flip_prob: float = 0.0,
 ) -> TrajectoryBatch:
     """Perturb X/A/T to create synthetic conditions that are distinct from originals."""
     # Perturb X with Gaussian noise
@@ -461,7 +477,7 @@ def write_results_summary(
 ) -> None:
     out_path = Path(out_txt)
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    id_candidates = ["model", "dataset", "ref_estimator", "predictor", "setting", "policy", "metric"]
+    id_candidates = ["model", "dataset", "ref_estimator", "predictor", "setting", "policy", "metric", "publish_mode"]
     with out_path.open("w", encoding="utf-8") as f:
         for name, df in metrics_tables.items():
             f.write(f"{name}\n")
@@ -479,6 +495,61 @@ def write_results_summary(
             if sort_cols:
                 out_df = out_df.sort_values(sort_cols)
             f.write(out_df.to_string(index=False))
+            f.write("\n\n")
+
+        oracle_ite = metrics_tables.get("oracle_ite_metrics")
+        oracle_policy = metrics_tables.get("oracle_policy_metrics")
+        if oracle_ite is not None and not oracle_ite.empty and "supported" in oracle_ite.columns:
+            supported_col = oracle_ite["supported"].fillna(False).astype(bool)
+            unsupported = oracle_ite[~supported_col]
+            if not unsupported.empty:
+                ratio = float(len(unsupported) / max(1, len(oracle_ite)))
+                datasets = sorted({str(x) for x in unsupported["dataset"].dropna().tolist()})
+                f.write("oracle_availability\n")
+                f.write(f"unsupported_ratio: {ratio:.3f}\n")
+                f.write(f"datasets_without_oracle: {', '.join(datasets) if datasets else '(none)'}\n\n")
+
+        if oracle_ite is not None and not oracle_ite.empty:
+            if "dataset" in oracle_ite.columns:
+                ite_irt = oracle_ite[oracle_ite["dataset"] == "irt_synth"]
+            else:
+                ite_irt = oracle_ite.iloc[0:0]
+            if "supported" in ite_irt.columns:
+                ite_irt = ite_irt[ite_irt["supported"] == True]
+            pehe_vals = ite_irt.get("pehe") if "pehe" in ite_irt.columns else None
+            ate_rmse_vals = ite_irt.get("ate_rmse") if "ate_rmse" in ite_irt.columns else None
+
+            def _stat_line(values: Optional[pd.Series], label: str) -> str:
+                if values is None:
+                    return f"{label}: mean=nan median=nan p25=nan p75=nan"
+                arr = values.to_numpy(dtype=np.float64)
+                arr = arr[np.isfinite(arr)]
+                if arr.size == 0:
+                    return f"{label}: mean=nan median=nan p25=nan p75=nan"
+                return (
+                    f"{label}: mean={float(np.mean(arr)):.6f} "
+                    f"median={float(np.median(arr)):.6f} "
+                    f"p25={float(np.quantile(arr, 0.25)):.6f} "
+                    f"p75={float(np.quantile(arr, 0.75)):.6f}"
+                )
+
+            f.write("oracle_irt_synth_summary\n")
+            f.write(_stat_line(pehe_vals, "pehe"))
+            f.write("\n")
+            f.write(_stat_line(ate_rmse_vals, "ate_rmse"))
+            f.write("\n")
+
+            regret_vals = None
+            if oracle_policy is not None and not oracle_policy.empty and "dataset" in oracle_policy.columns:
+                pol_irt = oracle_policy[oracle_policy["dataset"] == "irt_synth"]
+                if "supported" in pol_irt.columns:
+                    pol_irt = pol_irt[pol_irt["supported"] == True]
+                if "regret_oracle" in pol_irt.columns and "model" in pol_irt.columns:
+                    reg = pol_irt[["model", "regret_oracle"]].dropna()
+                    reg = reg[np.isfinite(reg["regret_oracle"].to_numpy(dtype=np.float64))]
+                    if not reg.empty:
+                        regret_vals = reg.drop_duplicates()["regret_oracle"]
+            f.write(_stat_line(regret_vals, "policy_regret"))
             f.write("\n\n")
 
 
@@ -517,6 +588,98 @@ def _extract_tstr_metrics(df: pd.DataFrame) -> dict[str, float]:
         out[f"{prefix}_auc"] = float(rows["auc"].iloc[0])
         out[f"{prefix}_rmse"] = float(rows["rmse"].iloc[0])
     return out
+
+
+def _compute_t_leakage_auc(
+    gen_model: Any,
+    *,
+    train_batch: TrajectoryBatch,
+    test_batch: TrajectoryBatch,
+    max_points: int = 20000,
+    epochs: int = 3,
+) -> float:
+    model = getattr(gen_model, "model", None)
+    if not isinstance(model, SCMGenerator):
+        return float("nan")
+    if not bool(getattr(model.cfg, "t_is_discrete", True)):
+        return float("nan")
+    if train_batch.T.ndim != 2 or test_batch.T.ndim != 2:
+        return float("nan")
+    if int(getattr(model, "d_k_c", 0)) <= 0:
+        return float("nan")
+
+    def _extract_kc(batch: TrajectoryBatch) -> tuple[np.ndarray, np.ndarray]:
+        device = next(model.parameters()).device
+        X = batch.X.to(device)
+        A = batch.A.to(device)
+        T = batch.T.to(device)
+        Y = batch.Y.to(device)
+        M = batch.mask.to(device)
+        with torch.no_grad():
+            tf = model.teacher_forcing(x=X, a=A, t=T, y=Y, mask=M, eps=None, eps_mode="zero")
+        k_c = tf.get("k_c")
+        if k_c is None:
+            k_c, _ = model.split_k(tf["k"])
+        k_c = k_c[:, :-1, :]
+        valid = M > 0.5
+        if not valid.any():
+            return np.zeros((0, k_c.shape[-1]), dtype=np.float32), np.zeros((0,), dtype=np.int64)
+        k_flat = k_c[valid].detach().cpu().numpy().astype(np.float32)
+        t_flat = T[valid].detach().cpu().numpy().astype(np.int64).reshape(-1)
+        return k_flat, t_flat
+
+    k_train, t_train = _extract_kc(train_batch)
+    k_test, t_test = _extract_kc(test_batch)
+    if k_train.size == 0 or k_test.size == 0:
+        return float("nan")
+
+    classes = np.unique(np.concatenate([t_train, t_test], axis=0))
+    if classes.size < 2:
+        return float("nan")
+    class_map = {int(c): i for i, c in enumerate(classes)}
+    t_train_idx = np.vectorize(lambda x: class_map[int(x)])(t_train)
+    t_test_idx = np.vectorize(lambda x: class_map[int(x)])(t_test)
+    num_classes = int(classes.size)
+
+    rng = np.random.default_rng(0)
+    if k_train.shape[0] > int(max_points):
+        sel = rng.choice(k_train.shape[0], size=int(max_points), replace=False)
+        k_train = k_train[sel]
+        t_train_idx = t_train_idx[sel]
+
+    device = next(model.parameters()).device
+    x_train = torch.as_tensor(k_train, device=device, dtype=torch.float32)
+    y_train = torch.as_tensor(t_train_idx, device=device, dtype=torch.long)
+    dataset = torch.utils.data.TensorDataset(x_train, y_train)
+    dl = DataLoader(dataset, batch_size=1024, shuffle=True)
+
+    clf = torch.nn.Linear(x_train.shape[1], num_classes).to(device)
+    opt = torch.optim.Adam(clf.parameters(), lr=1e-2)
+    clf.train()
+    for _ in range(max(1, int(epochs))):
+        for xb, yb in dl:
+            logits = clf(xb)
+            loss = torch.nn.functional.cross_entropy(logits, yb)
+            opt.zero_grad(set_to_none=True)
+            loss.backward()
+            opt.step()
+
+    x_test = torch.as_tensor(k_test, device=device, dtype=torch.float32)
+    with torch.no_grad():
+        logits = clf(x_test)
+        prob = torch.softmax(logits, dim=-1).detach().cpu().numpy()
+
+    if num_classes == 2:
+        return _roc_auc_score(t_test_idx, prob[:, 1])
+    aucs = []
+    for cls in range(num_classes):
+        y_true = (t_test_idx == cls).astype(np.int64)
+        auc = _roc_auc_score(y_true, prob[:, cls])
+        if np.isfinite(auc):
+            aucs.append(auc)
+    if not aucs:
+        return float("nan")
+    return float(np.mean(aucs))
 
 
 def _roc_auc_score(y_true: np.ndarray, y_score: np.ndarray) -> float:
@@ -566,7 +729,7 @@ def _predictive_fidelity(
             batch = move_batch(batch, device)
             X, A, T, Y, M = batch.X, batch.A, batch.T, batch.Y, batch.mask
 
-            if model_name == "scm":
+            if str(model_name).startswith("scm"):
                 out = model.teacher_forcing(  # type: ignore[attr-defined]
                     x=X, a=A, t=T, y=Y, mask=M, eps=None, eps_mode="zero"
                 )
@@ -673,9 +836,10 @@ def _interventional_fidelity_mmd(
                     feat_real = torch.cat([X[sel].float(), y_real], dim=-1)
 
                     do = DoIntervention.single_step(t_idx, int(a_val)).as_dict(batch_size=X.shape[0], device=device)
-                    ro = gen.rollout(  # type: ignore[attr-defined]
-                        x=X, a=A, t_obs=T, do_t=do, mask=M, stochastic_y=False
-                    )
+                    ro_kwargs = dict(x=X, a=A, t_obs=T, do_t=do, mask=M, stochastic_y=False)
+                    if str(model_name).startswith("scm"):
+                        ro_kwargs["causal_only"] = True
+                    ro = gen.rollout(**ro_kwargs)  # type: ignore[attr-defined]
                     y_do = ro["y"][:, t_idx].float()
                     if y_do.ndim == 1:
                         y_do = y_do.view(-1, 1)
@@ -715,9 +879,10 @@ def _policy_value_random(
         for batch in dl:
             batch = move_batch(batch, device)
             X, A, M = batch.X, batch.A, batch.mask
-            ro = gen.rollout(  # type: ignore[attr-defined]
-                x=X, a=A, t_obs=None, policy=policy, mask=M, stochastic_y=False
-            )
+            ro_kwargs = dict(x=X, a=A, t_obs=None, policy=policy, mask=M, stochastic_y=False)
+            if str(model_name).startswith("scm"):
+                ro_kwargs["causal_only"] = True
+            ro = gen.rollout(**ro_kwargs)  # type: ignore[attr-defined]
             y = ro["y"]
             if y.ndim == 3:
                 y = y.squeeze(-1)
@@ -747,10 +912,12 @@ def _train_scm_or_rcgan(
     w_y = float(knobs.get("w_y", 1.0))
     w_adv = float(knobs.get("w_adv", 0.5))
     w_sup = float(knobs.get("w_sup", 1.0))
+    is_scm = str(model_name).startswith("scm")
 
     # Causal regularizer weights (SCM Stage C)
     w_do = float(knobs.get("w_do", 0.0))
-    w_advT = float(knobs.get("w_advT", 0.0))
+    w_advT_causal = float(knobs.get("w_advT_causal", knobs.get("w_advT", 0.0)))
+    w_t_pred_spurious = float(knobs.get("w_t_pred_spurious", 0.0))
     w_cf = float(knobs.get("w_cf", 0.0))
     grl_lambda = float(knobs.get("grl_lambda", 1.0))
     lr_advT = float(knobs.get("lr_advT", 1e-4))
@@ -814,10 +981,11 @@ def _train_scm_or_rcgan(
     disc = SequenceDiscriminator(disc_cfg).to(device)
 
     d_eps = int(knobs.get("d_eps", 16))
-    if model_name == "scm":
+    if is_scm:
         gen_cfg = SCMGeneratorConfig(
             d_x=int(meta["d_x"]),
             d_k=int(knobs.get("d_k", 64)),
+            k_c_ratio=float(knobs.get("k_c_ratio", 0.5)),
             d_eps=d_eps,
             a_is_discrete=bool(meta["a_is_discrete"]),
             a_vocab_size=a_vocab_size,
@@ -860,14 +1028,27 @@ def _train_scm_or_rcgan(
     else:
         raise ValueError(f"Unexpected model={model_name}")
 
-    # Treatment classifier for adversarial deconfounding (Stage C; SCM only)
+    # Treatment classifiers for adversarial deconfounding (K_c) and spurious policy fit (K_s).
     t_clf: Optional[TreatmentClassifier] = None
+    t_policy_clf: Optional[TreatmentClassifier] = None
     opt_tclf: Optional[torch.optim.Optimizer] = None
-    if model_name == "scm" and w_advT > 0.0 and epochs_c > 0:
-        t_clf = TreatmentClassifier(d_h=int(gen_cfg.d_k), num_actions=t_vocab_size).to(device)  # type: ignore[union-attr]
-        opt_tclf = torch.optim.Adam(t_clf.parameters(), lr=lr_advT)
+    opt_tpolicy: Optional[torch.optim.Optimizer] = None
+    if is_scm:
+        t_clf = getattr(gen, "t_head", None)
+        t_policy_clf = getattr(gen, "t_policy_head", None)
+        if w_advT_causal > 0.0 and epochs_c > 0 and t_clf is not None:
+            opt_tclf = torch.optim.Adam(t_clf.parameters(), lr=lr_advT)
+        if w_t_pred_spurious > 0.0 and epochs_c > 0 and t_policy_clf is not None:
+            opt_tpolicy = torch.optim.Adam(t_policy_clf.parameters(), lr=lr_advT)
 
-    opt_g = torch.optim.Adam(gen.parameters(), lr=lr_g)
+    head_params: list[torch.nn.Parameter] = []
+    if t_clf is not None:
+        head_params.extend(list(t_clf.parameters()))
+    if t_policy_clf is not None:
+        head_params.extend(list(t_policy_clf.parameters()))
+    head_param_ids = {id(p) for p in head_params}
+    gen_params = [p for p in gen.parameters() if id(p) not in head_param_ids]
+    opt_g = torch.optim.Adam(gen_params, lr=lr_g)
     opt_d = torch.optim.Adam(disc.parameters(), lr=lr_d)
 
     last_ckpt_payload: Optional[dict[str, Any]] = None
@@ -902,7 +1083,7 @@ def _train_scm_or_rcgan(
             batch = move_batch(batch, device)
             X, A, T, Y, M = batch.X, batch.A, batch.T, batch.Y, batch.mask
 
-            if model_name == "scm":
+            if is_scm:
                 bsz, seq_len = A.shape[0], A.shape[1]
                 eps = torch.zeros(bsz, seq_len, d_eps, device=device)
                 out = gen.teacher_forcing(  # type: ignore[attr-defined]
@@ -954,13 +1135,18 @@ def _train_scm_or_rcgan(
         disc.train()
         if t_clf is not None:
             t_clf.train()
+        if t_policy_clf is not None:
+            t_policy_clf.train()
 
-        enable_causal = stage_name == "C" and model_name == "scm" and (w_do > 0.0 or w_advT > 0.0 or w_cf > 0.0)
+        enable_causal = stage_name == "C" and is_scm and (
+            w_do > 0.0 or w_advT_causal > 0.0 or w_t_pred_spurious > 0.0 or w_cf > 0.0
+        )
         for ep in range(1, epochs + 1):
             g_loss_accum = 0.0
             d_loss_accum = 0.0
             do_accum = 0.0
             advt_accum = 0.0
+            t_pred_accum = 0.0
             cf_accum = 0.0
             steps = 0
             for batch in train_dl:
@@ -993,9 +1179,10 @@ def _train_scm_or_rcgan(
 
                 loss_do = torch.tensor(0.0, device=device)
                 loss_advT = torch.tensor(0.0, device=device)
+                loss_t_pred = torch.tensor(0.0, device=device)
                 loss_cf = torch.tensor(0.0, device=device)
 
-                if model_name == "scm":
+                if is_scm:
                     eps_seq = torch.randn(bsz, seq_len, d_eps, device=device)
                     tf = gen.teacher_forcing(  # type: ignore[attr-defined]
                         x=X, a=A, t=T, y=Y, mask=M, eps=eps_seq, eps_mode="random"
@@ -1003,6 +1190,10 @@ def _train_scm_or_rcgan(
                     loss_y = bernoulli_nll_from_logits(tf["y_logits"], Y, mask=M)
 
                     k_tf = tf["k"]
+                    k_c = tf.get("k_c")
+                    k_s = tf.get("k_s")
+                    if k_c is None or k_s is None:
+                        k_c, k_s = gen.split_k(k_tf)
                     a_enc = gen.encode_a(A.view(-1, *A.shape[2:])).view(bsz, seq_len, -1)  # type: ignore[attr-defined]
                     t_enc = gen.encode_t(T.view(-1, *T.shape[2:])).view(bsz, seq_len, -1)  # type: ignore[attr-defined]
                     x_feat = gen.x_proj(X.float())  # type: ignore[attr-defined]
@@ -1037,6 +1228,7 @@ def _train_scm_or_rcgan(
                                 eps=eps_seq,
                                 steps=steps,
                                 stochastic_y=False,
+                                causal_only=True,
                             )
                             y_do = ro_do["y"]
                             if y_do.ndim == 3 and y_do.shape[-1] == 1:
@@ -1093,7 +1285,9 @@ def _train_scm_or_rcgan(
                                     a_val = int(a_val)
                                     t_do = torch.full((bsz,), a_val, device=device, dtype=T.dtype)
                                     t_enc_do = gen.encode_t(t_do)  # type: ignore[attr-defined]
-                                    y_inp_do = torch.cat([k_t, a_enc_t, t_enc_do, x_feat], dim=-1)
+                                    y_inp_do = gen.build_y_input(  # type: ignore[attr-defined]
+                                        k_t, a_enc_t, t_enc_do, x_feat, causal_only=True
+                                    )
                                     y_prob_do = torch.sigmoid(gen.y_head(y_inp_do))  # type: ignore[attr-defined]
                                     feat_do = torch.cat([x_feat, k_t, y_prob_do], dim=-1)[valid]
 
@@ -1109,17 +1303,34 @@ def _train_scm_or_rcgan(
                                 loss_do = loss_do / float(do_terms)
 
                         # (B) adversarial deconfounding (GRL): make K_t less predictive of T_t
-                        if w_advT > 0.0 and t_clf is not None and opt_tclf is not None:
+                        if w_advT_causal > 0.0 and t_clf is not None and opt_tclf is not None and k_c.shape[-1] > 0:
                             with torch.no_grad():
-                                k_repr_detached = k_tf[:, :-1, :].detach()
+                                k_repr_detached = k_c[:, :-1, :].detach()
                             t_logits_clf = t_clf(k_repr_detached)
                             loss_tclf = treatment_ce_loss(t_logits_clf, T.long(), mask=M)
                             opt_tclf.zero_grad(set_to_none=True)
                             loss_tclf.backward()
                             opt_tclf.step()
 
-                            t_logits_adv = t_clf(grad_reverse(k_tf[:, :-1, :], lambd=grl_lambda))
+                            t_logits_adv = t_clf(grad_reverse(k_c[:, :-1, :], lambd=grl_lambda))
                             loss_advT = treatment_ce_loss(t_logits_adv, T.long(), mask=M)
+
+                        if (
+                            w_t_pred_spurious > 0.0
+                            and t_policy_clf is not None
+                            and opt_tpolicy is not None
+                            and k_s.shape[-1] > 0
+                        ):
+                            with torch.no_grad():
+                                k_s_detached = k_s[:, :-1, :].detach()
+                            t_logits_policy = t_policy_clf(k_s_detached)
+                            loss_tpolicy = treatment_ce_loss(t_logits_policy, T.long(), mask=M)
+                            opt_tpolicy.zero_grad(set_to_none=True)
+                            loss_tpolicy.backward()
+                            opt_tpolicy.step()
+
+                            t_logits_policy = t_policy_clf(k_s[:, :-1, :])
+                            loss_t_pred = treatment_ce_loss(t_logits_policy, T.long(), mask=M)
 
                         # (C) counterfactual consistency: K_{0:t} must not change when intervening at t
                         # This is expensive for autoregressive rollouts (especially with transformer dynamics),
@@ -1166,7 +1377,13 @@ def _train_scm_or_rcgan(
 
                 loss_g = w_y * loss_y + w_sup * loss_sup + w_adv * loss_adv
                 if enable_causal:
-                    loss_g = loss_g + w_do * loss_do + w_advT * loss_advT + w_cf * loss_cf
+                    loss_g = (
+                        loss_g
+                        + w_do * loss_do
+                        + w_advT_causal * loss_advT
+                        + w_t_pred_spurious * loss_t_pred
+                        + w_cf * loss_cf
+                    )
 
                 opt_g.zero_grad(set_to_none=True)
                 loss_g.backward()
@@ -1176,6 +1393,7 @@ def _train_scm_or_rcgan(
                 if enable_causal:
                     do_accum += float(loss_do.item())
                     advt_accum += float(loss_advT.item())
+                    t_pred_accum += float(loss_t_pred.item())
                     cf_accum += float(loss_cf.item())
                 steps += 1
                 if steps % log_every == 0:
@@ -1186,6 +1404,7 @@ def _train_scm_or_rcgan(
                         msg += (
                             f" | do {do_accum / max(1, steps):.4f}"
                             f" | advT {advt_accum / max(1, steps):.4f}"
+                            f" | t_pred {t_pred_accum / max(1, steps):.4f}"
                             f" | cf {cf_accum / max(1, steps):.4f}"
                         )
                     print(msg)
@@ -1197,6 +1416,7 @@ def _train_scm_or_rcgan(
                 msg += (
                     f" | do {do_accum / max(1, steps):.4f}"
                     f" | advT {advt_accum / max(1, steps):.4f}"
+                    f" | t_pred {t_pred_accum / max(1, steps):.4f}"
                     f" | cf {cf_accum / max(1, steps):.4f}"
                 )
             print(msg)
@@ -1587,6 +1807,10 @@ def main(argv: Optional[list[str]] = None) -> int:
     p.add_argument("--test_ratio", type=float, default=None, help="Override COMMON_KNOBS.test_ratio")
     p.add_argument("--ref_estimator", type=str, default="gformula", choices=["iptw_msm", "gformula"])
     p.add_argument("--do_horizon", type=int, default=-1, help="Do/policy horizon (-1 uses seq_len-1).")
+    p.add_argument("--oracle_mc_samples", type=int, default=200, help="MC samples for OracleIRT (irt_synth only).")
+    p.add_argument("--oracle_mc_seed", type=int, default=0, help="MC seed for OracleIRT (irt_synth only).")
+    p.add_argument("--oracle_mc_batch", type=int, default=256, help="MC batch size for OracleIRT (irt_synth only).")
+    p.add_argument("--debug_oracle", action="store_true", default=False, help="Run OracleIRT sanity checks.")
     p.add_argument("--t0_list", type=str, default="0,5,10")
     p.add_argument("--actions", type=str, default="0,1")
     p.add_argument("--subgroups", type=str, default="all,low,high")
@@ -1596,6 +1820,9 @@ def main(argv: Optional[list[str]] = None) -> int:
     p.add_argument("--eval_calibration", action="store_true", default=True)
     p.add_argument("--eval_privacy", action="store_true", default=True)
     p.add_argument("--disc_input", type=str, default="logits", choices=["logits", "sampled"])
+    p.add_argument("--k_c_ratio", type=float, default=None, help="SCM: ratio of causal latent dims.")
+    p.add_argument("--w_advT_causal", type=float, default=None, help="SCM: adversarial T loss on K_c.")
+    p.add_argument("--w_t_pred_spurious", type=float, default=None, help="SCM: T prediction loss on K_s.")
     args, unknown = p.parse_known_args(argv)
     if unknown:
         is_kernel = ("ipykernel" in sys.modules) or (Path(sys.argv[0]).name == "ipykernel_launcher.py")
@@ -1648,6 +1875,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     oracle_ite_frames = []
     oracle_policy_frames = []
     tstr_frames = []
+    leakage_frames = []
     nn_frames = []
     mia_frames = []
     privacy_reports = []
@@ -1699,13 +1927,21 @@ def main(argv: Optional[list[str]] = None) -> int:
             sg["dataset"] = ds_name
 
         if ds_name == "irt_synth":
-            ref_estimator = OracleIRT(simulator=ds_raw)
+            ref_estimator = OracleIRT(
+                simulator=ds_raw,
+                mc_samples=int(args.oracle_mc_samples),
+                mc_seed=int(args.oracle_mc_seed),
+                mc_batch=int(args.oracle_mc_batch),
+                debug=bool(args.debug_oracle),
+            )
         elif args.ref_estimator == "iptw_msm":
             ref_estimator = IPTWMSM()
         else:
             ref_estimator = GFormula()
         ref_estimator.fit(train_batch)
         has_oracle = bool(getattr(ref_estimator, "is_oracle", False))
+        if has_oracle and bool(args.debug_oracle) and hasattr(ref_estimator, "debug_sanity_check"):
+            ref_estimator.debug_sanity_check(test_batch)
 
         train_ds = TrajectoryDataset(
             X=train_batch.X, A=train_batch.A, T=train_batch.T, Y=train_batch.Y, mask=train_batch.mask
@@ -1723,6 +1959,13 @@ def main(argv: Optional[list[str]] = None) -> int:
             knobs["do_horizon"] = int(do_horizon)
             knobs["ref_estimator"] = ref_estimator
             knobs["seed"] = int(common["seed"])
+            if str(model_key).startswith("scm"):
+                if args.k_c_ratio is not None:
+                    knobs["k_c_ratio"] = float(args.k_c_ratio)
+                if args.w_advT_causal is not None:
+                    knobs["w_advT_causal"] = float(args.w_advT_causal)
+                if args.w_t_pred_spurious is not None:
+                    knobs["w_t_pred_spurious"] = float(args.w_t_pred_spurious)
             legacy_ate_mae = float("nan")
             legacy_value_err = float("nan")
             legacy_policy_gen = float("nan")
@@ -1733,7 +1976,7 @@ def main(argv: Optional[list[str]] = None) -> int:
             run_dir = out_root / ds_name / model_key / f"seed{int(common['seed'])}"
             run_dir.mkdir(parents=True, exist_ok=True)
 
-            if model_key in {"scm", "rcgan"}:
+            if model_key == "rcgan" or str(model_key).startswith("scm"):
                 ckpt_path = _train_scm_or_rcgan(
                     model_key, train_dl=train_dl, meta=meta, device=device, out_dir=run_dir, knobs=knobs
                 )
@@ -1751,6 +1994,32 @@ def main(argv: Optional[list[str]] = None) -> int:
             ckpt = torch.load(ckpt_path, map_location=device)
             gen_model = load_base_model_from_checkpoint(ckpt, device=device)
             gen_model.name = model_key
+
+            try:
+                leakage_auc = _compute_t_leakage_auc(
+                    gen_model, train_batch=train_batch, test_batch=test_batch, max_points=20000, epochs=3
+                )
+            except Exception as e:
+                leakage_auc = float("nan")
+                add_artifact(
+                    manifest,
+                    kind="table",
+                    model=model_key,
+                    dataset=ds_name,
+                    path="results/leakage_auc.csv",
+                    meta={"supported": False, "skip_reason": str(e)},
+                )
+            leakage_frames.append(
+                pd.DataFrame(
+                    [
+                        {
+                            "model": model_key,
+                            "dataset": ds_name,
+                            "t_leakage_auc": leakage_auc,
+                        }
+                    ]
+                )
+            )
 
             try:
                 df_effects, summary = compute_causal_bias(
@@ -1898,46 +2167,46 @@ def main(argv: Optional[list[str]] = None) -> int:
                         )
                     )
 
-            df_oracle_ite = None
-            df_oracle_policy = None
-            if has_oracle:
-                try:
-                    df_oracle_ite, df_oracle_policy = compute_oracle_metrics(
-                        gen_model=gen_model,
-                        oracle_estimator=ref_estimator,
-                        data=test_batch,
-                        t0_list=t0_list,
-                        horizon=int(do_horizon),
-                        actions=actions,
-                        subgroups=subgroups,
-                        policy_set=str(args.policy_set),
-                        seed=int(common["seed"]),
-                        n_gen=20,
-                    )
-                except Exception as e:
-                    df_oracle_ite = pd.DataFrame(
-                        [
-                            {
-                                "model": model_key,
-                                "dataset": ds_name,
-                                "t0": int(t0_list[0]) if t0_list else 0,
-                                "subgroup": "all",
-                                "horizon": int(do_horizon),
-                                "skip_reason": str(e),
-                            }
-                        ]
-                    )
-                    df_oracle_policy = pd.DataFrame(
-                        [
-                            {
-                                "model": model_key,
-                                "dataset": ds_name,
-                                "policy": "unknown",
-                                "horizon": int(do_horizon),
-                                "skip_reason": str(e),
-                            }
-                        ]
-                    )
+            try:
+                df_oracle_ite, df_oracle_policy = compute_oracle_metrics(
+                    gen_model=gen_model,
+                    oracle_estimator=ref_estimator,
+                    data=test_batch,
+                    dataset_name=ds_name,
+                    t0_list=t0_list,
+                    horizon=int(do_horizon),
+                    actions=actions,
+                    subgroups=subgroups,
+                    policy_set=str(args.policy_set),
+                    seed=int(common["seed"]),
+                    n_gen=20,
+                )
+            except Exception as e:
+                df_oracle_ite = pd.DataFrame(
+                    [
+                        {
+                            "model": model_key,
+                            "dataset": ds_name,
+                            "t0": int(t0_list[0]) if t0_list else 0,
+                            "subgroup": "all",
+                            "horizon": int(do_horizon),
+                            "supported": False,
+                            "skip_reason": str(e),
+                        }
+                    ]
+                )
+                df_oracle_policy = pd.DataFrame(
+                    [
+                        {
+                            "model": model_key,
+                            "dataset": ds_name,
+                            "policy": "unknown",
+                            "horizon": int(do_horizon),
+                            "supported": False,
+                            "skip_reason": str(e),
+                        }
+                    ]
+                )
 
             if df_oracle_ite is not None:
                 oracle_ite_frames.append(df_oracle_ite)
@@ -1988,42 +2257,44 @@ def main(argv: Optional[list[str]] = None) -> int:
 
             if args.eval_privacy:
                 try:
+                    publish_mode = "y_only"
+                    embed_space = "y_only"
+                    perturb = {"x_noise_scale": 0.0, "a_flip_prob": 0.0, "t_flip_prob": 0.0}
                     # Sample from train only to keep a stronger membership signal.
                     rng = np.random.default_rng(int(common["seed"]))
                     n_synth_total = min(1024, int(train_batch.X.shape[0]))
                     train_idx = rng.integers(0, train_batch.X.shape[0], size=n_synth_total)
-                    synth_batch = _subset_batch(train_batch, train_idx.tolist())
-                    synth_batch = _perturb_batch_for_privacy(synth_batch, train_batch, meta)
+                    synth_source = _subset_batch(train_batch, train_idx.tolist())
 
                     # Generate synthetic Y using the model
-                    ro = gen_model.rollout(synth_batch, do_t=None, policy=None, horizon=None, t0=0)
+                    ro = gen_model.rollout(synth_source, do_t=None, policy=None, horizon=None, t0=0)
                     y_prob = ro["Y_prob"].detach().cpu().numpy()
                     y_sample = rng.binomial(n=1, p=np.clip(y_prob, 1e-4, 1.0 - 1e-4)).astype(np.float32)
                     synth_batch = TrajectoryBatch(
-                        X=synth_batch.X,
-                        A=synth_batch.A,
-                        T=synth_batch.T,
+                        X=torch.zeros_like(synth_source.X),
+                        A=torch.zeros_like(synth_source.A),
+                        T=torch.zeros_like(synth_source.T),
                         Y=torch.as_tensor(y_sample),
-                        mask=synth_batch.mask,
-                        lengths=synth_batch.lengths,
+                        mask=synth_source.mask,
+                        lengths=synth_source.lengths,
                     )
                     nn_df = compute_nn_distance(
                         real=train_batch,
                         synth=synth_batch,
                         metric="embedding_l2",
-                        embed_space="all"
+                        embed_space=embed_space
                     )
                     nn_df["model"] = model_key
                     nn_df["dataset"] = ds_name
                     nn_frames.append(nn_df)
 
-                    attack_features = ["recon_error", "avg_confidence", "nn_distance"]
+                    attack_features = ["y_stats", "nn_distance"]
                     mia = run_membership_inference(
                         gen_model=gen_model,
                         real_train=train_batch,
                         real_holdout=test_batch,
                         attack_features=attack_features,
-                        embed_space="all",
+                        embed_space=embed_space,
                         seed=int(common["seed"]),
                     )
                     mia_df = mia_to_dataframe(
@@ -2049,6 +2320,8 @@ def main(argv: Optional[list[str]] = None) -> int:
                             "p05": float(np.quantile(distances, 0.05)) if distances.size else float("nan"),
                             "p10": float(np.quantile(distances, 0.10)) if distances.size else float("nan"),
                         },
+                        "publish_mode": publish_mode,
+                        "perturbation": perturb,
                         "mia": {
                             "attack_auc": float(mia.get("attack_auc", np.nan)),
                             "attack_acc": float(mia.get("attack_acc", np.nan)),
@@ -2088,7 +2361,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                                 {
                                     "model": model_key,
                                     "dataset": ds_name,
-                                    "attack_features": "recon_error,avg_confidence,nn_distance",
+                                    "attack_features": "y_stats,nn_distance",
                                     "attack_auc": np.nan,
                                     "attack_acc": np.nan,
                                     "attack_balanced_acc": np.nan,
@@ -2102,20 +2375,22 @@ def main(argv: Optional[list[str]] = None) -> int:
                         {
                             "dataset": ds_name,
                             "model": model_key,
-                            "nn_distance": {
-                                "metric": "embedding_l2",
-                                "mean": float("nan"),
-                                "p01": float("nan"),
-                                "p05": float("nan"),
-                                "p10": float("nan"),
-                            },
-                            "mia": {
-                                "attack_auc": float("nan"),
-                                "attack_acc": float("nan"),
-                                "attack_balanced_acc": float("nan"),
-                                "features": ["recon_error", "avg_confidence", "nn_distance"],
-                            },
-                        }
+                        "nn_distance": {
+                            "metric": "embedding_l2",
+                            "mean": float("nan"),
+                            "p01": float("nan"),
+                            "p05": float("nan"),
+                            "p10": float("nan"),
+                        },
+                        "publish_mode": "y_only",
+                        "perturbation": {"x_noise_scale": 0.0, "a_flip_prob": 0.0, "t_flip_prob": 0.0},
+                        "mia": {
+                            "attack_auc": float("nan"),
+                            "attack_acc": float("nan"),
+                            "attack_balanced_acc": float("nan"),
+                            "features": ["y_stats", "nn_distance"],
+                        },
+                    }
                     )
 
             if legacy_report_path is not None:
@@ -2157,6 +2432,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     oracle_ite_df = pd.concat(oracle_ite_frames, ignore_index=True) if oracle_ite_frames else pd.DataFrame()
     oracle_policy_df = pd.concat(oracle_policy_frames, ignore_index=True) if oracle_policy_frames else pd.DataFrame()
     tstr_df = pd.concat(tstr_frames, ignore_index=True) if tstr_frames else pd.DataFrame()
+    leakage_df = pd.concat(leakage_frames, ignore_index=True) if leakage_frames else pd.DataFrame()
     nn_df = pd.concat(nn_frames, ignore_index=True) if nn_frames else pd.DataFrame()
     mia_df = pd.concat(mia_frames, ignore_index=True) if mia_frames else pd.DataFrame()
 
@@ -2228,6 +2504,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         "tau_true_mean",
         "tau_hat_mean",
         "n_gen",
+        "supported",
         "skip_reason",
     ]
     if oracle_ite_df.empty:
@@ -2262,6 +2539,12 @@ def main(argv: Optional[list[str]] = None) -> int:
     else:
         tstr_df = tstr_df.reindex(columns=tstr_cols)
 
+    leakage_cols = ["model", "dataset", "t_leakage_auc"]
+    if leakage_df.empty:
+        leakage_df = pd.DataFrame(columns=leakage_cols)
+    else:
+        leakage_df = leakage_df.reindex(columns=leakage_cols)
+
     nn_cols = ["model", "dataset", "metric", "synth_id", "nn_real_id", "distance"]
     if nn_df.empty:
         nn_df = pd.DataFrame(columns=nn_cols)
@@ -2289,6 +2572,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     oracle_ite_df.to_csv(results_dir / "oracle_ite_metrics.csv", index=False)
     oracle_policy_df.to_csv(results_dir / "oracle_policy_metrics.csv", index=False)
     tstr_df.to_csv(results_dir / "tstr_trts.csv", index=False)
+    leakage_df.to_csv(results_dir / "leakage_auc.csv", index=False)
     nn_df.to_csv(results_dir / "privacy_nn_distance.csv", index=False)
     mia_df.to_csv(results_dir / "privacy_mia.csv", index=False)
 
@@ -2336,6 +2620,10 @@ def main(argv: Optional[list[str]] = None) -> int:
             )
         if not tstr_df.empty and "dataset" in tstr_df.columns:
             tstr_df[tstr_df["dataset"] == ds_name].to_csv(results_dir / f"tstr_trts{suffix}.csv", index=False)
+        if not leakage_df.empty and "dataset" in leakage_df.columns:
+            leakage_df[leakage_df["dataset"] == ds_name].to_csv(
+                results_dir / f"leakage_auc{suffix}.csv", index=False
+            )
         if not nn_df.empty and "dataset" in nn_df.columns:
             nn_df[nn_df["dataset"] == ds_name].to_csv(
                 results_dir / f"privacy_nn_distance{suffix}.csv", index=False
@@ -2358,6 +2646,10 @@ def main(argv: Optional[list[str]] = None) -> int:
                 "nn_p01": report["nn_distance"]["p01"],
                 "nn_p05": report["nn_distance"]["p05"],
                 "nn_p10": report["nn_distance"]["p10"],
+                "publish_mode": report.get("publish_mode", ""),
+                "x_noise_scale": float(report.get("perturbation", {}).get("x_noise_scale", 0.0)),
+                "a_flip_prob": float(report.get("perturbation", {}).get("a_flip_prob", 0.0)),
+                "t_flip_prob": float(report.get("perturbation", {}).get("t_flip_prob", 0.0)),
                 "attack_auc": report["mia"]["attack_auc"],
                 "attack_acc": report["mia"]["attack_acc"],
                 "attack_balanced_acc": report["mia"]["attack_balanced_acc"],
@@ -2370,6 +2662,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         "oracle_ite_metrics": oracle_ite_df,
         "oracle_policy_metrics": oracle_policy_df,
         "tstr_trts": tstr_df,
+        "leakage_metrics": leakage_df,
         "privacy_summary": privacy_summary_df,
     }
     write_results_summary(metrics_tables, str(report_path))

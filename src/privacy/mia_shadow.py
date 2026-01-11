@@ -61,6 +61,22 @@ def _nn_distance_feature(
     return dist.astype(np.float32)
 
 
+def _y_stats(batch: TrajectoryBatch) -> np.ndarray:
+    return _embed(batch, embed_space="y_only")
+
+
+def _stack_features(features: list[np.ndarray]) -> np.ndarray:
+    cols = []
+    for feat in features:
+        if feat.ndim == 1:
+            cols.append(feat[:, None])
+        else:
+            cols.append(feat)
+    if not cols:
+        return np.zeros((0, 0), dtype=np.float32)
+    return np.concatenate(cols, axis=1).astype(np.float32)
+
+
 def _fit_attack_classifier(
     X_in: np.ndarray,
     X_out: np.ndarray,
@@ -120,6 +136,9 @@ def run_membership_inference(
     feats_in = []
     feats_out = []
 
+    if "y_stats" in attack_features:
+        feats_in.append(_y_stats(real_train))
+        feats_out.append(_y_stats(real_holdout))
     if "recon_error" in attack_features:
         feats_in.append(_recon_error(gen_model, real_train))
         feats_out.append(_recon_error(gen_model, real_holdout))
@@ -138,8 +157,8 @@ def run_membership_inference(
             "features": attack_features,
         }
 
-    X_in = np.stack(feats_in, axis=1)
-    X_out = np.stack(feats_out, axis=1)
+    X_in = _stack_features(feats_in)
+    X_out = _stack_features(feats_out)
     result = _fit_attack_classifier(X_in, X_out, seed=int(seed))
     result["features"] = attack_features
     return result

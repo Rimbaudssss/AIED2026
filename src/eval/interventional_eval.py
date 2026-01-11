@@ -13,6 +13,15 @@ from ..model.losses import mmd_rbf
 from ..model.policy import DoIntervention
 
 
+def _rollout(gen, *, causal_only: bool, **kwargs):
+    if causal_only and hasattr(gen, "d_k_c"):
+        try:
+            return gen.rollout(**kwargs, causal_only=True)
+        except TypeError:
+            pass
+    return gen.rollout(**kwargs)
+
+
 def main(argv: Optional[list[str]] = None) -> int:
     p = argparse.ArgumentParser(description="Interventional fidelity eval: E[Y_t | do(T_t=a)]")
     p.add_argument("--ckpt", type=str, required=True)
@@ -64,7 +73,16 @@ def main(argv: Optional[list[str]] = None) -> int:
                         num_real += int(sel.sum().item())
 
                     do = DoIntervention.single_step(t_idx, a_val).as_dict(batch_size=X.shape[0], device=device)
-                    ro = gen.rollout(x=X, a=A, t_obs=T, do_t=do, mask=M, stochastic_y=False)
+                    ro = _rollout(
+                        gen,
+                        causal_only=str(model_name).startswith("scm"),
+                        x=X,
+                        a=A,
+                        t_obs=T,
+                        do_t=do,
+                        mask=M,
+                        stochastic_y=False,
+                    )
                     y_do = ro["y"][:, t_idx].view(-1).float()
                     sum_gen += float(y_do.sum().item())
                     num_gen += int(y_do.numel())
