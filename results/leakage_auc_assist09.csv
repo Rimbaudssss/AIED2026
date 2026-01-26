@@ -1,0 +1,7 @@
+model,dataset,t_leakage_auc
+scm_causal,assist09,0.6154316145670496
+rcgan,assist09,
+vae,assist09,
+diffusion,assist09,
+crn,assist09,
+timegan,assist09,

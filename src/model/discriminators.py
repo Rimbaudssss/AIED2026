@@ -58,6 +58,7 @@ class SequenceDiscriminator(nn.Module):
             batch_first=True,
             dropout=cfg.dropout if cfg.num_layers > 1 else 0.0,
         )
+        self.ln = nn.LayerNorm(cfg.d_h)
         self.head = nn.Linear(cfg.d_h, 1)
 
     def encode_inputs(
@@ -97,6 +98,7 @@ class SequenceDiscriminator(nn.Module):
         packed = nn.utils.rnn.pack_padded_sequence(seq, lengths, batch_first=True, enforce_sorted=False)
         _, h_n = self.rnn(packed)
         h_last = h_n[-1]  # [B, d_h]
+        h_last = self.ln(h_last)
         return self.head(h_last).view(-1)  # [B]
 
 
@@ -118,4 +120,3 @@ class ConditionalDiscriminator(nn.Module):
         if t_t.ndim == 1:
             t_t = t_t[:, None]
         return self.net(torch.cat([h_t, t_t.float(), y_t.float()], dim=-1)).view(-1)
-

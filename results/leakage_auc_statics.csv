@@ -1,0 +1,7 @@
+model,dataset,t_leakage_auc
+scm_causal,statics,0.5279994850669413
+rcgan,statics,
+vae,statics,
+diffusion,statics,
+crn,statics,
+timegan,statics,

@@ -1,0 +1,7 @@
+model,dataset,attack_features,attack_auc,attack_acc,attack_balanced_acc,n_in,n_out
+scm_causal,statics,"recon_error,avg_confidence",0.44665461121157324,0.59,0.4957805907172995,267,66
+rcgan,statics,"recon_error,avg_confidence",0.4490657022302592,0.5,0.4912597950572634,267,66
+vae,statics,"recon_error,avg_confidence",0.6238698010849909,0.51,0.5500301386377335,267,66
+diffusion,statics,"recon_error,avg_confidence",0.5491259795057264,0.44,0.5406871609403255,267,66
+crn,statics,"recon_error,avg_confidence",0.6051838456901748,0.52,0.5563592525617842,267,66
+timegan,statics,"recon_error,avg_confidence",0.5834840265220013,0.55,0.5403857745629898,267,66

@@ -1,0 +1,7 @@
+model,dataset,factual_auc,n_samples,supported,skip_reason
+scm_causal,statics,0.7545537650249692,1950,1.0,
+rcgan,statics,0.7884504481363119,1950,1.0,
+vae,statics,0.8129764360130851,1950,1.0,
+diffusion,statics,,0,0.0,unsupported model=diffusion
+crn,statics,0.7909561836263407,1950,1.0,
+timegan,statics,0.6240968649345613,1950,1.0,

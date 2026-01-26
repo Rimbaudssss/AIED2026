@@ -1,0 +1,204 @@
+dr_policy_values
+     model dataset   policy  horizon  dr_value  dm_value  correction   w_mean  w_max  supported
+       crn   oulad   always       29  0.809275  0.808194    0.001081 0.476347   10.0        1.0
+       crn   oulad early_on       29  0.583436  0.582313    0.001123 0.196128   10.0        1.0
+       crn   oulad  late_on       29  0.559304  0.564992   -0.005688 0.289904   10.0        1.0
+       crn   oulad    never       29  0.510009  0.515797   -0.005789 0.324041   10.0        1.0
+ diffusion   oulad   always       29       NaN       NaN         NaN      NaN    NaN        0.0
+ diffusion   oulad early_on       29       NaN       NaN         NaN      NaN    NaN        0.0
+ diffusion   oulad  late_on       29       NaN       NaN         NaN      NaN    NaN        0.0
+ diffusion   oulad    never       29       NaN       NaN         NaN      NaN    NaN        0.0
+     rcgan   oulad   always       29  0.663123  0.568790    0.094333 0.476862   10.0        1.0
+     rcgan   oulad early_on       29  0.566008  0.531450    0.034558 0.196493   10.0        1.0
+     rcgan   oulad  late_on       29  0.515792  0.488701    0.027091 0.290073   10.0        1.0
+     rcgan   oulad    never       29  0.520896  0.489459    0.031437 0.324324   10.0        1.0
+scm_causal   oulad   always       29  0.766104  0.742214    0.023890 0.476913   10.0        1.0
+scm_causal   oulad early_on       29  0.654058  0.659789   -0.005732 0.196462   10.0        1.0
+scm_causal   oulad  late_on       29  0.629557  0.636075   -0.006518 0.290205   10.0        1.0
+scm_causal   oulad    never       29  0.621651  0.628794   -0.007142 0.324590   10.0        1.0
+   timegan   oulad   always       29  0.816133  0.810404    0.005729 0.477460   10.0        1.0
+   timegan   oulad early_on       29  0.577949  0.573334    0.004615 0.196696   10.0        1.0
+   timegan   oulad  late_on       29  0.549611  0.552760   -0.003149 0.290310   10.0        1.0
+   timegan   oulad    never       29  0.497609  0.500916   -0.003307 0.324429   10.0        1.0
+       vae   oulad   always       29  0.801355  0.802863   -0.001507 0.476510   10.0        1.0
+       vae   oulad early_on       29  0.563195  0.563709   -0.000515 0.196330   10.0        1.0
+       vae   oulad  late_on       29  0.514185  0.514967   -0.000781 0.289234   10.0        1.0
+       vae   oulad    never       29  0.460495  0.460309    0.000186 0.323281   10.0        1.0
+
+dr_policy_summary
+     model dataset  horizon  dr_value_mean  dm_value_mean  correction_mean  policy_supported
+       crn   oulad       29       0.615506       0.617824        -0.002318               1.0
+ diffusion   oulad       29            NaN            NaN              NaN               0.0
+     rcgan   oulad       29       0.566455       0.519600         0.046855               1.0
+scm_causal   oulad       29       0.667843       0.666718         0.001125               1.0
+   timegan   oulad       29       0.610325       0.609353         0.000972               1.0
+       vae   oulad       29       0.584808       0.585462        -0.000654               1.0
+
+factual_auc
+     model dataset  factual_auc  n_samples  supported
+       crn   oulad     0.873250     130931        1.0
+ diffusion   oulad          NaN          0        0.0
+     rcgan   oulad     0.787551     130931        1.0
+scm_causal   oulad     0.762614     130931        1.0
+   timegan   oulad     0.868229     130931        1.0
+       vae   oulad     0.884525     130931        1.0
+
+oracle_ite_metrics
+     model dataset  t0  horizon  pehe  ite_rmse  ate_true  ate_hat  ate_abs_error  ate_rmse  n_effective  tau_true_mean  tau_hat_mean  n_gen
+       crn   oulad  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn   oulad   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn   oulad  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn   oulad   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn   oulad  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn   oulad   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn   oulad   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn   oulad   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn   oulad   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion   oulad  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion   oulad  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion   oulad  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion   oulad   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion   oulad   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion   oulad   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion   oulad   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion   oulad   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion   oulad   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan   oulad  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan   oulad  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan   oulad   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan   oulad   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan   oulad   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan   oulad   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan   oulad   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan   oulad  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan   oulad   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal   oulad   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal   oulad  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal   oulad  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal   oulad  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal   oulad   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal   oulad   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal   oulad   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal   oulad   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal   oulad   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan   oulad   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan   oulad   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan   oulad   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan   oulad   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan   oulad  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan   oulad   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan   oulad   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan   oulad  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan   oulad  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae   oulad  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae   oulad  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae   oulad   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae   oulad   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae   oulad   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae   oulad   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae   oulad   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae   oulad   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae   oulad  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+
+oracle_policy_metrics
+     model dataset   policy  horizon  oracle_value  gen_value  value_abs_error  regret_oracle
+       crn   oulad   always       29           NaN        NaN              NaN            NaN
+       crn   oulad early_on       29           NaN        NaN              NaN            NaN
+       crn   oulad  late_on       29           NaN        NaN              NaN            NaN
+       crn   oulad    never       29           NaN        NaN              NaN            NaN
+ diffusion   oulad   always       29           NaN        NaN              NaN            NaN
+ diffusion   oulad early_on       29           NaN        NaN              NaN            NaN
+ diffusion   oulad  late_on       29           NaN        NaN              NaN            NaN
+ diffusion   oulad    never       29           NaN        NaN              NaN            NaN
+     rcgan   oulad   always       29           NaN        NaN              NaN            NaN
+     rcgan   oulad early_on       29           NaN        NaN              NaN            NaN
+     rcgan   oulad  late_on       29           NaN        NaN              NaN            NaN
+     rcgan   oulad    never       29           NaN        NaN              NaN            NaN
+scm_causal   oulad   always       29           NaN        NaN              NaN            NaN
+scm_causal   oulad early_on       29           NaN        NaN              NaN            NaN
+scm_causal   oulad  late_on       29           NaN        NaN              NaN            NaN
+scm_causal   oulad    never       29           NaN        NaN              NaN            NaN
+   timegan   oulad   always       29           NaN        NaN              NaN            NaN
+   timegan   oulad early_on       29           NaN        NaN              NaN            NaN
+   timegan   oulad  late_on       29           NaN        NaN              NaN            NaN
+   timegan   oulad    never       29           NaN        NaN              NaN            NaN
+       vae   oulad   always       29           NaN        NaN              NaN            NaN
+       vae   oulad early_on       29           NaN        NaN              NaN            NaN
+       vae   oulad  late_on       29           NaN        NaN              NaN            NaN
+       vae   oulad    never       29           NaN        NaN              NaN            NaN
+
+tstr_trts
+     model dataset predictor setting      auc     rmse    brier      ece  n_train  n_test
+       crn   oulad    logreg    TRTS 0.872255 0.338865 0.114830 0.007061    19281    4820
+       crn   oulad    logreg    TSTR 0.869087 0.340898 0.116211 0.024683     2048    4820
+       crn   oulad       mlp    TRTS 0.755649 0.462423 0.213835 0.240369    19281    4820
+       crn   oulad       mlp    TSTR 0.650764 0.492150 0.242212 0.193178     2048    4820
+       crn   oulad      sakt    TRTS 0.783747 0.451272 0.203646 0.221369    19281    4820
+       crn   oulad      sakt    TSTR 0.743829 0.453263 0.205447 0.171729     2048    4820
+ diffusion   oulad    logreg    TRTS 0.872284 0.338835 0.114809 0.009558    19281    4820
+ diffusion   oulad    logreg    TSTR 0.865584 0.416855 0.173768 0.216518     2048    4820
+ diffusion   oulad       mlp    TRTS 0.661647 0.471389 0.222207 0.180941    19281    4820
+ diffusion   oulad       mlp    TSTR 0.795409 0.474761 0.225398 0.268161     2048    4820
+ diffusion   oulad      sakt    TRTS 0.782729 0.453438 0.205606 0.267415    19281    4820
+ diffusion   oulad      sakt    TSTR 0.756775 0.524499 0.275099 0.327594     2048    4820
+     rcgan   oulad    logreg    TRTS 0.872525 0.338893 0.114849 0.009853    19281    4820
+     rcgan   oulad    logreg    TSTR 0.786285 0.446231 0.199122 0.234426     2048    4820
+     rcgan   oulad       mlp    TRTS 0.754381 0.466344 0.217477 0.231695    19281    4820
+     rcgan   oulad       mlp    TSTR 0.764345 0.461134 0.212645 0.240782     2048    4820
+     rcgan   oulad      sakt    TRTS 0.768725 0.456781 0.208649 0.186302    19281    4820
+     rcgan   oulad      sakt    TSTR 0.686673 0.575660 0.331385 0.371640     2048    4820
+scm_causal   oulad    logreg    TRTS 0.872453 0.338789 0.114778 0.008348    19281    4820
+scm_causal   oulad    logreg    TSTR 0.800115 0.361241 0.130495 0.039419     2048    4820
+scm_causal   oulad       mlp    TRTS 0.681241 0.456902 0.208759 0.264698    19281    4820
+scm_causal   oulad       mlp    TSTR 0.777767 0.466688 0.217798 0.272357     2048    4820
+scm_causal   oulad      sakt    TRTS 0.799146 0.365150 0.133334 0.038769    19281    4820
+scm_causal   oulad      sakt    TSTR 0.683361 0.450678 0.203111 0.089120     2048    4820
+   timegan   oulad    logreg    TRTS 0.872342 0.338758 0.114757 0.008246    19281    4820
+   timegan   oulad    logreg    TSTR 0.869506 0.341441 0.116582 0.029732     2048    4820
+   timegan   oulad       mlp    TRTS 0.797524 0.438532 0.192310 0.239645    19281    4820
+   timegan   oulad       mlp    TSTR 0.790776 0.443632 0.196810 0.212804     2048    4820
+   timegan   oulad      sakt    TRTS 0.767869 0.438827 0.192569 0.205724    19281    4820
+   timegan   oulad      sakt    TSTR 0.778473 0.442062 0.195419 0.184493     2048    4820
+       vae   oulad    logreg    TRTS 0.872413 0.339168 0.115035 0.016340    19281    4820
+       vae   oulad    logreg    TSTR 0.869162 0.340613 0.116017 0.020175     2048    4820
+       vae   oulad       mlp    TRTS 0.806479 0.490421 0.240513 0.202563    19281    4820
+       vae   oulad       mlp    TSTR 0.756844 0.486356 0.236543 0.190959     2048    4820
+       vae   oulad      sakt    TRTS 0.720524 0.446153 0.199052 0.068560    19281    4820
+       vae   oulad      sakt    TSTR 0.777254 0.429377 0.184364 0.153720     2048    4820
+
+leakage_metrics
+     model dataset  t_leakage_auc
+       crn   oulad            NaN
+ diffusion   oulad            NaN
+     rcgan   oulad            NaN
+scm_causal   oulad       0.586415
+   timegan   oulad            NaN
+       vae   oulad            NaN
+
+privacy_summary
+     model dataset publish_mode  nn_mean  nn_p01  nn_p05  nn_p10  x_noise_scale  a_flip_prob  t_flip_prob  attack_auc  attack_acc  attack_balanced_acc
+       crn   oulad       y_only 0.006097     0.0     0.0     0.0            0.0          0.0          0.0    0.514254    0.547780             0.508387
+ diffusion   oulad       y_only 0.011879     0.0     0.0     0.0            0.0          0.0          0.0    0.494448    0.510579             0.493733
+     rcgan   oulad       y_only 0.011581     0.0     0.0     0.0            0.0          0.0          0.0    0.515168    0.555801             0.500652
+scm_causal   oulad       y_only 0.005646     0.0     0.0     0.0            0.0          0.0          0.0    0.506976    0.533813             0.506165
+   timegan   oulad       y_only 0.006272     0.0     0.0     0.0            0.0          0.0          0.0    0.515506    0.548057             0.509080
+       vae   oulad       y_only 0.006230     0.0     0.0     0.0            0.0          0.0          0.0    0.509505    0.546812             0.507002
+
+run_config
+     model dataset  do_horizon_train  do_horizon_eval  causal_every  cf_every
+       crn   oulad               NaN               29           NaN       NaN
+ diffusion   oulad               NaN               29           NaN       NaN
+     rcgan   oulad               NaN               29           NaN       NaN
+scm_causal   oulad               5.0               29          20.0      10.0
+   timegan   oulad               NaN               29           NaN       NaN
+       vae   oulad               NaN               29           NaN       NaN
+
+oracle_availability
+unsupported_ratio: 1.000
+datasets_without_oracle: oulad
+
+oracle_irt_synth_summary
+pehe: mean=nan median=nan p25=nan p75=nan
+ate_rmse: mean=nan median=nan p25=nan p75=nan
+policy_regret: mean=nan median=nan p25=nan p75=nan
+

@@ -10,11 +10,12 @@ from pathlib import Path
 from typing import Any, Optional, TextIO
 
 import numpy as np
+
 import pandas as pd
+
 import torch
-
-
-
+import torch.nn as nn
+from sklearn.metrics import roc_auc_score
 from torch.utils.data import DataLoader, Dataset, Subset
 
 # Allow running as a script (e.g., `python src/main.py`) as well as a module (`python -m src.main`).
@@ -37,8 +38,8 @@ from src.data import (
     move_trajectory_batch,
 )
 from src.baselines import load_base_model_from_checkpoint
-from src.causal_estimators import GFormula, IPTWMSM, OracleIRT
-from src.eval.causal_bias import compute_causal_bias, compute_policy_values
+from src.causal_estimators import GFormula, IPTWMSM, OracleIRT, PrecomputedOracleEstimator
+from src.eval.dr_eval import compute_dr_policy_values
 from src.eval.oracle_metrics import compute_oracle_metrics
 from src.eval.tstr_trts import run_tstr_trts
 from src.privacy.mia_shadow import mia_to_dataframe, run_membership_inference
@@ -71,27 +72,30 @@ DATASET_PATHS = {
     "assist09": "DataSet/assist2009/assist09_processed.npz",
     "oulad": "DataSet/OULAD/oulad_processed.npz",
     "statics": "DataSet/Statics2011/statics2011_step_level.npz",
-    "irt_synth": "",
+    "irt_synth": "DataSet/irt_synth/dkt_synth.npz",
 }
 
+
+
+
+
 # Choose which datasets / models to run
-ACTIVE_DATASETS = ["oulad", "irt_synth"]  # options: ["assist09", "oulad", "statics"]
+ACTIVE_DATASETS = ["statics"]  # options: ["oulad","assist09",  "statics","irt_synth"]
 ACTIVE_MODELS = [
-    "scm_fidelity",
-    "scm_causal",
-    "rcgan",
-    "vae",
-    "diffusion",
-    "crn",
-    "timegan",
-]  # options: ["scm", "scm_fidelity", "scm_causal", "rcgan", "vae", "diffusion", "crn", "timegan"]
+
+    "scm_causal", "rcgan", "vae", "diffusion", "crn", "timegan"
+
+]  # options: [ "scm_causal", "rcgan", "vae", "diffusion", "crn", "timegan"]
 
 # Common training knobs (defaults)
 COMMON_KNOBS = dict(
 
+    
 
-    batch_size=256,
-    seq_len=50,  # will truncate if npz is longer
+
+
+    batch_size=512,
+    seq_len=30,  # will truncate if npz is longer
     device="auto",
     seed=42,
     
@@ -108,9 +112,60 @@ IRT_SYNTH_KNOBS = dict(
     gamma=0.8,
     lr=0.05,
     delta=0.02,
-    confounding=1.0,
+    confounding=3.0,
     noise_std=0.02,
 )
+
+# Dataset-specific overrides (applied on top of COMMON_KNOBS/MODEL_KNOBS).
+
+DATASET_SPECIFIC_KNOBS = {
+    "oulad": {
+        "dynamics": "transformer",
+        "w_advT_causal": 0.02,
+        "do_horizon_train": 2,
+
+        "batch_size": 1024,
+        "d_k": 64,
+        "rcgan_hidden": 64,
+        "w_do": 0.3,
+    },
+
+    "assist09": {
+        
+        "dynamics": "transformer",
+        "batch_size": 256,
+        "w_advT_causal": 0.02,
+        "do_horizon_train": 2,
+        "d_k": 64,
+        "w_do": 0.3,
+    },
+    "statics": {
+        "dynamics": "gru",
+        "batch_size": 64,
+        "d_k": 32,
+        "do_horizon_train": 2,
+        "w_advT_causal": 0.02,
+        "w_do": 0.3,
+
+
+    },
+"irt_synth": {
+    "dynamics": "gru",
+    "d_k": 64,
+    "disc_input": "sampled",
+    "causal_every": 2,
+
+    # --- 核心设置 ---
+    "k_c_ratio": 0.5,
+    "w_advT_causal": 0.05,
+
+    "w_y": 1,          # 强迫模型记住基本事实。
+    "w_do": 0.8,         # 适当提高因果权重，在削弱 GAN 后，让它主导生成规律。
+
+    "do_horizon_train": 2,
+    "epochs_c": 20
+}}
+
 
 # Model-specific knobs (override defaults)
 _SCM_BASE_KNOBS = dict(
@@ -118,11 +173,12 @@ _SCM_BASE_KNOBS = dict(
     epochs_b=30,
     epochs_c=20,
     dynamics="transformer",
-    d_k=64,
+    d_k=32,
     k_c_ratio=0.5,
     w_do=0,
     w_cf=0,
-    cf_interval=20,
+    causal_every=20,
+    cf_every=20,
     grl_lambda=1.0,
     lr_advT=1e-4,
     do_time_sampling="random",
@@ -133,7 +189,7 @@ _SCM_BASE_KNOBS = dict(
 )
 
 MODEL_KNOBS = {
-    "scm": dict(_SCM_BASE_KNOBS, w_advT_causal=0.02, w_t_pred_spurious=0.1),
+    "scm": dict(_SCM_BASE_KNOBS, w_advT_causal=0.0, w_t_pred_spurious=0.1),
     "scm_fidelity": dict(
         _SCM_BASE_KNOBS,
         w_do=0.0,
@@ -141,17 +197,24 @@ MODEL_KNOBS = {
         w_advT_causal=0.0,
         w_t_pred_spurious=0.0,
     ),
-    "scm_causal": dict(_SCM_BASE_KNOBS, w_advT_causal=0.02, w_t_pred_spurious=0.1),
+    "scm_causal": dict(
+    _SCM_BASE_KNOBS, 
+    w_advT_causal=0.02,    # <--- 改为 0.0，彻底关掉 Kc 的 GRL
+    w_t_pred_spurious=0.1, 
+    do_horizon_train=1,
+    w_do=0.05,             
+    cf_every=10,
+    w_cf=0.02),
     "rcgan": dict(
         epochs_a=30,
         epochs_b=30,
         epochs_c=10,
         rnn="gru",
-        rcgan_hidden=128,
+        rcgan_hidden=64,
     ),
     "crn": dict(
         epochs=30,
-        crn_hidden=128,
+        crn_hidden=32,
         crn_grl_lambda=1.0,
     ),
     
@@ -168,11 +231,11 @@ MODEL_KNOBS = {
         epochs_embed=3,
         epochs_supervisor=3,
         epochs_joint=5,
-        timegan_hidden=64,
+        timegan_hidden=32,
         timegan_num_layers=2,
         timegan_z_dim=16,
         x_emb_dim=32,
-        lambda_sup=10.0,
+        lambda_sup=1.0,
         lambda_mom=1.0,
         lr_embed=1e-3,
         lr_gen=1e-3,
@@ -560,6 +623,85 @@ def _safe_nanmean(values: np.ndarray) -> float:
     return float(np.nanmean(arr))
 
 
+def _compute_factual_auc(
+    gen_model: Any,
+    *,
+    data: TrajectoryBatch,
+    batch_size: int,
+) -> tuple[float, int, str]:
+    model = getattr(gen_model, "model", None)
+    model_name = str(getattr(gen_model, "name", ""))
+    if model is None or not hasattr(model, "parameters"):
+        return float("nan"), 0, "no_model"
+
+    device = next(model.parameters()).device
+    ds = TrajectoryDataset(
+        X=data.X.detach().cpu(),
+        A=data.A.detach().cpu(),
+        T=data.T.detach().cpu(),
+        Y=data.Y.detach().cpu(),
+        mask=data.mask.detach().cpu(),
+    )
+    dl = make_trajectory_dataloader(ds, batch_size=int(batch_size), shuffle=False, drop_last=False)
+    y_true_all: list[np.ndarray] = []
+    y_pred_all: list[np.ndarray] = []
+
+    with torch.no_grad():
+        for batch in dl:
+            batch = move_batch(batch, device)
+            X, A, T, Y, M = batch.X, batch.A, batch.T, batch.Y, batch.mask
+
+            if str(model_name).startswith("scm"):
+                out = model.teacher_forcing(  # type: ignore[attr-defined]
+                    x=X, a=A, t=T, y=Y, mask=M, eps=None, eps_mode="zero"
+                )
+                y_prob = torch.sigmoid(out["y_logits"])
+            elif model_name == "rcgan":
+                d_eps = int(getattr(getattr(model, "cfg", None), "d_eps", 16))
+                eps = torch.zeros(A.shape[0], A.shape[1], d_eps, device=device)
+                out = model.teacher_forcing(  # type: ignore[attr-defined]
+                    x=X, a=A, t=T, y=Y, mask=M, eps=eps, stochastic_y=False
+                )
+                y_prob = torch.sigmoid(out["y_logits"])
+            elif model_name == "crn":
+                out = model.forward(x=X, a=A, t=T, y=Y, mask=M)  # type: ignore[call-arg]
+                y_prob = torch.sigmoid(out["y_logits"])
+            elif model_name == "vae":
+                mu, _logvar = model.encode(x=X, a=A, t=T, y=Y, mask=M)  # type: ignore[attr-defined]
+                out = model.decode(  # type: ignore[attr-defined]
+                    x=X, a=A, t=T, mask=M, z=mu, y=Y, teacher_forcing=True, stochastic_y=False
+                )
+                y_prob = torch.sigmoid(out["y_logits"])
+            elif model_name == "timegan":
+                z_dim = int(getattr(getattr(model, "cfg", None), "z_dim", 16))
+                z = torch.zeros(A.shape[0], A.shape[1], z_dim, device=device)
+                out = model.teacher_forcing(  # type: ignore[attr-defined]
+                    x=X, a=A, t=T, y=None, mask=M, z=z, stochastic_y=False
+                )
+                y_prob = torch.sigmoid(out["y_logits"])
+            else:
+                return float("nan"), 0, f"unsupported model={model_name}"
+
+            if y_prob.ndim == 3:
+                y_prob = y_prob.squeeze(-1)
+            if Y.ndim == 3:
+                Y = Y.squeeze(-1)
+
+            valid = M > 0.5
+            if not valid.any():
+                continue
+            y_true_all.append(Y[valid].detach().cpu().numpy())
+            y_pred_all.append(y_prob[valid].detach().cpu().numpy())
+
+    if not y_true_all:
+        return float("nan"), 0, "empty"
+    y_true = np.concatenate(y_true_all, axis=0)
+    y_pred = np.concatenate(y_pred_all, axis=0)
+    if np.unique(y_true).size < 2:
+        return float("nan"), int(y_true.size), "single_class"
+    return float(roc_auc_score(y_true, y_pred)), int(y_true.size), ""
+
+
 def _format_legacy_metric(value: object) -> str:
     try:
         num = float(value)
@@ -680,6 +822,178 @@ def _compute_t_leakage_auc(
     if not aucs:
         return float("nan")
     return float(np.mean(aucs))
+
+
+def _maybe_plot_cf_consistency(
+    *,
+    gen_model: Any,
+    model_key: str,
+    test_batch: TrajectoryBatch,
+    dataset: str,
+    t0_list: list[int],
+    out_dir: Path,
+    seed: int,
+    actions: list[int],
+    plot_horizon: int,
+) -> Optional[Path]:
+    if not str(model_key).startswith("scm"):
+        return None
+    if dataset not in {"assist09", "oulad", "statics", "irt_synth"}:
+        return None
+
+    try:
+        import matplotlib
+
+        matplotlib.use("Agg")
+        from scripts import eval_cf_consistency as cf_vis
+    except Exception as e:
+        print(f"[cf_consistency] import failed: {e}")
+        return None
+
+    model = getattr(gen_model, "model", None)
+    if model is None or not hasattr(model, "rollout"):
+        return None
+    if not hasattr(model, "cfg") or not hasattr(model.cfg, "d_eps"):
+        return None
+
+    seq_len = int(test_batch.T.shape[1])
+    if seq_len <= 1:
+        return None
+
+    action_a = int(actions[0]) if actions else 0
+    action_b = int(actions[1]) if len(actions) > 1 else 1
+    t_intervention = int(t0_list[0]) if t0_list else min(10, seq_len - 1)
+    t_intervention = max(0, min(int(t_intervention), seq_len - 1))
+    plot_horizon = max(1, min(int(plot_horizon), seq_len - 1))
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / f"cf_bifurcation_{dataset}_{model_key}.png"
+    out_data = out_dir / f"cf_bifurcation_{dataset}_{model_key}.npz"
+    try:
+        cf_vis.plot_counterfactual_bifurcation(
+            model=model,
+            batch=test_batch,
+            t_intervention=t_intervention,
+            action_a=action_a,
+            action_b=action_b,
+            plot_horizon=plot_horizon,
+            plot_metric="k_norm",
+            seed=int(seed),
+            out_path=str(out_path),
+            student_select="max_delta_k",
+            causal_only=True,
+            out_data_path=str(out_data),
+        )
+    except Exception as e:
+        print(f"[cf_consistency] plot failed: {e}")
+        return None
+    return out_path
+
+
+def _maybe_plot_cf_consistency_multi(
+    *,
+    ckpt_paths: dict[str, Path],
+    model_order: list[str],
+    test_batch: TrajectoryBatch,
+    dataset: str,
+    t0_list: list[int],
+    out_dir: Path,
+    seed: int,
+    actions: list[int],
+    plot_horizon: int,
+    device: torch.device,
+) -> Optional[Path]:
+    if dataset not in {"assist09", "oulad", "statics"}:
+        return None
+
+    try:
+        import matplotlib
+
+        matplotlib.use("Agg")
+        from scripts import eval_cf_consistency as cf_vis
+    except Exception as e:
+        print(f"[cf_consistency] import failed: {e}")
+        return None
+
+    if not ckpt_paths:
+        return None
+
+    models: list[tuple[str, object, str]] = []
+    for model_key in model_order:
+        ckpt_path = ckpt_paths.get(model_key)
+        if ckpt_path is None:
+            continue
+        try:
+            ckpt = torch.load(ckpt_path, map_location=device)
+            model_name = str(ckpt.get("model", "scm"))
+            if model_name.startswith("scm"):
+                model, _ = cf_vis.load_rollout_model_from_checkpoint(ckpt, device=device)
+                models.append((model_key, model, "scm_raw"))
+            else:
+                base_model = load_base_model_from_checkpoint(ckpt, device=device)
+                models.append((model_key, base_model, "wrapped"))
+        except Exception as e:
+            print(f"[cf_consistency] skip {model_key}: {e}")
+
+    if not models:
+        return None
+
+    seq_len = int(test_batch.T.shape[1])
+    if seq_len <= 1:
+        return None
+
+    action_a = int(actions[0]) if actions else 0
+    action_b = int(actions[1]) if len(actions) > 1 else 1
+    t_intervention = int(t0_list[0]) if t0_list else min(10, seq_len - 1)
+    t_intervention = max(0, min(int(t_intervention), seq_len - 1))
+    plot_horizon = max(1, min(int(plot_horizon), seq_len - 1))
+
+    ref_key = None
+    for cand in ("scm_causal", "scm_fidelity", "scm"):
+        if any(k == cand for k, _, _ in models):
+            ref_key = cand
+            break
+    if ref_key is None:
+        ref_key = models[0][0]
+
+    ref_model = next(m for k, m, _ in models if k == ref_key)
+    ref_mode = next(mode for k, _, mode in models if k == ref_key)
+    if ref_mode != "scm_raw":
+        student_idx = 0
+    else:
+        ref_select = "max_delta_k" if str(ref_key).startswith("scm") else "max_delta_y"
+        student_idx = cf_vis.select_student_idx_for_model(
+            ref_model,
+            test_batch,
+            t_intervention=t_intervention,
+            action_a=action_a,
+            action_b=action_b,
+            plot_horizon=plot_horizon,
+            seed=int(seed),
+            select=str(ref_select),
+            causal_only=bool(str(ref_key).startswith("scm")),
+        )
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / f"cf_bifurcation_{dataset}_all.png"
+    out_data = out_dir / f"cf_bifurcation_{dataset}_all.npz"
+    try:
+        cf_vis.plot_bifurcation_multi(
+            models=models,
+            batch=test_batch,
+            student_idx=int(student_idx),
+            t_intervention=t_intervention,
+            action_a=action_a,
+            action_b=action_b,
+            plot_horizon=plot_horizon,
+            seed=int(seed),
+            out_path=str(out_path),
+            out_data_path=str(out_data),
+        )
+    except Exception as e:
+        print(f"[cf_consistency] multi-plot failed: {e}")
+        return None
+    return out_path
 
 
 def _roc_auc_score(y_true: np.ndarray, y_score: np.ndarray) -> float:
@@ -902,6 +1216,15 @@ def _train_scm_or_rcgan(
     knobs: dict[str, Any],
 ) -> Path:
     out_dir.mkdir(parents=True, exist_ok=True)
+    nan_debugger = None
+    if model_name == "scm_causal":
+        try:
+            from src.diagnostics import NaNDebugger
+
+            nan_debugger = NaNDebugger(out_dir / "nan_debug.log")
+            print(f"[diag] NaN debugger enabled: {nan_debugger.log_path}")
+        except Exception as e:
+            print(f"[diag] NaN debugger init failed: {e}")
 
     epochs_a = int(knobs.get("epochs_a", 2))
     epochs_b = int(knobs.get("epochs_b", 2))
@@ -925,7 +1248,12 @@ def _train_scm_or_rcgan(
     ckpt_every = max(1, int(knobs.get("ckpt_every", 1)))
     disc_input = str(knobs.get("disc_input", "logits"))
     do_horizon = int(knobs.get("do_horizon", 0))
+    do_horizon_train = int(knobs.get("do_horizon_train", do_horizon))
+    causal_every = max(1, int(knobs.get("causal_every", 20)))
+    cf_every = max(1, int(knobs.get("cf_every", knobs.get("cf_interval", 20))))
     ref_estimator = knobs.get("ref_estimator", None)
+    do_huber_delta = float(knobs.get("do_huber_delta", 1.0))
+    max_grad_norm = float(knobs.get("max_grad_norm", 5.0))
 
     # Causal knobs (ported from src/train.py)
     do_time_index = int(knobs.get("do_time_index", 5))
@@ -934,7 +1262,6 @@ def _train_scm_or_rcgan(
     do_min_arm_samples = int(knobs.get("do_min_arm_samples", 8))
     do_actions_raw = knobs.get("do_actions", "0,1")
     cf_num_time_samples = int(knobs.get("cf_num_time_samples", 1))
-    cf_interval = max(1, int(knobs.get("cf_interval", 10)))
 
     log_every = int(knobs.get("log_every", 50))
     log_every = max(1, log_every)
@@ -944,6 +1271,8 @@ def _train_scm_or_rcgan(
     do_num_time_samples = max(1, int(do_num_time_samples))
     do_min_arm_samples = max(1, int(do_min_arm_samples))
     cf_num_time_samples = max(1, int(cf_num_time_samples))
+
+    criterion_huber = nn.L1Loss(reduction="mean")
 
     if isinstance(do_actions_raw, str):
         do_actions = [int(x.strip()) for x in do_actions_raw.split(",") if x.strip()]
@@ -984,7 +1313,7 @@ def _train_scm_or_rcgan(
     if is_scm:
         gen_cfg = SCMGeneratorConfig(
             d_x=int(meta["d_x"]),
-            d_k=int(knobs.get("d_k", 64)),
+            d_k=int(knobs.get("d_k", 128)),
             k_c_ratio=float(knobs.get("k_c_ratio", 0.5)),
             d_eps=d_eps,
             a_is_discrete=bool(meta["a_is_discrete"]),
@@ -1114,6 +1443,7 @@ def _train_scm_or_rcgan(
 
             opt_g.zero_grad(set_to_none=True)
             loss.backward()
+            torch.nn.utils.clip_grad_norm_(gen_params, max_norm=max_grad_norm)
             opt_g.step()
 
             total_loss += float(loss.item())
@@ -1141,6 +1471,7 @@ def _train_scm_or_rcgan(
         enable_causal = stage_name == "C" and is_scm and (
             w_do > 0.0 or w_advT_causal > 0.0 or w_t_pred_spurious > 0.0 or w_cf > 0.0
         )
+        global_step = 0
         for ep in range(1, epochs + 1):
             g_loss_accum = 0.0
             d_loss_accum = 0.0
@@ -1153,6 +1484,8 @@ def _train_scm_or_rcgan(
                 batch = move_batch(batch, device)
                 X, A, T, Y, M = batch.X, batch.A, batch.T, batch.Y, batch.mask
                 bsz, seq_len = A.shape[0], A.shape[1]
+                should_causal = (global_step % causal_every == 0)
+                should_cf = (global_step % cf_every == 0)
 
                 ro = gen.rollout(x=X, a=A, t_obs=T, mask=M, stochastic_y=False)  # type: ignore[attr-defined]
                 y_fake = ro["y"]
@@ -1207,35 +1540,36 @@ def _train_scm_or_rcgan(
                         inp = torch.cat([a_enc, t_enc, x_rep, eps_seq], dim=-1)
                     k_pred = gen.supervisor(k_tf[:, :-1, :], inp)  # type: ignore[attr-defined]
                     loss_sup = ((k_pred - k_tf[:, 1:, :]).pow(2).mean(dim=-1) * M).sum() / M.sum().clamp(min=1.0)
+                    if nan_debugger is not None:
+                        nan_debugger.check_tensors(
+                            stage=str(stage_name),
+                            epoch=ep,
+                            step=global_step,
+                            tag="tf",
+                            tensors={
+                                "y_logits": tf.get("y_logits"),
+                                "k_tf": k_tf,
+                                "k_c": k_c,
+                                "k_s": k_s,
+                                "a_enc": a_enc,
+                                "t_enc": t_enc,
+                                "x_feat": x_feat,
+                                "k_pred": k_pred,
+                            },
+                        )
 
                     if enable_causal and bool(gen_cfg.t_is_discrete) and T.ndim == 2:
-                        if w_do > 0.0 and do_horizon > 0 and ref_estimator is not None:
-                            t0 = int(torch.randint(low=0, high=seq_len, size=(1,), device=device).item())
-                            action = int(
-                                do_actions[
-                                    int(torch.randint(low=0, high=len(do_actions), size=(1,), device=device).item())
-                                ]
-                            )
-                            horizon_eff = min(int(do_horizon), max(0, seq_len - t0 - 1))
-                            steps = t0 + horizon_eff + 1
-                            t_do = torch.full((bsz,), action, device=device, dtype=T.dtype)
-                            ro_do = gen.rollout(  # type: ignore[attr-defined]
-                                x=X,
-                                a=A,
-                                t_obs=T,
-                                do_t={t0: t_do},
-                                mask=M,
-                                eps=eps_seq,
-                                steps=steps,
-                                stochastic_y=False,
-                                causal_only=True,
-                            )
-                            y_do = ro_do["y"]
-                            if y_do.ndim == 3 and y_do.shape[-1] == 1:
-                                y_do = y_do.squeeze(-1)
-                            y_slice = y_do[:, t0:steps]
-                            m_slice = M[:, t0:steps]
-                            gen_mu = (y_slice * m_slice).sum(dim=0) / m_slice.sum(dim=0).clamp(min=1.0)
+                        if w_do > 0.0 and should_causal and do_horizon_train > 0 and ref_estimator is not None:
+                            support_pairs = []
+                            for t_idx in range(seq_len):
+                                valid = M[:, int(t_idx)] > 0.5
+                                if valid.sum().item() < do_min_arm_samples:
+                                    continue
+                                for a_val in do_actions:
+                                    sel = (T[:, int(t_idx)].long() == int(a_val)) & valid
+                                    if sel.sum().item() >= do_min_arm_samples:
+                                        support_pairs.append((int(t_idx), int(a_val)))
+
                             batch_ref = TrajectoryBatch(
                                 X=X.detach().cpu(),
                                 A=A.detach().cpu(),
@@ -1244,22 +1578,68 @@ def _train_scm_or_rcgan(
                                 mask=M.detach().cpu(),
                                 lengths=compute_lengths(M.detach().cpu()),
                             )
-                            ref = ref_estimator.estimate_do(
-                                batch_ref,
-                                t0=t0,
-                                horizon=int(horizon_eff),
-                                action=int(action),
-                                subgroup={"name": "all"},
-                                n_boot=1,
-                                seed=int(knobs.get("seed", 0)),
-                            )
-                            ref_mu = torch.as_tensor(ref["mu"], device=device).float()
-                            loss_do = torch.mean((gen_mu[: ref_mu.shape[0]] - ref_mu) ** 2)
-                            print(
-                                f"      loss_do_multistep={float(loss_do.item()):.4f} "
-                                f"do_horizon={int(horizon_eff)} t0_sampled={t0}"
-                            )
-                        elif w_do > 0.0:
+                            ref_ok = False
+                            max_ref_tries = int(knobs.get("do_ref_max_tries", 5))
+                            t0 = 0
+                            action = 0
+                            horizon_eff = 0
+                            ref_mu = None
+                            for _ in range(max_ref_tries):
+                                if not support_pairs:
+                                    break
+                                idx = int(torch.randint(low=0, high=len(support_pairs), size=(1,), device=device).item())
+                                t0, action = support_pairs[idx]
+                                horizon_eff = min(int(do_horizon_train), max(0, seq_len - t0 - 1))
+                                ref = ref_estimator.estimate_do(
+                                    batch_ref,
+                                    t0=int(t0),
+                                    horizon=int(horizon_eff),
+                                    action=int(action),
+                                    subgroup={"name": "all"},
+                                    n_boot=1,
+                                    seed=int(knobs.get("seed", 0)),
+                                )
+                                ref_mu = torch.as_tensor(ref["mu"], device=device).float()
+                                if not bool(ref.get("valid", True)) or not torch.isfinite(ref_mu).all():
+                                    continue
+                                ref_ok = True
+                                break
+
+                            if ref_ok and ref_mu is not None:
+                                steps = t0 + horizon_eff + 1
+                                t_do = torch.full((bsz,), int(action), device=device, dtype=T.dtype)
+                                ro_do = gen.rollout(  # type: ignore[attr-defined]
+                                    x=X,
+                                    a=A,
+                                    t_obs=T,
+                                    do_t={int(t0): t_do},
+                                    mask=M,
+                                    eps=eps_seq,
+                                    steps=steps,
+                                    stochastic_y=False,
+                                    causal_only=True,
+                                )
+                                y_do = ro_do["y"]
+                                if y_do.ndim == 3 and y_do.shape[-1] == 1:
+                                    y_do = y_do.squeeze(-1)
+                                y_slice = y_do[:, int(t0) : steps]
+                                m_slice = M[:, int(t0) : steps]
+                                gen_mu = (y_slice * m_slice).sum(dim=0) / m_slice.sum(dim=0).clamp(min=1.0)
+                                ref_mu_clipped = torch.clamp(ref_mu, min=0.0, max=1.0)
+                                gen_mu_aligned = gen_mu[: ref_mu_clipped.shape[0]]
+                                raw_loss_do = criterion_huber(gen_mu_aligned, ref_mu_clipped)
+                                if not torch.isfinite(raw_loss_do):
+                                    print(
+                                        f"      [WARNING] loss_do NaN/Inf at t0={t0}, action={action}; skipping."
+                                    )
+                                    loss_do = torch.tensor(0.0, device=device)
+                                else:
+                                    loss_do = raw_loss_do
+                                    print(
+                                        f"      loss_do_multistep={float(loss_do.item()):.4f} "
+                                        f"do_horizon={int(horizon_eff)} t0_sampled={t0}"
+                                    )
+                        elif w_do > 0.0 and should_causal:
                             # Fallback: single-step MMD alignment (legacy).
                             if do_time_sampling == "fixed":
                                 do_time_indices = [int(do_time_index)]
@@ -1301,6 +1681,8 @@ def _train_scm_or_rcgan(
 
                             if do_terms > 0:
                                 loss_do = loss_do / float(do_terms)
+                            else:
+                                loss_do = torch.tensor(0.0, device=device)
 
                         # (B) adversarial deconfounding (GRL): make K_t less predictive of T_t
                         if w_advT_causal > 0.0 and t_clf is not None and opt_tclf is not None and k_c.shape[-1] > 0:
@@ -1334,9 +1716,8 @@ def _train_scm_or_rcgan(
 
                         # (C) counterfactual consistency: K_{0:t} must not change when intervening at t
                         # This is expensive for autoregressive rollouts (especially with transformer dynamics),
-                        # so we optionally compute it only every `cf_interval` steps.
-                        do_cf_now = (steps % cf_interval == 0) if cf_interval > 1 else True
-                        if w_cf > 0.0 and do_cf_now:
+                        # so we optionally compute it only every `cf_every` steps.
+                        if w_cf > 0.0 and should_cf:
                             num_actions = max(1, int(t_vocab_size))
                             cf_time_indices = torch.randint(
                                 low=0, high=seq_len, size=(int(cf_num_time_samples),), device=device
@@ -1384,10 +1765,32 @@ def _train_scm_or_rcgan(
                         + w_t_pred_spurious * loss_t_pred
                         + w_cf * loss_cf
                     )
+                if nan_debugger is not None:
+                    nan_debugger.check_tensors(
+                        stage=str(stage_name),
+                        epoch=ep,
+                        step=global_step,
+                        tag="loss",
+                        tensors={
+                            "loss_y": loss_y,
+                            "loss_sup": loss_sup,
+                            "loss_adv": loss_adv,
+                            "loss_do": loss_do,
+                            "loss_advT": loss_advT,
+                            "loss_t_pred": loss_t_pred,
+                            "loss_cf": loss_cf,
+                            "loss_g": loss_g,
+                        },
+                    )
 
                 opt_g.zero_grad(set_to_none=True)
                 loss_g.backward()
+                if nan_debugger is not None:
+                    nan_debugger.check_grads(gen, stage=str(stage_name), epoch=ep, step=global_step)
+                torch.nn.utils.clip_grad_norm_(gen_params, max_norm=max_grad_norm)
                 opt_g.step()
+                if nan_debugger is not None:
+                    nan_debugger.check_params(gen, stage=str(stage_name), epoch=ep, step=global_step)
 
                 g_loss_accum += float(loss_g.item())
                 if enable_causal:
@@ -1396,6 +1799,7 @@ def _train_scm_or_rcgan(
                     t_pred_accum += float(loss_t_pred.item())
                     cf_accum += float(loss_cf.item())
                 steps += 1
+                global_step += 1
                 if steps % log_every == 0:
                     avg_d = d_loss_accum / max(1, steps)
                     avg_g = g_loss_accum / max(1, steps)
@@ -1805,7 +2209,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     p.add_argument("--batch_size", type=int, default=None, help="Override COMMON_KNOBS.batch_size")
     p.add_argument("--seq_len", type=int, default=None, help="Override COMMON_KNOBS.seq_len (truncate if needed)")
     p.add_argument("--test_ratio", type=float, default=None, help="Override COMMON_KNOBS.test_ratio")
-    p.add_argument("--ref_estimator", type=str, default="gformula", choices=["iptw_msm", "gformula"])
+    p.add_argument("--ref_estimator", type=str, default="iptw_msm", choices=["iptw_msm", "gformula"])
     p.add_argument("--do_horizon", type=int, default=-1, help="Do/policy horizon (-1 uses seq_len-1).")
     p.add_argument("--oracle_mc_samples", type=int, default=200, help="MC samples for OracleIRT (irt_synth only).")
     p.add_argument("--oracle_mc_seed", type=int, default=0, help="MC seed for OracleIRT (irt_synth only).")
@@ -1823,6 +2227,8 @@ def main(argv: Optional[list[str]] = None) -> int:
     p.add_argument("--k_c_ratio", type=float, default=None, help="SCM: ratio of causal latent dims.")
     p.add_argument("--w_advT_causal", type=float, default=None, help="SCM: adversarial T loss on K_c.")
     p.add_argument("--w_t_pred_spurious", type=float, default=None, help="SCM: T prediction loss on K_s.")
+    p.add_argument("--plot_cf", action="store_true", default=True, help="Auto-generate counterfactual plots.")
+    p.add_argument("--no_plot_cf", action="store_false", dest="plot_cf")
     args, unknown = p.parse_known_args(argv)
     if unknown:
         is_kernel = ("ipykernel" in sys.modules) or (Path(sys.argv[0]).name == "ipykernel_launcher.py")
@@ -1869,9 +2275,9 @@ def main(argv: Optional[list[str]] = None) -> int:
     subgroup_names = _parse_str_list(args.subgroups, default=["all", "low", "high"])
     predictors = _parse_str_list(args.predictors, default=["logreg", "mlp", "sakt"])
 
-    effects_frames = []
-    bias_frames = []
-    policy_frames = []
+    dr_frames = []
+    dr_summary_frames = []
+    factual_auc_frames = []
     oracle_ite_frames = []
     oracle_policy_frames = []
     tstr_frames = []
@@ -1879,6 +2285,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     nn_frames = []
     mia_frames = []
     privacy_reports = []
+    run_config_rows = []
     max_horizon = 0
 
     manifest = {
@@ -1889,56 +2296,61 @@ def main(argv: Optional[list[str]] = None) -> int:
     }
 
     for ds_name in datasets:
-        if ds_name == "irt_synth":
-            synth_cfg = dict(IRT_SYNTH_KNOBS)
-            ds_raw = IRTSyntheticDataset(
-                n=int(synth_cfg["n"]),
-                seq_len=int(common["seq_len"]),
-                d_x=int(synth_cfg["d_x"]),
-                a_vocab_size=int(synth_cfg["a_vocab_size"]),
-                t_vocab_size=int(synth_cfg["t_vocab_size"]),
-                gamma=float(synth_cfg["gamma"]),
-                lr=float(synth_cfg["lr"]),
-                delta=float(synth_cfg["delta"]),
-                confounding=float(synth_cfg["confounding"]),
-                noise_std=float(synth_cfg["noise_std"]),
-                seed=int(common["seed"]),
-            )
-        else:
-            if ds_name not in DATASET_PATHS:
-                raise KeyError(f"Unknown dataset key: {ds_name}. Available: {sorted(DATASET_PATHS.keys())}")
-            ds_path = _resolve_path(DATASET_PATHS[ds_name])
-            ds_raw = NPZSequenceDataset(ds_path)
-            desired_seq_len = int(common.get("seq_len", ds_raw.seq_len))
-            if desired_seq_len < int(ds_raw.seq_len):
-                ds_raw.X = ds_raw.X
-                ds_raw.A = ds_raw.A[:, :desired_seq_len]
-                ds_raw.T = ds_raw.T[:, :desired_seq_len]
-                ds_raw.Y = ds_raw.Y[:, :desired_seq_len]
-                ds_raw.M = ds_raw.M[:, :desired_seq_len]
-                ds_raw.seq_len = desired_seq_len
+        if ds_name not in DATASET_PATHS:
+            raise KeyError(f"Unknown dataset key: {ds_name}. Available: {sorted(DATASET_PATHS.keys())}")
+        ds_path = _resolve_path(DATASET_PATHS[ds_name])
+        dataset_knobs = DATASET_SPECIFIC_KNOBS.get(ds_name, {})
+        common_ds = dict(common)
+        for key in ("batch_size", "seq_len", "device", "seed", "test_ratio"):
+            if key in dataset_knobs:
+                common_ds[key] = dataset_knobs[key]
+        if dataset_knobs:
+            print(f"Applying specific knobs for {ds_name}...")
+        ds_raw = NPZSequenceDataset(ds_path)
+        desired_seq_len = int(common_ds.get("seq_len", ds_raw.seq_len))
+        if desired_seq_len < int(ds_raw.seq_len):
+            ds_raw.X = ds_raw.X
+            ds_raw.A = ds_raw.A[:, :desired_seq_len]
+            ds_raw.T = ds_raw.T[:, :desired_seq_len]
+            ds_raw.Y = ds_raw.Y[:, :desired_seq_len]
+            ds_raw.M = ds_raw.M[:, :desired_seq_len]
+            ds_raw.seq_len = desired_seq_len
 
         full_batch = _batch_from_dataset(ds_raw)
-        train_idx, test_idx = _split_indices(len(ds_raw), test_ratio=float(common["test_ratio"]), seed=int(common["seed"]))
+        train_idx, test_idx = _split_indices(
+            len(ds_raw), test_ratio=float(common_ds["test_ratio"]), seed=int(common_ds["seed"])
+        )
         train_batch = _subset_batch(full_batch, train_idx)
         test_batch = _subset_batch(full_batch, test_idx)
         subgroups = _build_subgroups(test_batch, subgroup_names)
         for sg in subgroups:
             sg["dataset"] = ds_name
 
-        if ds_name == "irt_synth":
-            ref_estimator = OracleIRT(
-                simulator=ds_raw,
-                mc_samples=int(args.oracle_mc_samples),
-                mc_seed=int(args.oracle_mc_seed),
-                mc_batch=int(args.oracle_mc_batch),
-                debug=bool(args.debug_oracle),
-            )
-        elif args.ref_estimator == "iptw_msm":
-            ref_estimator = IPTWMSM()
-        else:
+        ds_knobs = DATASET_SPECIFIC_KNOBS.get(ds_name, {})
+        estimator_type = str(ds_knobs.get("ref_estimator", args.ref_estimator))
+        print(f"[{ds_name}] Using ref_estimator: {estimator_type}")
+        if estimator_type == "iptw_msm":
+            ref_estimator = IPTWMSM(clip=10.0)
+        elif estimator_type == "gformula":
             ref_estimator = GFormula()
+        else:
+            raise ValueError(f"Unknown ref_estimator: {estimator_type}")
         ref_estimator.fit(train_batch)
+
+        oracle_estimator = None
+        if ds_name == "irt_synth":
+            try:
+                oracle_estimator = PrecomputedOracleEstimator(str(ds_path), device=str(device))
+                print(f"[oracle] Loaded precomputed oracle from {ds_path}")
+            except Exception as e:
+                oracle_estimator = None
+                print(f"[oracle] Precomputed oracle unavailable: {e}")
+
+        if isinstance(ref_estimator, IPTWMSM):
+            propensity_estimator = ref_estimator
+        else:
+            propensity_estimator = IPTWMSM(clip=10.0)
+            propensity_estimator.fit(train_batch)
         has_oracle = bool(getattr(ref_estimator, "is_oracle", False))
         if has_oracle and bool(args.debug_oracle) and hasattr(ref_estimator, "debug_sanity_check"):
             ref_estimator.debug_sanity_check(test_batch)
@@ -1946,19 +2358,27 @@ def main(argv: Optional[list[str]] = None) -> int:
         train_ds = TrajectoryDataset(
             X=train_batch.X, A=train_batch.A, T=train_batch.T, Y=train_batch.Y, mask=train_batch.mask
         )
-        train_dl = _make_dataloader(train_ds, batch_size=int(common["batch_size"]), shuffle=True, drop_last=True)
+        train_dl = _make_dataloader(train_ds, batch_size=int(common_ds["batch_size"]), shuffle=True, drop_last=True)
 
         meta = _dataset_meta(ds_raw)
         do_horizon = _resolve_horizon(args.do_horizon, seq_len=int(meta["seq_len"]))
         max_horizon = max(max_horizon, do_horizon)
 
+        ckpt_paths: dict[str, Path] = {}
         for model_key in models:
             knobs = dict(MODEL_KNOBS.get(model_key, {}))
-            knobs["save_checkpoints"] = bool(common.get("keep_checkpoints", True))
+            knobs["save_checkpoints"] = bool(common_ds.get("keep_checkpoints", True))
             knobs["disc_input"] = str(args.disc_input)
             knobs["do_horizon"] = int(do_horizon)
             knobs["ref_estimator"] = ref_estimator
-            knobs["seed"] = int(common["seed"])
+            knobs["seed"] = int(common_ds["seed"])
+            if dataset_knobs:
+                model_dataset_knobs = dict(dataset_knobs)
+                model_dataset_knobs.pop("ref_estimator", None)
+                if model_key != "scm_causal":
+                    model_dataset_knobs.pop("w_do", None)
+                knobs.update(model_dataset_knobs)
+                knobs["ref_estimator"] = ref_estimator
             if str(model_key).startswith("scm"):
                 if args.k_c_ratio is not None:
                     knobs["k_c_ratio"] = float(args.k_c_ratio)
@@ -1966,14 +2386,33 @@ def main(argv: Optional[list[str]] = None) -> int:
                     knobs["w_advT_causal"] = float(args.w_advT_causal)
                 if args.w_t_pred_spurious is not None:
                     knobs["w_t_pred_spurious"] = float(args.w_t_pred_spurious)
+            is_scm_model = str(model_key).startswith("scm")
+            do_horizon_train = int(knobs.get("do_horizon_train", do_horizon)) if is_scm_model else np.nan
+            causal_every = (
+                int(knobs.get("causal_every", 20)) if is_scm_model else np.nan
+            )
+            cf_every = (
+                int(knobs.get("cf_every", knobs.get("cf_interval", 20))) if is_scm_model else np.nan
+            )
+            run_config_rows.append(
+                {
+                    "model": model_key,
+                    "dataset": ds_name,
+                    "do_horizon_train": do_horizon_train,
+                    "do_horizon_eval": int(do_horizon),
+                    "causal_every": causal_every,
+                    "cf_every": cf_every,
+                }
+            )
             legacy_ate_mae = float("nan")
-            legacy_value_err = float("nan")
+            legacy_dr_value = float("nan")
+            legacy_dm_value = float("nan")
             legacy_policy_gen = float("nan")
             legacy_privacy_auc = float("nan")
             legacy_nn_mean = float("nan")
             legacy_tstr_metrics: dict[str, dict[str, float]] = {}
 
-            run_dir = out_root / ds_name / model_key / f"seed{int(common['seed'])}"
+            run_dir = out_root / ds_name / model_key / f"seed{int(common_ds['seed'])}"
             run_dir.mkdir(parents=True, exist_ok=True)
 
             if model_key == "rcgan" or str(model_key).startswith("scm"):
@@ -1994,6 +2433,7 @@ def main(argv: Optional[list[str]] = None) -> int:
             ckpt = torch.load(ckpt_path, map_location=device)
             gen_model = load_base_model_from_checkpoint(ckpt, device=device)
             gen_model.name = model_key
+            ckpt_paths[model_key] = ckpt_path
 
             try:
                 leakage_auc = _compute_t_leakage_auc(
@@ -2020,86 +2460,30 @@ def main(argv: Optional[list[str]] = None) -> int:
                     ]
                 )
             )
-
             try:
-                df_effects, summary = compute_causal_bias(
+                df_dr, dr_summary = compute_dr_policy_values(
                     gen_model=gen_model,
-                    ref_estimator=ref_estimator,
+                    propensity_estimator=propensity_estimator,
                     data=test_batch,
-                    t0_list=t0_list,
-                    horizon=int(do_horizon),
                     actions=actions,
-                    subgroups=subgroups,
-                    n_gen=20,
-                    seed=int(common["seed"]),
+                    horizon=int(do_horizon),
+                    dataset=ds_name,
+                    seed=int(common_ds["seed"]),
                     policy_set=str(args.policy_set),
                 )
-                df_effects["dataset"] = ds_name
-                effects_frames.append(df_effects)
-                bias_frames.append(pd.DataFrame([summary]))
-                legacy_ate_mae = float(summary.get("ate_mae_mean", np.nan))
-                legacy_value_err = float(summary.get("value_abs_error", np.nan))
-                if summary.get("policy_supported") == 0 and summary.get("policy_skip_reason"):
+                dr_frames.append(df_dr)
+                dr_summary_frames.append(pd.DataFrame([dr_summary]))
+                legacy_dr_value = float(dr_summary.get("dr_value_mean", np.nan))
+                legacy_dm_value = float(dr_summary.get("dm_value_mean", np.nan))
+                legacy_policy_gen = legacy_dm_value
+                if dr_summary.get("policy_supported") == 0 and dr_summary.get("policy_skip_reason"):
                     add_artifact(
                         manifest,
                         kind="policy_curve",
                         model=model_key,
                         dataset=ds_name,
-                        path="results/causal_bias_summary.csv",
-                        meta={"supported": False, "skip_reason": summary.get("policy_skip_reason", "")},
-                    )
-
-                try:
-                    df_policies, policy_supported, policy_skip_reason = compute_policy_values(
-                        gen_model=gen_model,
-                        ref_estimator=ref_estimator,
-                        data=test_batch,
-                        actions=actions,
-                        horizon=int(do_horizon),
-                        dataset=ds_name,
-                        n_boot=200,
-                        seed=int(common["seed"]),
-                        policy_set=str(args.policy_set),
-                    )
-                    policy_frames.append(df_policies)
-                    if "gen_value" in df_policies.columns:
-                        legacy_policy_gen = _safe_nanmean(df_policies["gen_value"].to_numpy(dtype=np.float64))
-                    if not policy_supported and policy_skip_reason:
-                        add_artifact(
-                            manifest,
-                            kind="policy_curve",
-                            model=model_key,
-                            dataset=ds_name,
-                            path="results/policy_values.csv",
-                            meta={"supported": False, "skip_reason": policy_skip_reason},
-                        )
-                except Exception as e:
-                    add_artifact(
-                        manifest,
-                        kind="policy_curve",
-                        model=model_key,
-                        dataset=ds_name,
-                        path="results/policy_values.csv",
-                        meta={"supported": False, "skip_reason": str(e)},
-                    )
-                    policy_frames.append(
-                        pd.DataFrame(
-                            [
-                                {
-                                    "model": model_key,
-                                    "ref_estimator": ref_estimator.name,
-                                    "dataset": ds_name,
-                                    "policy": "unknown",
-                                    "horizon": int(do_horizon),
-                                    "ref_value": np.nan,
-                                    "ref_ci_low": np.nan,
-                                    "ref_ci_high": np.nan,
-                                    "gen_value": np.nan,
-                                    "supported": 0.0,
-                                    "skip_reason": str(e),
-                                }
-                            ]
-                        )
+                        path="results/dr_policy_values.csv",
+                        meta={"supported": False, "skip_reason": dr_summary.get("policy_skip_reason", "")},
                     )
             except Exception as e:
                 add_artifact(
@@ -2107,70 +2491,78 @@ def main(argv: Optional[list[str]] = None) -> int:
                     kind="table",
                     model=model_key,
                     dataset=ds_name,
-                    path="results/causal_effects.csv",
+                    path="results/dr_policy_values.csv",
                     meta={"supported": False, "skip_reason": str(e)},
                 )
-                nan_row = {
-                    "model": model_key,
-                    "ref_estimator": ref_estimator.name,
-                    "dataset": ds_name,
-                    "t0": int(t0_list[0]) if t0_list else 0,
-                    "horizon": int(do_horizon),
-                    "subgroup": "all",
-                    "action": int(actions[0]) if actions else 0,
-                    "n_effective": 0,
-                }
-                for h in range(int(do_horizon) + 1):
-                    nan_row[f"ref_mu_{h}"] = np.nan
-                    nan_row[f"ref_ci_low_{h}"] = np.nan
-                    nan_row[f"ref_ci_high_{h}"] = np.nan
-                    nan_row[f"gen_mu_{h}"] = np.nan
-                    nan_row[f"gen_std_{h}"] = np.nan
-                effects_frames.append(pd.DataFrame([nan_row]))
-                bias_frames.append(
+                dr_frames.append(
                     pd.DataFrame(
                         [
                             {
                                 "model": model_key,
-                                "ref_estimator": ref_estimator.name,
                                 "dataset": ds_name,
+                                "policy": "unknown",
                                 "horizon": int(do_horizon),
-                                "ate_mae_mean": np.nan,
-                                "ate_rmse_mean": np.nan,
-                                "cate_mae_mean": np.nan,
-                                "value_abs_error": np.nan,
-                                "regret_error": np.nan,
-                                "n_t0": int(len(t0_list)),
-                                "n_subgroups": int(len(subgroups)),
-                                "policy_supported": 0.0,
+                                "dr_value": np.nan,
+                                "dm_value": np.nan,
+                                "correction": np.nan,
+                                "w_mean": np.nan,
+                                "w_max": np.nan,
+                                "supported": 0.0,
+                                "skip_reason": str(e),
                             }
                         ]
                     )
                 )
-                policy_frames.append(
+                dr_summary_frames.append(
                     pd.DataFrame(
                         [
                             {
                                 "model": model_key,
-                                "ref_estimator": ref_estimator.name,
                                 "dataset": ds_name,
-                                "policy": "unknown",
                                 "horizon": int(do_horizon),
-                                "ref_value": np.nan,
-                                "ref_ci_low": np.nan,
-                                "ref_ci_high": np.nan,
-                                "gen_value": np.nan,
-                                "supported": 0.0,
-                                "skip_reason": str(e),
-                                }
-                            ]
-                        )
+                                "dr_value_mean": np.nan,
+                                "dm_value_mean": np.nan,
+                                "correction_mean": np.nan,
+                                "policy_supported": 0.0,
+                                "policy_skip_reason": str(e),
+                            }
+                        ]
                     )
-
+                )
+            try:
+                factual_auc, factual_n, factual_skip = _compute_factual_auc(
+                    gen_model, data=test_batch, batch_size=int(common_ds.get("batch_size", 128))
+                )
+                supported = 0.0 if factual_skip else 1.0
+            except Exception as e:
+                factual_auc, factual_n, factual_skip = float("nan"), 0, str(e)
+                supported = 0.0
+                add_artifact(
+                    manifest,
+                    kind="table",
+                    model=model_key,
+                    dataset=ds_name,
+                    path="results/factual_auc.csv",
+                    meta={"supported": False, "skip_reason": str(e)},
+                )
+            factual_auc_frames.append(
+                pd.DataFrame(
+                    [
+                        {
+                            "model": model_key,
+                            "dataset": ds_name,
+                            "factual_auc": factual_auc,
+                            "n_samples": int(factual_n),
+                            "supported": supported,
+                            "skip_reason": factual_skip,
+                        }
+                    ]
+                )
+            )
             try:
                 df_oracle_ite, df_oracle_policy = compute_oracle_metrics(
                     gen_model=gen_model,
-                    oracle_estimator=ref_estimator,
+                    oracle_estimator=oracle_estimator,
                     data=test_batch,
                     dataset_name=ds_name,
                     t0_list=t0_list,
@@ -2178,7 +2570,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                     actions=actions,
                     subgroups=subgroups,
                     policy_set=str(args.policy_set),
-                    seed=int(common["seed"]),
+                    seed=int(common_ds["seed"]),
                     n_gen=20,
                 )
             except Exception as e:
@@ -2222,7 +2614,8 @@ def main(argv: Optional[list[str]] = None) -> int:
                             real_test=test_batch,
                             n_synth=min(2048, int(train_batch.X.shape[0])),
                             predictor=predictor,
-                            seed=int(common["seed"]),
+                            seed=int(common_ds["seed"]),
+                            save_calibration=bool(args.eval_calibration),
                         )
                         df_tstr["dataset"] = ds_name
                         tstr_frames.append(df_tstr)
@@ -2261,7 +2654,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                     embed_space = "y_only"
                     perturb = {"x_noise_scale": 0.0, "a_flip_prob": 0.0, "t_flip_prob": 0.0}
                     # Sample from train only to keep a stronger membership signal.
-                    rng = np.random.default_rng(int(common["seed"]))
+                    rng = np.random.default_rng(int(common_ds["seed"]))
                     n_synth_total = min(1024, int(train_batch.X.shape[0]))
                     train_idx = rng.integers(0, train_batch.X.shape[0], size=n_synth_total)
                     synth_source = _subset_batch(train_batch, train_idx.tolist())
@@ -2288,14 +2681,15 @@ def main(argv: Optional[list[str]] = None) -> int:
                     nn_df["dataset"] = ds_name
                     nn_frames.append(nn_df)
 
-                    attack_features = ["y_stats", "nn_distance"]
+                    # Use model-dependent features so MIA reflects generator behavior.
+                    attack_features = ["recon_error", "avg_confidence"]
                     mia = run_membership_inference(
                         gen_model=gen_model,
                         real_train=train_batch,
                         real_holdout=test_batch,
                         attack_features=attack_features,
                         embed_space=embed_space,
-                        seed=int(common["seed"]),
+                        seed=int(common_ds["seed"]),
                     )
                     mia_df = mia_to_dataframe(
                         mia,
@@ -2419,16 +2813,51 @@ def main(argv: Optional[list[str]] = None) -> int:
                     f"tstr_rmse={_format_legacy_metric(tstr_rmse)} "
                     f"trts_rmse={_format_legacy_metric(trts_rmse)} "
                     f"ate_mae={_format_legacy_metric(legacy_ate_mae)} "
-                    f"value_err={_format_legacy_metric(legacy_value_err)} "
+                    f"dr_value={_format_legacy_metric(legacy_dr_value)} "
+                    f"dm_value={_format_legacy_metric(legacy_dm_value)} "
                     f"policyY={_format_legacy_metric(legacy_policy_gen)} "
                     f"privacy_auc={_format_legacy_metric(legacy_privacy_auc)} "
                     f"nn_mean={_format_legacy_metric(legacy_nn_mean)}"
                 )
                 _append_legacy_line(legacy_report_path, line)
 
-    effects_df = pd.concat(effects_frames, ignore_index=True) if effects_frames else pd.DataFrame()
-    bias_df = pd.concat(bias_frames, ignore_index=True) if bias_frames else pd.DataFrame()
-    policy_df = pd.concat(policy_frames, ignore_index=True) if policy_frames else pd.DataFrame()
+        if not bool(args.plot_cf):
+            print("[cf_consistency] plot_cf disabled via args, but forcing plot generation.")
+        cf_path = _maybe_plot_cf_consistency_multi(
+            ckpt_paths=ckpt_paths,
+            model_order=[str(m) for m in models],
+            test_batch=test_batch,
+            dataset=ds_name,
+            t0_list=t0_list,
+            out_dir=_resolve_path("artifacts"),
+            seed=int(common_ds["seed"]),
+            actions=actions,
+            plot_horizon=min(20, int(meta.get("seq_len", 1)) - 1),
+            device=device,
+        )
+        if cf_path is not None:
+            add_artifact(
+                manifest,
+                kind="plot",
+                model="all",
+                dataset=ds_name,
+                path=str(Path(cf_path).as_posix()),
+                meta={"title": "counterfactual_bifurcation_multi"},
+            )
+            cf_data = Path(cf_path).with_suffix(".npz")
+            if cf_data.exists():
+                add_artifact(
+                    manifest,
+                    kind="data",
+                    model="all",
+                    dataset=ds_name,
+                    path=str(cf_data.as_posix()),
+                    meta={"title": "counterfactual_bifurcation_multi_data"},
+                )
+
+    dr_df = pd.concat(dr_frames, ignore_index=True) if dr_frames else pd.DataFrame()
+    dr_summary_df = pd.concat(dr_summary_frames, ignore_index=True) if dr_summary_frames else pd.DataFrame()
+    factual_auc_df = pd.concat(factual_auc_frames, ignore_index=True) if factual_auc_frames else pd.DataFrame()
     oracle_ite_df = pd.concat(oracle_ite_frames, ignore_index=True) if oracle_ite_frames else pd.DataFrame()
     oracle_policy_df = pd.concat(oracle_policy_frames, ignore_index=True) if oracle_policy_frames else pd.DataFrame()
     tstr_df = pd.concat(tstr_frames, ignore_index=True) if tstr_frames else pd.DataFrame()
@@ -2436,57 +2865,46 @@ def main(argv: Optional[list[str]] = None) -> int:
     nn_df = pd.concat(nn_frames, ignore_index=True) if nn_frames else pd.DataFrame()
     mia_df = pd.concat(mia_frames, ignore_index=True) if mia_frames else pd.DataFrame()
 
-    horizon = int(max_horizon)
-    effect_cols = (
-        ["model", "ref_estimator", "dataset", "t0", "horizon", "subgroup", "action"]
-        + [f"ref_mu_{h}" for h in range(horizon + 1)]
-        + [f"ref_ci_low_{h}" for h in range(horizon + 1)]
-        + [f"ref_ci_high_{h}" for h in range(horizon + 1)]
-        + [f"gen_mu_{h}" for h in range(horizon + 1)]
-        + [f"gen_std_{h}" for h in range(horizon + 1)]
-        + ["n_effective"]
-    )
-    if effects_df.empty:
-        effects_df = pd.DataFrame(columns=effect_cols)
-    else:
-        effects_df = effects_df.reindex(columns=effect_cols)
-
-    bias_cols = [
+    dr_cols = [
         "model",
-        "ref_estimator",
-        "dataset",
-        "horizon",
-        "ate_mae_mean",
-        "ate_rmse_mean",
-        "cate_mae_mean",
-        "value_abs_error",
-        "regret_error",
-        "n_t0",
-        "n_subgroups",
-        "policy_supported",
-    ]
-    if bias_df.empty:
-        bias_df = pd.DataFrame(columns=bias_cols)
-    else:
-        bias_df = bias_df.reindex(columns=bias_cols + [c for c in bias_df.columns if c not in bias_cols])
-
-    policy_cols = [
-        "model",
-        "ref_estimator",
         "dataset",
         "policy",
         "horizon",
-        "ref_value",
-        "ref_ci_low",
-        "ref_ci_high",
-        "gen_value",
+        "dr_value",
+        "dm_value",
+        "correction",
+        "w_mean",
+        "w_max",
         "supported",
         "skip_reason",
     ]
-    if policy_df.empty:
-        policy_df = pd.DataFrame(columns=policy_cols)
+    if dr_df.empty:
+        dr_df = pd.DataFrame(columns=dr_cols)
     else:
-        policy_df = policy_df.reindex(columns=policy_cols + [c for c in policy_df.columns if c not in policy_cols])
+        dr_df = dr_df.reindex(columns=dr_cols + [c for c in dr_df.columns if c not in dr_cols])
+
+    dr_summary_cols = [
+        "model",
+        "dataset",
+        "horizon",
+        "dr_value_mean",
+        "dm_value_mean",
+        "correction_mean",
+        "policy_supported",
+        "policy_skip_reason",
+    ]
+    if dr_summary_df.empty:
+        dr_summary_df = pd.DataFrame(columns=dr_summary_cols)
+    else:
+        dr_summary_df = dr_summary_df.reindex(columns=dr_summary_cols + [c for c in dr_summary_df.columns if c not in dr_summary_cols])
+
+    factual_auc_cols = ["model", "dataset", "factual_auc", "n_samples", "supported", "skip_reason"]
+    if factual_auc_df.empty:
+        factual_auc_df = pd.DataFrame(columns=factual_auc_cols)
+    else:
+        factual_auc_df = factual_auc_df.reindex(
+            columns=factual_auc_cols + [c for c in factual_auc_df.columns if c not in factual_auc_cols]
+        )
 
     oracle_ite_cols = [
         "model",
@@ -2566,9 +2984,9 @@ def main(argv: Optional[list[str]] = None) -> int:
     else:
         mia_df = mia_df.reindex(columns=mia_cols)
 
-    effects_df.to_csv(results_dir / "causal_effects.csv", index=False)
-    bias_df.to_csv(results_dir / "causal_bias_summary.csv", index=False)
-    policy_df.to_csv(results_dir / "policy_values.csv", index=False)
+    dr_df.to_csv(results_dir / "dr_policy_values.csv", index=False)
+    dr_summary_df.to_csv(results_dir / "dr_policy_summary.csv", index=False)
+    factual_auc_df.to_csv(results_dir / "factual_auc.csv", index=False)
     oracle_ite_df.to_csv(results_dir / "oracle_ite_metrics.csv", index=False)
     oracle_policy_df.to_csv(results_dir / "oracle_policy_metrics.csv", index=False)
     tstr_df.to_csv(results_dir / "tstr_trts.csv", index=False)
@@ -2579,6 +2997,30 @@ def main(argv: Optional[list[str]] = None) -> int:
     with (results_dir / "privacy_report.json").open("w", encoding="utf-8") as f:
         json.dump(privacy_reports, f, indent=2)
 
+    add_artifact(
+        manifest,
+        kind="table",
+        model="all",
+        dataset=",".join(datasets),
+        path="results/dr_policy_values.csv",
+        meta={},
+    )
+    add_artifact(
+        manifest,
+        kind="table",
+        model="all",
+        dataset=",".join(datasets),
+        path="results/dr_policy_summary.csv",
+        meta={},
+    )
+    add_artifact(
+        manifest,
+        kind="table",
+        model="all",
+        dataset=",".join(datasets),
+        path="results/factual_auc.csv",
+        meta={},
+    )
     add_artifact(
         manifest,
         kind="table",
@@ -2598,17 +3040,15 @@ def main(argv: Optional[list[str]] = None) -> int:
 
     for ds_name in datasets:
         suffix = f"_{ds_name}"
-        if not effects_df.empty and "dataset" in effects_df.columns:
-            effects_df[effects_df["dataset"] == ds_name].to_csv(
-                results_dir / f"causal_effects{suffix}.csv", index=False
+        if not dr_df.empty and "dataset" in dr_df.columns:
+            dr_df[dr_df["dataset"] == ds_name].to_csv(results_dir / f"dr_policy_values{suffix}.csv", index=False)
+        if not dr_summary_df.empty and "dataset" in dr_summary_df.columns:
+            dr_summary_df[dr_summary_df["dataset"] == ds_name].to_csv(
+                results_dir / f"dr_policy_summary{suffix}.csv", index=False
             )
-        if not bias_df.empty and "dataset" in bias_df.columns:
-            bias_df[bias_df["dataset"] == ds_name].to_csv(
-                results_dir / f"causal_bias_summary{suffix}.csv", index=False
-            )
-        if not policy_df.empty and "dataset" in policy_df.columns:
-            policy_df[policy_df["dataset"] == ds_name].to_csv(
-                results_dir / f"policy_values{suffix}.csv", index=False
+        if not factual_auc_df.empty and "dataset" in factual_auc_df.columns:
+            factual_auc_df[factual_auc_df["dataset"] == ds_name].to_csv(
+                results_dir / f"factual_auc{suffix}.csv", index=False
             )
         if not oracle_ite_df.empty and "dataset" in oracle_ite_df.columns:
             oracle_ite_df[oracle_ite_df["dataset"] == ds_name].to_csv(
@@ -2656,14 +3096,20 @@ def main(argv: Optional[list[str]] = None) -> int:
             }
         )
     privacy_summary_df = pd.DataFrame(privacy_summary_rows)
+    run_config_df = pd.DataFrame(run_config_rows)
+    run_config_manifest = run_config_df.where(pd.notnull(run_config_df), None).to_dict(orient="records")
+    manifest["run_config"] = run_config_manifest
 
     metrics_tables = {
-        "causal_bias_summary": bias_df,
+        "dr_policy_values": dr_df,
+        "dr_policy_summary": dr_summary_df,
+        "factual_auc": factual_auc_df,
         "oracle_ite_metrics": oracle_ite_df,
         "oracle_policy_metrics": oracle_policy_df,
         "tstr_trts": tstr_df,
         "leakage_metrics": leakage_df,
         "privacy_summary": privacy_summary_df,
+        "run_config": run_config_df,
     }
     write_results_summary(metrics_tables, str(report_path))
     report_base = Path(report_path)
@@ -2687,6 +3133,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         manifest=manifest,
         plot_calibration=bool(args.eval_calibration),
     )
+    write_manifest(manifest, str(results_dir / "manifest.json"))
     return 0
 
 

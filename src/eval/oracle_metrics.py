@@ -356,6 +356,10 @@ def compute_oracle_metrics(
     model_name = getattr(gen_model, "name", "model")
     seq_len = int(data.T.shape[1])
     bsz = int(data.X.shape[0])
+    print(
+        f"[oracle_metrics] start model={model_name} dataset={dataset} "
+        f"batch={bsz} horizon={int(horizon)} t0_list={t0_list} actions={actions} n_gen={int(n_gen)}"
+    )
 
     if oracle_estimator is None or not getattr(oracle_estimator, "is_oracle", False):
         return _oracle_skip_frames(
@@ -429,6 +433,7 @@ def compute_oracle_metrics(
         steps = min(int(horizon), seq_len - t0 - 1)
         H = max(0, int(steps))
         sl = slice(t0, t0 + H + 1)
+        print(f"[oracle_metrics] t0={int(t0)} horizon_eff={int(H)}")
 
         try:
             tau_true_all = oracle_estimator.estimate_tau_per_sample(data, t0=t0, horizon=H)
@@ -460,7 +465,9 @@ def compute_oracle_metrics(
             continue
 
         def _gen_mean(action: int) -> np.ndarray:
+            print(f"[oracle_metrics]   action={int(action)} rollouts={int(n_gen_eff)}")
             acc = None
+            progress_every = max(1, int(n_gen_eff // 4))
             for r in range(n_gen_eff):
                 torch.manual_seed(int(seed) + 10007 * r + 13 * t0 + 3 * int(action))
                 ro = gen_model.rollout(data, do_t={t0: int(action)}, horizon=H, t0=t0, teacher_forcing=False)
@@ -469,6 +476,8 @@ def compute_oracle_metrics(
                     acc = y
                 else:
                     acc = acc + y
+                if (r + 1) % progress_every == 0 or r == n_gen_eff - 1:
+                    print(f"[oracle_metrics]     rollout {r + 1}/{int(n_gen_eff)} done")
             if acc is None:
                 return np.zeros_like(y_true0)
             return acc / float(n_gen_eff)
@@ -569,6 +578,7 @@ def compute_oracle_metrics(
     policies: list[Policy] = get_default_policies(seq_len, action_space=actions, policy_set=policy_set)
     for pol in policies:
         pol_name = getattr(pol, "name", "policy")
+        print(f"[oracle_metrics] policy_eval policy={pol_name}")
         supported = True
         skip_reason = ""
         try:

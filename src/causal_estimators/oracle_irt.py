@@ -422,3 +422,90 @@ class OracleIRT(CausalEstimator):
         denom = np.where(denom == 0.0, np.nan, denom)
         tau = (diff * m_slice).sum(axis=1) / denom
         return tau.astype(np.float32)
+
+
+class PrecomputedOracleEstimator:
+    """Oracle adapter that reads precomputed counterfactuals from a dataset .npz."""
+
+    name = "oracle_precomputed"
+    is_oracle = True
+
+    def __init__(self, dataset_path: str, *, device: str = "cpu") -> None:
+        self.device = str(device)
+        data = np.load(dataset_path, allow_pickle=False)
+        if "Y_cf" not in data.files or "Y_policy" not in data.files:
+            raise ValueError(
+                f"Dataset {dataset_path} missing Y_cf/Y_policy. Run make_dkt_synth.py with --with_oracle."
+            )
+        self.y_cf = np.asarray(data["Y_cf"], dtype=np.float32)
+        self.hmax = int(self.y_cf.shape[-1] - 1)
+        self.y_policy = np.asarray(data["Y_policy"], dtype=np.float32)
+        policy_names = data["policy_names"] if "policy_names" in data.files else None
+        if policy_names is None:
+            self.policy_names = []
+            self.policy_map = {}
+        else:
+            self.policy_names = [
+                n.decode("utf-8") if isinstance(n, (bytes, bytearray)) else str(n) for n in policy_names
+            ]
+            self.policy_map = {name: i for i, name in enumerate(self.policy_names)}
+
+    def fit(self, train: TrajectoryBatch, valid: Optional[TrajectoryBatch] = None, **kwargs) -> None:
+        _ = (train, valid, kwargs)
+        return None
+
+    def _resolve_ids(self, batch: TrajectoryBatch) -> np.ndarray:
+        if batch.ids is None:
+            if batch.X.shape[0] != self.y_cf.shape[0]:
+                raise ValueError("Oracle dataset size mismatch and batch.ids is missing.")
+            return np.arange(batch.X.shape[0], dtype=np.int64)
+        ids = batch.ids.detach().cpu().numpy().astype(np.int64)
+        if ids.size == 0:
+            return ids
+        if int(ids.max()) >= self.y_cf.shape[0]:
+            raise ValueError("Oracle ids exceed dataset size.")
+        return ids
+
+    def estimate_tau_per_sample(self, batch: TrajectoryBatch, *, t0: int, horizon: int) -> np.ndarray:
+        ids = self._resolve_ids(batch)
+        t0 = int(t0)
+        H = min(int(horizon), self.hmax)
+        y1 = self.y_cf[ids, t0, 1, : H + 1]
+        y0 = self.y_cf[ids, t0, 0, : H + 1]
+        diff = y1 - y0
+        m_slice = batch.mask.detach().cpu().numpy().astype(np.float32)[:, t0 : t0 + H + 1]
+        denom = m_slice.sum(axis=1)
+        denom = np.where(denom == 0.0, np.nan, denom)
+        tau = (diff * m_slice).sum(axis=1) / denom
+        return tau.astype(np.float32)
+
+    def expected_outcomes_do(
+        self,
+        batch: TrajectoryBatch,
+        *,
+        t0: int,
+        horizon: int,
+        action: int,
+    ) -> tuple[np.ndarray, np.ndarray]:
+        ids = self._resolve_ids(batch)
+        t0 = int(t0)
+        H = min(int(horizon), self.hmax)
+        y_slice = self.y_cf[ids, t0, int(action), : H + 1].astype(np.float32)
+        m_slice = batch.mask.detach().cpu().numpy().astype(np.float32)[:, t0 : t0 + H + 1]
+        return y_slice, m_slice
+
+    def estimate_policy_value(self, batch: TrajectoryBatch, *, policy: Policy, horizon: int, **kwargs) -> dict:
+        _ = kwargs
+        ids = self._resolve_ids(batch)
+        pol_name = getattr(policy, "name", str(policy))
+        if pol_name not in self.policy_map:
+            raise ValueError(f"Policy {pol_name} not found in oracle dataset.")
+        pidx = int(self.policy_map[pol_name])
+        horizon = int(min(int(horizon), batch.T.shape[1] - 1))
+        y_seq = self.y_policy[ids, pidx, : horizon + 1].astype(np.float32)
+        m_slice = batch.mask.detach().cpu().numpy().astype(np.float32)[:, : horizon + 1]
+        denom = m_slice.sum(axis=1)
+        denom = np.where(denom == 0.0, np.nan, denom)
+        per_seq = (y_seq * m_slice).sum(axis=1) / denom
+        value = float(np.nanmean(per_seq)) if per_seq.size else float("nan")
+        return {"value": value, "policy_name": pol_name}

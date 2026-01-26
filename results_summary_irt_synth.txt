@@ -1,0 +1,164 @@
+dr_policy_values
+     model   dataset   policy  horizon  dr_value  dm_value  correction   w_mean  w_max  supported
+       crn irt_synth   always       29  0.599512  0.600874   -0.001362 0.236814   10.0        1.0
+       crn irt_synth early_on       29  0.720752  0.720767   -0.000014 0.183747   10.0        1.0
+       crn irt_synth  late_on       29  0.771847  0.762587    0.009260 0.285360   10.0        1.0
+       crn irt_synth    never       29  0.768352  0.759050    0.009302 0.286444   10.0        1.0
+ diffusion irt_synth   always       29       NaN       NaN         NaN      NaN    NaN        0.0
+ diffusion irt_synth early_on       29       NaN       NaN         NaN      NaN    NaN        0.0
+ diffusion irt_synth  late_on       29       NaN       NaN         NaN      NaN    NaN        0.0
+ diffusion irt_synth    never       29       NaN       NaN         NaN      NaN    NaN        0.0
+     rcgan irt_synth   always       29  0.614222  0.627907   -0.013686 0.236848   10.0        1.0
+     rcgan irt_synth early_on       29  0.774244  0.784138   -0.009894 0.183817   10.0        1.0
+     rcgan irt_synth  late_on       29  0.790321  0.797489   -0.007168 0.285197   10.0        1.0
+     rcgan irt_synth    never       29  0.808295  0.815428   -0.007133 0.286280   10.0        1.0
+scm_causal irt_synth   always       29  0.798692  0.801728   -0.003036 0.236891   10.0        1.0
+scm_causal irt_synth early_on       29  0.674433  0.676766   -0.002333 0.183852   10.0        1.0
+scm_causal irt_synth  late_on       29  0.675779  0.676984   -0.001205 0.285270   10.0        1.0
+scm_causal irt_synth    never       29  0.643242  0.644420   -0.001179 0.286354   10.0        1.0
+   timegan irt_synth   always       29  0.617707  0.665977   -0.048270 0.236788   10.0        1.0
+   timegan irt_synth early_on       29  0.524807  0.566390   -0.041583 0.183734   10.0        1.0
+   timegan irt_synth  late_on       29  0.572862  0.580425   -0.007563 0.285382   10.0        1.0
+   timegan irt_synth    never       29  0.547963  0.555123   -0.007160 0.286466   10.0        1.0
+       vae irt_synth   always       29  0.602851  0.603906   -0.001055 0.236650   10.0        1.0
+       vae irt_synth early_on       29  0.743215  0.743819   -0.000604 0.183593   10.0        1.0
+       vae irt_synth  late_on       29  0.786102  0.783915    0.002187 0.285273   10.0        1.0
+       vae irt_synth    never       29  0.791094  0.788879    0.002215 0.286357   10.0        1.0
+
+dr_policy_summary
+     model   dataset  horizon  dr_value_mean  dm_value_mean  correction_mean  policy_supported
+       crn irt_synth       29       0.715116       0.710820         0.004296               1.0
+ diffusion irt_synth       29            NaN            NaN              NaN               0.0
+     rcgan irt_synth       29       0.746771       0.756241        -0.009470               1.0
+scm_causal irt_synth       29       0.698036       0.699975        -0.001938               1.0
+   timegan irt_synth       29       0.565835       0.591979        -0.026144               1.0
+       vae irt_synth       29       0.730815       0.730130         0.000686               1.0
+
+factual_auc
+     model   dataset  factual_auc  n_samples  supported
+       crn irt_synth     0.717995     120000        1.0
+ diffusion irt_synth          NaN          0        0.0
+     rcgan irt_synth     0.708894     120000        1.0
+scm_causal irt_synth     0.691421     120000        1.0
+   timegan irt_synth     0.591992     120000        1.0
+       vae irt_synth     0.721248     120000        1.0
+
+oracle_ite_metrics
+     model   dataset  t0  horizon     pehe  ite_rmse  ate_true   ate_hat  ate_abs_error  ate_rmse  n_effective  tau_true_mean  tau_hat_mean  n_gen
+       crn irt_synth  10       19 0.027925  0.027925  0.014925 -0.010543       0.025468  0.039777         2000       0.014925     -0.010543     20
+       crn irt_synth   5       24 0.024202  0.024202  0.012230 -0.009337       0.021568  0.036684         2000       0.012230     -0.009337     20
+       crn irt_synth   0       29 0.019510  0.019510  0.011619 -0.004942       0.016561  0.034481         2000       0.011619     -0.004942     20
+ diffusion irt_synth   0       29 0.041096  0.041096  0.011619 -0.010644       0.022262  0.047729         2000       0.011619     -0.010644     20
+ diffusion irt_synth   5       24 0.041582  0.041582  0.012230 -0.007760       0.019990  0.042158         2000       0.012230     -0.007760     20
+ diffusion irt_synth  10       19 0.045356  0.045356  0.014925 -0.006198       0.021123  0.045611         2000       0.014925     -0.006198     20
+     rcgan irt_synth   0       29 0.017887  0.017887  0.011619 -0.003036       0.014655  0.032167         2000       0.011619     -0.003036     20
+     rcgan irt_synth   5       24 0.022096  0.022096  0.012230 -0.007254       0.019484  0.041840         2000       0.012230     -0.007254     20
+     rcgan irt_synth  10       19 0.028827  0.028827  0.014925 -0.011595       0.026520  0.049369         2000       0.014925     -0.011595     20
+scm_causal irt_synth   0       29 0.010734  0.010734  0.011619  0.006437       0.005181  0.030651         2000       0.011619      0.006437     20
+scm_causal irt_synth   5       24 0.010915  0.010915  0.012230  0.006425       0.005806  0.027198         2000       0.012230      0.006425     20
+scm_causal irt_synth  10       19 0.011878  0.011878  0.014925  0.007844       0.007081  0.029661         2000       0.014925      0.007844     20
+   timegan irt_synth   0       29 0.013814  0.013814  0.011619  0.001438       0.010181  0.059813         2000       0.011619      0.001438     20
+   timegan irt_synth  10       19 0.012912  0.012912  0.014925  0.006187       0.008738  0.036472         2000       0.014925      0.006187     20
+   timegan irt_synth   5       24 0.012287  0.012287  0.012230  0.003865       0.008365  0.038686         2000       0.012230      0.003865     20
+       vae irt_synth   5       24 0.024526  0.024526  0.012230 -0.009657       0.021887  0.038736         2000       0.012230     -0.009657     20
+       vae irt_synth   0       29 0.021986  0.021986  0.011619 -0.007413       0.019032  0.037729         2000       0.011619     -0.007413     20
+       vae irt_synth  10       19 0.029334  0.029334  0.014925 -0.012027       0.026952  0.043205         2000       0.014925     -0.012027     20
+
+oracle_policy_metrics
+     model   dataset   policy  horizon  oracle_value  gen_value  value_abs_error  regret_oracle
+       crn irt_synth   always       29      0.828048   0.600874         0.227174       0.104099
+       crn irt_synth early_on       29      0.642433   0.720767         0.078334       0.104099
+       crn irt_synth  late_on       29      0.723949   0.762587         0.038638       0.104099
+       crn irt_synth    never       29      0.535852   0.759050         0.223198       0.104099
+ diffusion irt_synth   always       29      0.828048        NaN              NaN            NaN
+ diffusion irt_synth early_on       29      0.642433        NaN              NaN            NaN
+ diffusion irt_synth  late_on       29      0.723949        NaN              NaN            NaN
+ diffusion irt_synth    never       29      0.535852        NaN              NaN            NaN
+     rcgan irt_synth   always       29      0.828048   0.627957         0.200092       0.292196
+     rcgan irt_synth early_on       29      0.642433   0.784198         0.141765       0.292196
+     rcgan irt_synth  late_on       29      0.723949   0.797452         0.073503       0.292196
+     rcgan irt_synth    never       29      0.535852   0.815431         0.279579       0.292196
+scm_causal irt_synth   always       29      0.828048   0.801741         0.026307       0.000000
+scm_causal irt_synth early_on       29      0.642433   0.676760         0.034327       0.000000
+scm_causal irt_synth  late_on       29      0.723949   0.676965         0.046984       0.000000
+scm_causal irt_synth    never       29      0.535852   0.644419         0.108567       0.000000
+   timegan irt_synth   always       29      0.828048   0.665982         0.162066       0.000000
+   timegan irt_synth early_on       29      0.642433   0.566394         0.076039       0.000000
+   timegan irt_synth  late_on       29      0.723949   0.580435         0.143514       0.000000
+   timegan irt_synth    never       29      0.535852   0.555128         0.019275       0.000000
+       vae irt_synth   always       29      0.828048   0.603976         0.224072       0.292196
+       vae irt_synth early_on       29      0.642433   0.743807         0.101374       0.292196
+       vae irt_synth  late_on       29      0.723949   0.783934         0.059985       0.292196
+       vae irt_synth    never       29      0.535852   0.788857         0.253004       0.292196
+
+tstr_trts
+     model   dataset predictor setting      auc     rmse    brier      ece  n_train  n_test
+       crn irt_synth    logreg    TRTS 0.655116 0.441340 0.194781 0.010270    16000    4000
+       crn irt_synth    logreg    TSTR 0.638129 0.443986 0.197124 0.013967     2048    4000
+       crn irt_synth       mlp    TRTS 0.498934 0.491117 0.241196 0.176129    16000    4000
+       crn irt_synth       mlp    TSTR 0.520917 0.478772 0.229223 0.146098     2048    4000
+       crn irt_synth      sakt    TRTS 0.519547 0.463977 0.215275 0.089152    16000    4000
+       crn irt_synth      sakt    TSTR 0.505075 0.462005 0.213448 0.073632     2048    4000
+ diffusion irt_synth    logreg    TRTS 0.655703 0.441358 0.194797 0.010025    16000    4000
+ diffusion irt_synth    logreg    TSTR 0.624772 0.506302 0.256342 0.238920     2048    4000
+ diffusion irt_synth       mlp    TRTS 0.498934 0.491117 0.241196 0.176129    16000    4000
+ diffusion irt_synth       mlp    TSTR 0.544328 0.501310 0.251312 0.211860     2048    4000
+ diffusion irt_synth      sakt    TRTS 0.518939 0.463923 0.215225 0.088795    16000    4000
+ diffusion irt_synth      sakt    TSTR 0.508666 0.508332 0.258402 0.223571     2048    4000
+     rcgan irt_synth    logreg    TRTS 0.654578 0.441439 0.194869 0.012984    16000    4000
+     rcgan irt_synth    logreg    TSTR 0.638265 0.445074 0.198090 0.027681     2048    4000
+     rcgan irt_synth       mlp    TRTS 0.498934 0.491117 0.241196 0.176129    16000    4000
+     rcgan irt_synth       mlp    TSTR 0.519147 0.478785 0.229235 0.145666     2048    4000
+     rcgan irt_synth      sakt    TRTS 0.517932 0.464056 0.215348 0.089273    16000    4000
+     rcgan irt_synth      sakt    TSTR 0.504076 0.455994 0.207930 0.016919     2048    4000
+scm_causal irt_synth    logreg    TRTS 0.654800 0.441412 0.194844 0.008586    16000    4000
+scm_causal irt_synth    logreg    TSTR 0.637153 0.444235 0.197345 0.006281     2048    4000
+scm_causal irt_synth       mlp    TRTS 0.498934 0.491117 0.241196 0.176129    16000    4000
+scm_causal irt_synth       mlp    TSTR 0.520332 0.478761 0.229212 0.145803     2048    4000
+scm_causal irt_synth      sakt    TRTS 0.521001 0.463936 0.215237 0.089162    16000    4000
+scm_causal irt_synth      sakt    TSTR 0.505844 0.456470 0.208365 0.025382     2048    4000
+   timegan irt_synth    logreg    TRTS 0.652538 0.442114 0.195465 0.012402    16000    4000
+   timegan irt_synth    logreg    TSTR 0.643216 0.455362 0.207355 0.102522     2048    4000
+   timegan irt_synth       mlp    TRTS 0.498934 0.491117 0.241196 0.176129    16000    4000
+   timegan irt_synth       mlp    TSTR 0.531007 0.479425 0.229848 0.150470     2048    4000
+   timegan irt_synth      sakt    TRTS 0.517932 0.464056 0.215348 0.089273    16000    4000
+   timegan irt_synth      sakt    TSTR 0.500267 0.562729 0.316664 0.319139     2048    4000
+       vae irt_synth    logreg    TRTS 0.653925 0.441728 0.195124 0.013258    16000    4000
+       vae irt_synth    logreg    TSTR 0.632297 0.444524 0.197602 0.005650     2048    4000
+       vae irt_synth       mlp    TRTS 0.498934 0.491117 0.241196 0.176129    16000    4000
+       vae irt_synth       mlp    TSTR 0.520388 0.478759 0.229210 0.145873     2048    4000
+       vae irt_synth      sakt    TRTS 0.516962 0.464024 0.215318 0.088989    16000    4000
+       vae irt_synth      sakt    TSTR 0.506638 0.459931 0.211537 0.060484     2048    4000
+
+leakage_metrics
+     model   dataset  t_leakage_auc
+       crn irt_synth            NaN
+ diffusion irt_synth            NaN
+     rcgan irt_synth            NaN
+scm_causal irt_synth       0.668907
+   timegan irt_synth            NaN
+       vae irt_synth            NaN
+
+privacy_summary
+     model   dataset publish_mode  nn_mean  nn_p01  nn_p05  nn_p10  x_noise_scale  a_flip_prob  t_flip_prob  attack_auc  attack_acc  attack_balanced_acc
+       crn irt_synth       y_only 0.000404     0.0     0.0     0.0            0.0          0.0          0.0    0.495644    0.501500             0.497224
+ diffusion irt_synth       y_only 0.006283     0.0     0.0     0.0            0.0          0.0          0.0    0.492306    0.501000             0.494125
+     rcgan irt_synth       y_only 0.000308     0.0     0.0     0.0            0.0          0.0          0.0    0.554209    0.556667             0.542286
+scm_causal irt_synth       y_only 0.000234     0.0     0.0     0.0            0.0          0.0          0.0    0.493276    0.511500             0.494817
+   timegan irt_synth       y_only 0.001327     0.0     0.0     0.0            0.0          0.0          0.0    0.492802    0.469833             0.491020
+       vae irt_synth       y_only 0.000455     0.0     0.0     0.0            0.0          0.0          0.0    0.531963    0.541833             0.524951
+
+run_config
+     model   dataset  do_horizon_train  do_horizon_eval  causal_every  cf_every
+       crn irt_synth               NaN               29           NaN       NaN
+ diffusion irt_synth               NaN               29           NaN       NaN
+     rcgan irt_synth               NaN               29           NaN       NaN
+scm_causal irt_synth               2.0               29           2.0      10.0
+   timegan irt_synth               NaN               29           NaN       NaN
+       vae irt_synth               NaN               29           NaN       NaN
+
+oracle_irt_synth_summary
+pehe: mean=0.023159 median=0.022041 p25=0.013137 p75=0.028602
+ate_rmse: mean=0.039554 median=0.038711 p25=0.034979 p75=0.042944
+policy_regret: mean=0.137698 median=0.104099 p25=0.000000 p75=0.292196
+

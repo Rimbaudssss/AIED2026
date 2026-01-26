@@ -1,12 +1,14 @@
 from __future__ import annotations
 
-from typing import List
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_score
 from sklearn.neighbors import NearestNeighbors
+import torch
+import torch.nn.functional as F
 
 from src.baselines import BaseSeqModel
 from src.data import TrajectoryBatch
@@ -75,6 +77,305 @@ def _stack_features(features: list[np.ndarray]) -> np.ndarray:
     if not cols:
         return np.zeros((0, 0), dtype=np.float32)
     return np.concatenate(cols, axis=1).astype(np.float32)
+
+
+def _ensure_3d_y(y: torch.Tensor) -> torch.Tensor:
+    if y.ndim == 2:
+        return y.unsqueeze(-1)
+    return y
+
+
+def _masked_mean_per_seq(x: torch.Tensor, mask: Optional[torch.Tensor]) -> torch.Tensor:
+    if x.ndim == 3 and x.shape[-1] == 1:
+        x = x.squeeze(-1)
+    if mask is None:
+        return x.mean(dim=1)
+    denom = mask.sum(dim=1).clamp(min=1.0)
+    return (x * mask).sum(dim=1) / denom
+
+
+def _latent_seq_norm(latent: torch.Tensor, mask: Optional[torch.Tensor]) -> torch.Tensor:
+    if latent.ndim == 3:
+        norms = torch.norm(latent, dim=-1)
+        return _masked_mean_per_seq(norms, mask)
+    if latent.ndim == 2:
+        return torch.norm(latent, dim=-1)
+    return torch.zeros(latent.shape[0], device=latent.device)
+
+
+def _get_model_and_name(gen_model: BaseSeqModel) -> Tuple[Optional[torch.nn.Module], str]:
+    model = getattr(gen_model, "model", None)
+    model_name = str(getattr(gen_model, "name", ""))
+    return model, model_name
+
+
+def _whitebox_forward(
+    *,
+    model: torch.nn.Module,
+    model_name: str,
+    batch: TrajectoryBatch,
+) -> Dict[str, torch.Tensor]:
+    device = next(model.parameters()).device
+    X = batch.X.to(device)
+    A = batch.A.to(device)
+    T = batch.T.to(device)
+    Y = batch.Y.to(device)
+    M = batch.mask.to(device)
+
+    out: Dict[str, torch.Tensor] = {"mask": M}
+
+    if model_name.startswith("scm"):
+        tf = model.teacher_forcing(  # type: ignore[attr-defined]
+            x=X, a=A, t=T, y=Y, mask=M, eps_mode="zero", causal_only=True
+        )
+        out["y_logits"] = tf["y_logits"]
+        if "k_c" in tf:
+            out["k_c"] = tf["k_c"]
+        if "k_s" in tf:
+            out["k_s"] = tf["k_s"]
+        if "k" in tf:
+            out["k"] = tf["k"]
+        return out
+
+    if model_name == "rcgan":
+        tf = model.teacher_forcing(  # type: ignore[attr-defined]
+            x=X, a=A, t=T, y=Y, mask=M, stochastic_y=False
+        )
+        out["y_logits"] = tf["y_logits"]
+        return out
+
+    if model_name == "vae":
+        mu, logvar = model.encode(x=X, a=A, t=T, y=Y, mask=M)  # type: ignore[attr-defined]
+        dec = model.decode(  # type: ignore[attr-defined]
+            x=X, a=A, t=T, mask=M, z=mu, y=Y, teacher_forcing=True, stochastic_y=False
+        )
+        out["y_logits"] = dec["y_logits"]
+        out["z_mu"] = mu
+        out["z_logvar"] = logvar
+        return out
+
+    if model_name == "crn":
+        tf = model.forward(x=X, a=A, t=T, y=Y, mask=M)  # type: ignore[attr-defined]
+        out["y_logits"] = tf["y_logits"]
+        if "h" in tf:
+            out["h"] = tf["h"]
+        return out
+
+    if model_name == "timegan":
+        tf = model.teacher_forcing(  # type: ignore[attr-defined]
+            x=X, a=A, t=T, y=Y, mask=M, stochastic_y=False
+        )
+        out["y_logits"] = tf["y_logits"]
+        if hasattr(model, "generate_hidden"):
+            z_dim = int(getattr(getattr(model, "cfg", None), "z_dim", 16))
+            z = torch.zeros(X.shape[0], X.shape[1], z_dim, device=device)
+            out["h_hat"] = model.generate_hidden(x=X, a=A, t=T, z=z)  # type: ignore[attr-defined]
+        return out
+
+    return out
+
+
+def _diffusion_loss_per_seq(
+    *,
+    model: torch.nn.Module,
+    batch: TrajectoryBatch,
+    seed: int,
+) -> np.ndarray:
+    device = next(model.parameters()).device
+    X = batch.X.to(device)
+    A = batch.A.to(device)
+    T = batch.T.to(device)
+    Y = batch.Y.to(device)
+    M = batch.mask.to(device)
+
+    bsz = X.shape[0]
+    rng = torch.Generator(device=device).manual_seed(int(seed))
+    y0 = _ensure_3d_y(Y).float()
+    timesteps = torch.randint(
+        low=0,
+        high=int(model.cfg.num_steps),  # type: ignore[attr-defined]
+        size=(bsz,),
+        device=device,
+        generator=rng,
+    )
+    noise = torch.randn_like(y0, generator=rng)
+    alpha_bar = model.alpha_bars[timesteps].view(bsz, 1, 1)  # type: ignore[attr-defined]
+    y_noisy = torch.sqrt(alpha_bar) * y0 + torch.sqrt(1.0 - alpha_bar) * noise
+    pred = model._predict_eps(  # type: ignore[attr-defined]
+        x=X, a=A, t=T, y_noisy=y_noisy, timesteps=timesteps, mask=M
+    )
+    loss_t = (pred - noise).pow(2).mean(dim=-1)  # [B,T]
+    per_seq = _masked_mean_per_seq(loss_t, M)
+    return per_seq.detach().cpu().numpy().astype(np.float32)
+
+
+def _whitebox_per_sample_features(
+    *,
+    gen_model: BaseSeqModel,
+    batch: TrajectoryBatch,
+    feature_names: List[str],
+    seed: int,
+) -> Dict[str, np.ndarray]:
+    model, model_name = _get_model_and_name(gen_model)
+    bsz = int(batch.X.shape[0])
+    out: Dict[str, np.ndarray] = {}
+
+    if model is None or bsz == 0:
+        for name in feature_names:
+            out[name] = np.zeros((bsz,), dtype=np.float32)
+        return out
+
+    if model_name == "diffusion":
+        if "wb_loss" in feature_names:
+            out["wb_loss"] = _diffusion_loss_per_seq(model=model, batch=batch, seed=seed)
+        if "wb_logit_margin" in feature_names:
+            out["wb_logit_margin"] = np.zeros((bsz,), dtype=np.float32)
+        if "wb_latent_norm" in feature_names:
+            out["wb_latent_norm"] = np.zeros((bsz,), dtype=np.float32)
+        return out
+
+    with torch.no_grad():
+        wb = _whitebox_forward(model=model, model_name=model_name, batch=batch)
+        mask = wb.get("mask")
+        y_logits = wb.get("y_logits")
+
+        if "wb_loss" in feature_names:
+            if y_logits is None:
+                out["wb_loss"] = np.zeros((bsz,), dtype=np.float32)
+            else:
+                y_true = _ensure_3d_y(batch.Y.to(y_logits.device)).float()
+                loss = F.binary_cross_entropy_with_logits(y_logits, y_true, reduction="none")
+                per_seq = _masked_mean_per_seq(loss, mask)
+                out["wb_loss"] = per_seq.detach().cpu().numpy().astype(np.float32)
+
+        if "wb_logit_margin" in feature_names:
+            if y_logits is None:
+                out["wb_logit_margin"] = np.zeros((bsz,), dtype=np.float32)
+            else:
+                margin = _masked_mean_per_seq(y_logits.abs(), mask)
+                out["wb_logit_margin"] = margin.detach().cpu().numpy().astype(np.float32)
+
+        if "wb_latent_norm" in feature_names:
+            latent: Optional[torch.Tensor] = None
+            if model_name.startswith("scm"):
+                if "k_c" in wb and wb["k_c"].shape[-1] > 0:
+                    latent = wb["k_c"]
+                elif "k" in wb:
+                    latent = wb["k"]
+                if latent is not None:
+                    mask_k = torch.cat(
+                        [torch.ones(latent.shape[0], 1, device=latent.device), mask], dim=1
+                    )
+                    latent_norm = _latent_seq_norm(latent, mask_k)
+                    out["wb_latent_norm"] = latent_norm.detach().cpu().numpy().astype(np.float32)
+                else:
+                    out["wb_latent_norm"] = np.zeros((bsz,), dtype=np.float32)
+            elif model_name == "crn" and "h" in wb:
+                latent = wb["h"]
+                latent_norm = _latent_seq_norm(latent, mask)
+                out["wb_latent_norm"] = latent_norm.detach().cpu().numpy().astype(np.float32)
+            elif model_name == "vae" and "z_mu" in wb:
+                latent = wb["z_mu"]
+                latent_norm = _latent_seq_norm(latent, None)
+                out["wb_latent_norm"] = latent_norm.detach().cpu().numpy().astype(np.float32)
+            elif model_name == "timegan" and "h_hat" in wb:
+                latent = wb["h_hat"]
+                latent_norm = _latent_seq_norm(latent, mask)
+                out["wb_latent_norm"] = latent_norm.detach().cpu().numpy().astype(np.float32)
+            else:
+                out["wb_latent_norm"] = np.zeros((bsz,), dtype=np.float32)
+
+    for name in feature_names:
+        out.setdefault(name, np.zeros((bsz,), dtype=np.float32))
+    return out
+
+
+def _select_head_params(model: torch.nn.Module) -> List[torch.nn.Parameter]:
+    head = None
+    if hasattr(model, "y_head"):
+        head = getattr(model, "y_head")
+        if callable(head) and not isinstance(head, torch.nn.Module):
+            head = head()
+    if head is None and hasattr(model, "recovery"):
+        head = getattr(model, "recovery")
+    if head is None and hasattr(model, "out_proj"):
+        head = getattr(model, "out_proj")
+    if head is None and hasattr(model, "net"):
+        head = getattr(model, "net")
+    if isinstance(head, torch.nn.Module):
+        return [p for p in head.parameters() if p.requires_grad]
+    return [p for p in model.parameters() if p.requires_grad]
+
+
+def _whitebox_grad_norm(
+    *,
+    gen_model: BaseSeqModel,
+    batch: TrajectoryBatch,
+    seed: int,
+    max_samples: int = 256,
+) -> float:
+    model, model_name = _get_model_and_name(gen_model)
+    if model is None:
+        return float("nan")
+
+    device = next(model.parameters()).device
+    bsz = int(batch.X.shape[0])
+    if bsz == 0:
+        return float("nan")
+
+    n = min(int(max_samples), bsz)
+    rng = np.random.default_rng(int(seed))
+    idx = rng.choice(bsz, size=n, replace=False)
+    idx_t = torch.as_tensor(idx, device=device, dtype=torch.long)
+    X = batch.X.to(device)[idx_t]
+    A = batch.A.to(device)[idx_t]
+    T = batch.T.to(device)[idx_t]
+    Y = batch.Y.to(device)[idx_t]
+    M = batch.mask.to(device)[idx_t]
+
+    model.zero_grad(set_to_none=True)
+    with torch.enable_grad():
+        if model_name == "diffusion":
+            y0 = _ensure_3d_y(Y).float()
+            timesteps = torch.randint(
+                low=0,
+                high=int(model.cfg.num_steps),  # type: ignore[attr-defined]
+                size=(n,),
+                device=device,
+            )
+            noise = torch.randn_like(y0)
+            alpha_bar = model.alpha_bars[timesteps].view(n, 1, 1)  # type: ignore[attr-defined]
+            y_noisy = torch.sqrt(alpha_bar) * y0 + torch.sqrt(1.0 - alpha_bar) * noise
+            pred = model._predict_eps(  # type: ignore[attr-defined]
+                x=X, a=A, t=T, y_noisy=y_noisy, timesteps=timesteps, mask=M
+            )
+            loss_t = (pred - noise).pow(2).mean(dim=-1)
+            loss = _masked_mean_per_seq(loss_t, M).mean()
+        else:
+            sub_batch = TrajectoryBatch(
+                X=X,
+                A=A,
+                T=T,
+                Y=Y,
+                mask=M,
+                lengths=batch.lengths.to(device)[idx_t],
+            )
+            wb = _whitebox_forward(model=model, model_name=model_name, batch=sub_batch)
+            y_logits = wb.get("y_logits")
+            if y_logits is None:
+                return float("nan")
+            y_true = _ensure_3d_y(Y).float()
+            loss = F.binary_cross_entropy_with_logits(y_logits, y_true, reduction="none")
+            loss = _masked_mean_per_seq(loss, M).mean()
+
+        loss.backward()
+        total = 0.0
+        for p in _select_head_params(model):
+            if p.grad is None:
+                continue
+            total += float(p.grad.detach().pow(2).sum().item())
+        model.zero_grad(set_to_none=True)
+    return float(np.sqrt(total))
 
 
 def _fit_attack_classifier(
@@ -148,6 +449,18 @@ def run_membership_inference(
     if "nn_distance" in attack_features:
         feats_in.append(_nn_distance_feature(real_train, real_train, leave_one_out=True, embed_space=embed_space))
         feats_out.append(_nn_distance_feature(real_train, real_holdout, leave_one_out=False, embed_space=embed_space))
+    wb_feature_names = [f for f in attack_features if f.startswith("wb_") and f != "wb_grad_norm"]
+    if wb_feature_names:
+        wb_in = _whitebox_per_sample_features(gen_model=gen_model, batch=real_train, feature_names=wb_feature_names, seed=int(seed))
+        wb_out = _whitebox_per_sample_features(gen_model=gen_model, batch=real_holdout, feature_names=wb_feature_names, seed=int(seed))
+        for name in wb_feature_names:
+            feats_in.append(wb_in.get(name, np.zeros((real_train.X.shape[0],), dtype=np.float32)))
+            feats_out.append(wb_out.get(name, np.zeros((real_holdout.X.shape[0],), dtype=np.float32)))
+    if "wb_grad_norm" in attack_features:
+        gn_in = _whitebox_grad_norm(gen_model=gen_model, batch=real_train, seed=int(seed))
+        gn_out = _whitebox_grad_norm(gen_model=gen_model, batch=real_holdout, seed=int(seed) + 1)
+        feats_in.append(np.full((real_train.X.shape[0],), float(gn_in), dtype=np.float32))
+        feats_out.append(np.full((real_holdout.X.shape[0],), float(gn_out), dtype=np.float32))
 
     if not feats_in:
         return {

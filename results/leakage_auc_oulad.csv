@@ -1,0 +1,7 @@
+model,dataset,t_leakage_auc
+scm_causal,oulad,0.586415444233342
+rcgan,oulad,
+vae,oulad,
+diffusion,oulad,
+crn,oulad,
+timegan,oulad,

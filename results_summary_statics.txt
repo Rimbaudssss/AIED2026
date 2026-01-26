@@ -1,0 +1,204 @@
+dr_policy_values
+     model dataset   policy  horizon  dr_value  dm_value  correction   w_mean     w_max  supported
+       crn statics   always       29  0.523271  0.524398   -0.001127 0.003374  3.542527        1.0
+       crn statics early_on       29  0.788932  0.790060   -0.001127 0.003374  3.542527        1.0
+       crn statics  late_on       29  0.879396  0.788662    0.090734 4.798615 10.000000        1.0
+       crn statics    never       29       NaN       NaN         NaN 6.588359 10.000000        0.0
+ diffusion statics   always       29       NaN       NaN         NaN      NaN       NaN        0.0
+ diffusion statics early_on       29       NaN       NaN         NaN      NaN       NaN        0.0
+ diffusion statics  late_on       29       NaN       NaN         NaN      NaN       NaN        0.0
+ diffusion statics    never       29       NaN       NaN         NaN      NaN       NaN        0.0
+     rcgan statics   always       29  0.431187  0.431262   -0.000074 0.003445  3.647826        1.0
+     rcgan statics early_on       29  0.819786  0.819861   -0.000074 0.003445  3.647826        1.0
+     rcgan statics  late_on       29  0.567590  0.902316   -0.334726 4.799489 10.000000        1.0
+     rcgan statics    never       29       NaN       NaN         NaN 6.589232 10.000000        0.0
+scm_causal statics   always       29  0.791903  0.793957   -0.002054 0.003581  3.632766        1.0
+scm_causal statics early_on       29  0.884696  0.886750   -0.002054 0.003581  3.632766        1.0
+scm_causal statics  late_on       29  1.061324  0.900294    0.161030 4.821658 10.000000        1.0
+scm_causal statics    never       29       NaN       NaN         NaN 6.611401 10.000000        0.0
+   timegan statics   always       29  0.818936  0.821619   -0.002683 0.003514  3.532989        1.0
+   timegan statics early_on       29  0.875390  0.878073   -0.002683 0.003514  3.532989        1.0
+   timegan statics  late_on       29  0.739197  0.877761   -0.138564 4.789333 10.000000        1.0
+   timegan statics    never       29       NaN       NaN         NaN 6.579076 10.000000        0.0
+       vae statics   always       29  0.588526  0.590185   -0.001659 0.003626  3.713090        1.0
+       vae statics early_on       29  0.813823  0.815482   -0.001659 0.003626  3.713090        1.0
+       vae statics  late_on       29  0.905055  0.799188    0.105868 4.786016 10.000000        1.0
+       vae statics    never       29       NaN       NaN         NaN 6.575760 10.000000        0.0
+
+dr_policy_summary
+     model dataset  horizon  dr_value_mean  dm_value_mean  correction_mean  policy_supported
+       crn statics       29       0.730533       0.701040         0.029493               1.0
+ diffusion statics       29            NaN            NaN              NaN               0.0
+     rcgan statics       29       0.606188       0.717813        -0.111625               1.0
+scm_causal statics       29       0.912641       0.860334         0.052307               1.0
+   timegan statics       29       0.811174       0.859151        -0.047977               1.0
+       vae statics       29       0.769135       0.734951         0.034183               1.0
+
+factual_auc
+     model dataset  factual_auc  n_samples  supported
+       crn statics     0.790956       1950        1.0
+ diffusion statics          NaN          0        0.0
+     rcgan statics     0.788450       1950        1.0
+scm_causal statics     0.754554       1950        1.0
+   timegan statics     0.624097       1950        1.0
+       vae statics     0.812976       1950        1.0
+
+oracle_ite_metrics
+     model dataset  t0  horizon  pehe  ite_rmse  ate_true  ate_hat  ate_abs_error  ate_rmse  n_effective  tau_true_mean  tau_hat_mean  n_gen
+       crn statics  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn statics   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn statics  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn statics   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn statics  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn statics   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn statics   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn statics   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn statics   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion statics  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion statics  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion statics  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion statics   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion statics   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion statics   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion statics   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion statics   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion statics   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan statics  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan statics  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan statics   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan statics   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan statics   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan statics   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan statics   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan statics  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan statics   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal statics   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal statics  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal statics  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal statics  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal statics   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal statics   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal statics   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal statics   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal statics   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan statics   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan statics   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan statics   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan statics   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan statics  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan statics   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan statics   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan statics  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan statics  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae statics  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae statics  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae statics   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae statics   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae statics   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae statics   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae statics   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae statics   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae statics  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+
+oracle_policy_metrics
+     model dataset   policy  horizon  oracle_value  gen_value  value_abs_error  regret_oracle
+       crn statics   always       29           NaN        NaN              NaN            NaN
+       crn statics early_on       29           NaN        NaN              NaN            NaN
+       crn statics  late_on       29           NaN        NaN              NaN            NaN
+       crn statics    never       29           NaN        NaN              NaN            NaN
+ diffusion statics   always       29           NaN        NaN              NaN            NaN
+ diffusion statics early_on       29           NaN        NaN              NaN            NaN
+ diffusion statics  late_on       29           NaN        NaN              NaN            NaN
+ diffusion statics    never       29           NaN        NaN              NaN            NaN
+     rcgan statics   always       29           NaN        NaN              NaN            NaN
+     rcgan statics early_on       29           NaN        NaN              NaN            NaN
+     rcgan statics  late_on       29           NaN        NaN              NaN            NaN
+     rcgan statics    never       29           NaN        NaN              NaN            NaN
+scm_causal statics   always       29           NaN        NaN              NaN            NaN
+scm_causal statics early_on       29           NaN        NaN              NaN            NaN
+scm_causal statics  late_on       29           NaN        NaN              NaN            NaN
+scm_causal statics    never       29           NaN        NaN              NaN            NaN
+   timegan statics   always       29           NaN        NaN              NaN            NaN
+   timegan statics early_on       29           NaN        NaN              NaN            NaN
+   timegan statics  late_on       29           NaN        NaN              NaN            NaN
+   timegan statics    never       29           NaN        NaN              NaN            NaN
+       vae statics   always       29           NaN        NaN              NaN            NaN
+       vae statics early_on       29           NaN        NaN              NaN            NaN
+       vae statics  late_on       29           NaN        NaN              NaN            NaN
+       vae statics    never       29           NaN        NaN              NaN            NaN
+
+tstr_trts
+     model dataset predictor setting      auc     rmse    brier      ece  n_train  n_test
+       crn statics    logreg    TRTS 0.859712 0.306290 0.093813 0.090145      267      66
+       crn statics    logreg    TSTR 0.767079 0.311711 0.097164 0.062777      267      66
+       crn statics       mlp    TRTS 0.626905 0.351224 0.123358 0.144531      267      66
+       crn statics       mlp    TSTR 0.614099 0.438069 0.191905 0.297707      267      66
+       crn statics      sakt    TRTS 0.541153 0.330549 0.109262 0.070321      267      66
+       crn statics      sakt    TSTR 0.563366 0.328341 0.107808 0.059896      267      66
+ diffusion statics    logreg    TRTS 0.863668 0.284442 0.080907 0.024487      267      66
+ diffusion statics    logreg    TSTR 0.790174 0.388143 0.150655 0.244092      267      66
+ diffusion statics       mlp    TRTS 0.513089 0.380877 0.145067 0.197003      267      66
+ diffusion statics       mlp    TSTR 0.515403 0.497453 0.247459 0.376451      267      66
+ diffusion statics      sakt    TRTS 0.510887 0.324828 0.105513 0.034919      267      66
+ diffusion statics      sakt    TSTR 0.622009 0.652656 0.425959 0.568558      267      66
+     rcgan statics    logreg    TRTS 0.860286 0.288472 0.083216 0.038515      267      66
+     rcgan statics    logreg    TSTR 0.785075 0.302087 0.091257 0.057605      267      66
+     rcgan statics       mlp    TRTS 0.631657 0.426423 0.181837 0.282138      267      66
+     rcgan statics       mlp    TSTR 0.522958 0.366183 0.134090 0.170911      267      66
+     rcgan statics      sakt    TRTS 0.484694 0.330128 0.108985 0.066845      267      66
+     rcgan statics      sakt    TSTR 0.510452 0.335805 0.112765 0.091485      267      66
+scm_causal statics    logreg    TRTS 0.837178 0.288991 0.083516 0.019380      267      66
+scm_causal statics    logreg    TSTR 0.814733 0.321506 0.103366 0.084194      267      66
+scm_causal statics       mlp    TRTS 0.617000 0.380992 0.145155 0.205322      267      66
+scm_causal statics       mlp    TSTR 0.580419 0.370320 0.137137 0.182686      267      66
+scm_causal statics      sakt    TRTS 0.516247 0.328038 0.107609 0.056687      267      66
+scm_causal statics      sakt    TSTR 0.577000 0.325265 0.105797 0.042497      267      66
+   timegan statics    logreg    TRTS 0.846959 0.346822 0.120286 0.156048      267      66
+   timegan statics    logreg    TSTR 0.571095 0.324212 0.105114 0.042930      267      66
+   timegan statics       mlp    TRTS 0.558610 0.405953 0.164798 0.244797      267      66
+   timegan statics       mlp    TSTR 0.555017 0.393693 0.154994 0.225114      267      66
+   timegan statics      sakt    TRTS 0.547883 0.330428 0.109183 0.069755      267      66
+   timegan statics      sakt    TSTR 0.543901 0.330982 0.109549 0.072530      267      66
+       vae statics    logreg    TRTS 0.836757 0.299890 0.089934 0.059627      267      66
+       vae statics    logreg    TSTR 0.814383 0.296283 0.087783 0.020712      267      66
+       vae statics       mlp    TRTS 0.622836 0.381356 0.145432 0.207650      267      66
+       vae statics       mlp    TSTR 0.522078 0.403059 0.162457 0.239564      267      66
+       vae statics      sakt    TRTS 0.539869 0.331975 0.110207 0.076617      267      66
+       vae statics      sakt    TSTR 0.553863 0.325388 0.105878 0.040585      267      66
+
+leakage_metrics
+     model dataset  t_leakage_auc
+       crn statics            NaN
+ diffusion statics            NaN
+     rcgan statics            NaN
+scm_causal statics       0.527999
+   timegan statics            NaN
+       vae statics            NaN
+
+privacy_summary
+     model dataset publish_mode  nn_mean       nn_p01   nn_p05   nn_p10  x_noise_scale  a_flip_prob  t_flip_prob  attack_auc  attack_acc  attack_balanced_acc
+       crn statics       y_only 0.021395 0.000000e+00 0.000000 0.000000            0.0          0.0          0.0    0.605184        0.52             0.556359
+ diffusion statics       y_only 0.259075 2.980232e-08 0.052695 0.074846            0.0          0.0          0.0    0.549126        0.44             0.540687
+     rcgan statics       y_only 0.005868 0.000000e+00 0.000000 0.000000            0.0          0.0          0.0    0.449066        0.50             0.491260
+scm_causal statics       y_only 0.015291 0.000000e+00 0.000000 0.000000            0.0          0.0          0.0    0.446655        0.59             0.495781
+   timegan statics       y_only 0.010720 0.000000e+00 0.000000 0.000000            0.0          0.0          0.0    0.583484        0.55             0.540386
+       vae statics       y_only 0.025065 0.000000e+00 0.000000 0.000000            0.0          0.0          0.0    0.623870        0.51             0.550030
+
+run_config
+     model dataset  do_horizon_train  do_horizon_eval  causal_every  cf_every
+       crn statics               NaN               29           NaN       NaN
+ diffusion statics               NaN               29           NaN       NaN
+     rcgan statics               NaN               29           NaN       NaN
+scm_causal statics               5.0               29          20.0      10.0
+   timegan statics               NaN               29           NaN       NaN
+       vae statics               NaN               29           NaN       NaN
+
+oracle_availability
+unsupported_ratio: 1.000
+datasets_without_oracle: statics
+
+oracle_irt_synth_summary
+pehe: mean=nan median=nan p25=nan p75=nan
+ate_rmse: mean=nan median=nan p25=nan p75=nan
+policy_regret: mean=nan median=nan p25=nan p75=nan
+

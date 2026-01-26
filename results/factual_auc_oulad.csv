@@ -1,0 +1,7 @@
+model,dataset,factual_auc,n_samples,supported,skip_reason
+scm_causal,oulad,0.7626143854907489,130931,1.0,
+rcgan,oulad,0.7875507332422473,130931,1.0,
+vae,oulad,0.8845246755936127,130931,1.0,
+diffusion,oulad,,0,0.0,unsupported model=diffusion
+crn,oulad,0.8732502712409697,130931,1.0,
+timegan,oulad,0.8682285486987222,130931,1.0,

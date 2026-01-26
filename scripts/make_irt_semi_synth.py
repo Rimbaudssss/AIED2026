@@ -48,21 +48,22 @@ def simulate_factual(
     noise_std: float,
     confounding: float,
 ) -> dict[str, np.ndarray]:
-    """Simulate an IRT-like sequential process with time-varying treatment and outcomes."""
-    X = rng.normal(0.0, 1.0, size=(n, d_x)).astype(np.float32)
-    # Latent ability starts from a linear projection of X.
-    w = rng.normal(0.0, 1.0, size=(d_x,)).astype(np.float32)
-    theta0 = (X @ w).astype(np.float32)
+    """Simulate a multidimensional IRT (MIRT) sequential process."""
+    # Treat d_x as latent ability dimension (d_k).
+    theta0 = rng.normal(0.0, 1.0, size=(n, d_x)).astype(np.float32)
 
-    beta = rng.normal(0.0, 1.0, size=(a_vocab_size,)).astype(np.float32)
+    # Item embeddings represent which skills are tested by each item.
+    item_embeddings = rng.normal(0.0, 1.0, size=(a_vocab_size, d_x)).astype(np.float32)
+    item_embeddings = item_embeddings / (np.linalg.norm(item_embeddings, axis=1, keepdims=True) + 1e-6)
+
     A = rng.integers(low=0, high=a_vocab_size, size=(n, seq_len), dtype=np.int64)
 
     # Exogenous noises, fixed for all counterfactuals.
-    eps_theta = rng.normal(0.0, noise_std, size=(n, seq_len)).astype(np.float32)
+    eps_theta = rng.normal(0.0, noise_std, size=(n, seq_len, d_x)).astype(np.float32)
     u_y = rng.random(size=(n, seq_len)).astype(np.float32)
 
     theta = theta0.copy()
-    theta_hist = np.zeros((n, seq_len + 1), dtype=np.float32)
+    theta_hist = np.zeros((n, seq_len + 1, d_x), dtype=np.float32)
     theta_hist[:, 0] = theta
 
     T = np.zeros((n, seq_len), dtype=np.int64)
@@ -70,26 +71,33 @@ def simulate_factual(
 
     for t in range(seq_len):
         # Confounded treatment assignment: low-ability students more likely to receive help.
-        p_help = sigmoid(-confounding * theta)
+        mean_ability = theta.mean(axis=1)
+        p_help = sigmoid(-confounding * mean_ability)
         T[:, t] = (rng.random(size=n) < p_help).astype(np.int64)
 
+        cur_items = item_embeddings[A[:, t]]
+        knowledge_term = (theta * cur_items).sum(axis=1)
         help_flag = T[:, t].astype(np.float32)
-        p = sigmoid(theta - beta[A[:, t]] + gamma * help_flag).astype(np.float32)
+        logits = knowledge_term + gamma * help_flag
+        p = sigmoid(logits).astype(np.float32)
         y = (u_y[:, t] < p).astype(np.float32)
         Y[:, t] = y
 
-        theta = theta + lr * (y - p) + delta * help_flag + eps_theta[:, t]
+        pred_error = (y - p)[:, None]
+        learning_gain = lr * pred_error * cur_items
+        intervention_gain = delta * help_flag[:, None] * cur_items
+        theta = theta + learning_gain + intervention_gain + eps_theta[:, t]
         theta_hist[:, t + 1] = theta
 
     M = np.ones((n, seq_len), dtype=np.float32)
     return {
-        "X": X,
+        "X": theta0,
         "A": A,
         "T": T,
         "Y": Y,
         "M": M,
         "theta_hist": theta_hist,
-        "beta": beta,
+        "item_embeddings": item_embeddings,
         "theta0": theta0,
         "eps_theta": eps_theta,
         "u_y": u_y,
@@ -99,7 +107,7 @@ def simulate_factual(
 def simulate_given_T(
     A: np.ndarray,
     T: np.ndarray,
-    beta: np.ndarray,
+    item_embeddings: np.ndarray,
     theta0: np.ndarray,
     eps_theta: np.ndarray,
     u_y: np.ndarray,
@@ -112,11 +120,17 @@ def simulate_given_T(
     theta = theta0.astype(np.float32).copy()
     Y_prob = np.zeros((n, seq_len), dtype=np.float32)
     for t in range(seq_len):
+        cur_items = item_embeddings[A[:, t]]
+        knowledge_term = (theta * cur_items).sum(axis=1)
         help_flag = T[:, t].astype(np.float32)
-        p = sigmoid(theta - beta[A[:, t]] + gamma * help_flag).astype(np.float32)
+        logits = knowledge_term + gamma * help_flag
+        p = sigmoid(logits).astype(np.float32)
         Y_prob[:, t] = p
         y = (u_y[:, t] < p).astype(np.float32)
-        theta = theta + lr * (y - p) + delta * help_flag + eps_theta[:, t]
+        pred_error = (y - p)[:, None]
+        learning_gain = lr * pred_error * cur_items
+        intervention_gain = delta * help_flag[:, None] * cur_items
+        theta = theta + learning_gain + intervention_gain + eps_theta[:, t]
     return Y_prob
 
 
@@ -128,10 +142,9 @@ def build_oracle_counterfactuals(
     gamma: float,
 ) -> np.ndarray:
     """Compute Y_cf = P(Y_{t0:t0+h} | do(T_{t0}=a), T_{!=t0}=factual)."""
-    X = sim["X"]
     A = sim["A"]
     T = sim["T"]
-    beta = sim["beta"]
+    item_embeddings = sim["item_embeddings"]
     theta_hist = sim["theta_hist"]
     eps_theta = sim["eps_theta"]
     u_y = sim["u_y"]
@@ -149,10 +162,16 @@ def build_oracle_counterfactuals(
                 if t >= seq_len:
                     break
                 help_flag = (np.full(n, a, dtype=np.int64) if h == 0 else T[:, t]).astype(np.float32)
-                p = sigmoid(theta - beta[A[:, t]] + gamma * help_flag).astype(np.float32)
+                cur_items = item_embeddings[A[:, t]]
+                knowledge_term = (theta * cur_items).sum(axis=1)
+                logits = knowledge_term + gamma * help_flag
+                p = sigmoid(logits).astype(np.float32)
                 Y_cf[:, t0, a, h] = p
                 y = (u_y[:, t] < p).astype(np.float32)
-                theta = theta + lr * (y - p) + delta * help_flag + eps_theta[:, t]
+                pred_error = (y - p)[:, None]
+                learning_gain = lr * pred_error * cur_items
+                intervention_gain = delta * help_flag[:, None] * cur_items
+                theta = theta + learning_gain + intervention_gain + eps_theta[:, t]
 
     return Y_cf
 
@@ -162,7 +181,8 @@ def main() -> int:
     ap.add_argument("--out", type=str, required=True, help="Output .npz path")
     ap.add_argument("--n", type=int, default=20000)
     ap.add_argument("--seq_len", type=int, default=50)
-    ap.add_argument("--d_x", type=int, default=4)
+    ap.add_argument("--d_x", type=int, default=5)
+    ap.add_argument("--d_k", type=int, default=5, help="Latent ability dimension (overrides d_x if set).")
     ap.add_argument("--a_vocab_size", type=int, default=50)
     ap.add_argument("--hmax", type=int, default=10, help="Max horizon for oracle Y_cf")
     ap.add_argument("--seed", type=int, default=0)
@@ -178,11 +198,14 @@ def main() -> int:
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
     rng = np.random.default_rng(args.seed)
+    d_k = int(args.d_k)
+    if int(args.d_k) == 5 and int(args.d_x) != 5:
+        d_k = int(args.d_x)
     sim = simulate_factual(
         rng=rng,
         n=args.n,
         seq_len=args.seq_len,
-        d_x=args.d_x,
+        d_x=d_k,
         a_vocab_size=args.a_vocab_size,
         lr=float(args.lr),
         delta=float(args.delta),
@@ -203,7 +226,7 @@ def main() -> int:
         Y_policy[:, p] = simulate_given_T(
             A=sim["A"],
             T=T_pol,
-            beta=sim["beta"],
+            item_embeddings=sim["item_embeddings"],
             theta0=sim["theta0"],
             eps_theta=sim["eps_theta"],
             u_y=sim["u_y"],

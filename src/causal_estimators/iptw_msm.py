@@ -51,7 +51,8 @@ class _BaselinePropensity(nn.Module):
 class _FitConfig:
     propensity_model: str = "mlp"
     stabilized: bool = True
-    clip: float = 20.0
+    self_normalized: bool = True
+    clip: Optional[float] = None
     lr: float = 1e-3
     epochs: int = 5
     hidden: int = 64
@@ -62,12 +63,28 @@ class _FitConfig:
 class IPTWMSM(CausalEstimator):
     name = "iptw_msm"
 
-    def __init__(self, *, propensity_model: str = "mlp", stabilized: bool = True, clip: float = 20.0, **kwargs):
-        self.cfg = _FitConfig(propensity_model=propensity_model, stabilized=stabilized, clip=clip, **kwargs)
+    def __init__(
+        self,
+        *,
+        propensity_model: str = "mlp",
+        stabilized: bool = True,
+        self_normalized: bool = True,
+        clip: Optional[float] = None,
+        **kwargs,
+    ):
+        self.cfg = _FitConfig(
+            propensity_model=propensity_model,
+            stabilized=stabilized,
+            self_normalized=self_normalized,
+            clip=clip,
+            **kwargs,
+        )
         self.propensity: Optional[_PropensityGRU] = None
         self.baseline_propensity: Optional[_BaselinePropensity] = None
         self.num_actions: Optional[int] = None
         self.seq_len: Optional[int] = None
+        self.a_vocab: Optional[int] = None
+        self.a_is_discrete: Optional[bool] = None
         self._device = torch.device("cpu")
 
     def _infer_dims(self, batch: TrajectoryBatch) -> tuple[int, int, int]:
@@ -81,7 +98,7 @@ class IPTWMSM(CausalEstimator):
         x_rep = batch.X.float()[:, None, :].expand(bsz, seq_len, batch.X.shape[1])
 
         if batch.A.ndim == 2:
-            a_vocab = int(batch.A.max().item() + 1)
+            a_vocab = self.a_vocab if self.a_vocab is not None else int(batch.A.max().item() + 1)
             a_onehot = torch.zeros(bsz, seq_len, a_vocab, device=batch.A.device)
             a_onehot.scatter_(2, batch.A.long().unsqueeze(-1), 1.0)
             a_feat = a_onehot
@@ -90,7 +107,7 @@ class IPTWMSM(CausalEstimator):
 
         t_prev = torch.zeros_like(batch.T)
         t_prev[:, 1:] = batch.T[:, :-1]
-        t_vocab = int(batch.T.max().item() + 1)
+        t_vocab = int(self.num_actions) if self.num_actions is not None else int(batch.T.max().item() + 1)
         t_onehot = torch.zeros(bsz, seq_len, t_vocab, device=batch.T.device)
         t_onehot.scatter_(2, t_prev.long().unsqueeze(-1), 1.0)
 
@@ -106,6 +123,8 @@ class IPTWMSM(CausalEstimator):
         d_x, seq_len, num_actions = self._infer_dims(train)
         self.num_actions = num_actions
         self.seq_len = seq_len
+        self.a_is_discrete = train.A.ndim == 2
+        self.a_vocab = int(train.A.max().item() + 1) if self.a_is_discrete else None
 
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self._device = device
@@ -150,7 +169,10 @@ class IPTWMSM(CausalEstimator):
                 opt.step()
 
                 t_idx = torch.arange(seq_len, device=device).view(1, seq_len).expand(bsz, seq_len)
-                base_logits = self.baseline_propensity(batch.X, t_idx.reshape(-1)).view(bsz, seq_len, num_actions)
+                x_rep = batch.X.float()[:, None, :].expand(bsz, seq_len, d_x)
+                base_logits = self.baseline_propensity(x_rep.reshape(-1, d_x), t_idx.reshape(-1)).view(
+                    bsz, seq_len, num_actions
+                )
                 loss_base = nn.CrossEntropyLoss(reduction="none")(
                     base_logits.view(bsz * seq_len, num_actions), batch.T.view(-1).long()
                 )
@@ -169,9 +191,12 @@ class IPTWMSM(CausalEstimator):
             logits = self.propensity(self._encode_inputs(batch), batch.mask)
             logp_den = torch.log_softmax(logits, dim=-1)
             if self.cfg.stabilized:
-                t_idx = torch.arange(batch.T.shape[1], device=device).view(1, -1).expand(batch.T.shape[0], -1)
-                base_logits = self.baseline_propensity(batch.X, t_idx.reshape(-1)).view(
-                    batch.T.shape[0], batch.T.shape[1], -1
+                bsz, seq_len = batch.T.shape
+                d_x = int(batch.X.shape[1])
+                t_idx = torch.arange(seq_len, device=device).view(1, -1).expand(bsz, -1)
+                x_rep = batch.X.float()[:, None, :].expand(bsz, seq_len, d_x)
+                base_logits = self.baseline_propensity(x_rep.reshape(-1, d_x), t_idx.reshape(-1)).view(
+                    bsz, seq_len, -1
                 )
                 logp_num = torch.log_softmax(base_logits, dim=-1)
             else:
@@ -182,6 +207,11 @@ class IPTWMSM(CausalEstimator):
             logp_num_obs = torch.gather(logp_num, dim=-1, index=t_obs).squeeze(-1)
         return logp_num_obs.cpu().numpy(), logp_den_obs.cpu().numpy()
 
+    def behavior_log_probs(self, data: TrajectoryBatch) -> np.ndarray:
+        """Return log P(T_t | history) for observed actions, shape [N,T]."""
+        _, logp_den = self._compute_log_probs(data)
+        return logp_den
+
     def _weights_up_to(self, logp_num: np.ndarray, logp_den: np.ndarray, mask: np.ndarray, t_end: int) -> np.ndarray:
         t_end = int(t_end)
         seq_len = logp_num.shape[1]
@@ -189,9 +219,19 @@ class IPTWMSM(CausalEstimator):
         valid = mask[:, : t_end + 1] > 0.5
         log_ratio = (logp_num[:, : t_end + 1] - logp_den[:, : t_end + 1]) * valid
         log_w = log_ratio.sum(axis=1)
-        w = np.exp(log_w)
+
+        if log_w.size == 0:
+            return np.zeros_like(log_w)
+
+        max_log_w = np.max(log_w)
+        w = np.exp(log_w - max_log_w)
         if self.cfg.clip is not None:
             w = np.clip(w, 0.0, float(self.cfg.clip))
+        if self.cfg.self_normalized:
+            sum_w = float(np.sum(w))
+            if not np.isfinite(sum_w) or sum_w <= 0.0:
+                return np.zeros_like(w)
+            w = w / sum_w
         return w
 
     def estimate_do(
@@ -212,6 +252,21 @@ class IPTWMSM(CausalEstimator):
         mask = data.mask.detach().cpu().numpy()
         T = data.T.detach().cpu().numpy()
         Y = data.Y.detach().cpu().numpy()
+        seq_len = int(T.shape[1])
+        max_h = min(int(horizon), seq_len - 1 - t0)
+        if max_h < 0:
+            mu = np.full(horizon + 1, np.nan, dtype=np.float64)
+            ci_low = mu.copy()
+            ci_high = mu.copy()
+            return {
+                "mu": mu,
+                "ci_low": ci_low,
+                "ci_high": ci_high,
+                "n": 0,
+                "subgroup_key": "all",
+                "valid": False,
+                "arm_support": 0,
+            }
 
         subgroup_name = "all"
         if subgroup is not None and "name" in subgroup:
@@ -220,6 +275,23 @@ class IPTWMSM(CausalEstimator):
             sel = np.asarray(subgroup["mask"]).astype(bool)
         else:
             sel = np.ones(T.shape[0], dtype=bool)
+        t_end_full = t0 + max_h
+        t_slice_full = T[:, t0 : t_end_full + 1]
+        matched_full = np.all(t_slice_full == action, axis=1)
+        arm_support = int(np.sum(sel & matched_full))
+        if arm_support == 0:
+            mu = np.full(horizon + 1, np.nan, dtype=np.float64)
+            ci_low = mu.copy()
+            ci_high = mu.copy()
+            return {
+                "mu": mu,
+                "ci_low": ci_low,
+                "ci_high": ci_high,
+                "n": 0,
+                "subgroup_key": subgroup_name,
+                "valid": False,
+                "arm_support": arm_support,
+            }
 
         rng = np.random.default_rng(int(seed))
         mu_samples = []
@@ -229,23 +301,24 @@ class IPTWMSM(CausalEstimator):
             if idx.size == 0:
                 mu_samples.append(np.full(horizon + 1, np.nan, dtype=np.float64))
                 continue
-            mu = np.zeros(horizon + 1, dtype=np.float64)
-            for h in range(horizon + 1):
+            mu = np.full(horizon + 1, np.nan, dtype=np.float64)
+            for h in range(max_h + 1):
                 t_end = t0 + h
                 w = self._weights_up_to(logp_num[idx], logp_den[idx], mask[idx], t_end)
-                arm = T[idx, t0] == action
+                t_slice = T[idx, t0 : t_end + 1]
+                arm = np.all(t_slice == action, axis=1)
                 if not np.any(arm):
-                    mu[h] = np.nan
-                else:
-                    y = Y[idx, t0 + h]
-                    w_sel = w[arm]
-                    y_sel = y[arm]
-                    mu[h] = float(np.sum(w_sel * y_sel) / max(1e-6, np.sum(w_sel)))
+                    continue
+                y = Y[idx, t0 + h]
+                w_sel = w[arm]
+                y_sel = y[arm]
+                mu[h] = float(np.sum(w_sel * y_sel) / max(1e-6, np.sum(w_sel)))
             mu_samples.append(mu)
         mu_samples = np.stack(mu_samples, axis=0)
         mu = np.nanmean(mu_samples, axis=0)
         ci_low, ci_high = _bootstrap_ci(mu_samples, alpha=0.05)
         n_eff = int(np.sum(sel))
+        valid = bool(np.isfinite(mu).all())
 
         return {
             "mu": mu.astype(np.float64),
@@ -253,6 +326,8 @@ class IPTWMSM(CausalEstimator):
             "ci_high": ci_high.astype(np.float64),
             "n": n_eff,
             "subgroup_key": subgroup_name,
+            "valid": valid,
+            "arm_support": arm_support,
         }
 
     def estimate_policy_value(

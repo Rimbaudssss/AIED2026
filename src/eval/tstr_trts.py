@@ -9,7 +9,7 @@ import pandas as pd
 import scipy.sparse as sp
 import torch
 import torch.nn as nn
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import SGDClassifier
 from sklearn.metrics import roc_auc_score
 
 from src.data import TrajectoryBatch
@@ -331,8 +331,14 @@ class _SAKTPredictor(nn.Module):
         return self.sakt(inp, mask)
 
 
-def _train_logreg(x_train: sp.csr_matrix | np.ndarray, y_train: np.ndarray) -> LogisticRegression:
-    clf = LogisticRegression(max_iter=200, solver="saga")
+def _train_logreg(x_train: sp.csr_matrix | np.ndarray, y_train: np.ndarray) -> SGDClassifier:
+    clf = SGDClassifier(
+        loss="log_loss",
+        max_iter=1000,
+        tol=1e-3,
+        learning_rate="optimal",
+        n_jobs=1,
+    )
     clf.fit(x_train, y_train.astype(int))
     return clf
 
@@ -441,17 +447,26 @@ def run_tstr_trts(
     predictor: str,
     seed: int = 0,
     save_calibration: bool = False,
+    max_train_samples: int = 20000,
 ) -> pd.DataFrame:
     rng = np.random.default_rng(int(seed))
     n_synth = int(n_synth)
-    idx = rng.integers(0, real_train.X.shape[0], size=n_synth)
+    max_train_samples = int(max_train_samples)
+    n_gen = min(n_synth, max_train_samples)
+    idx = rng.integers(0, real_train.X.shape[0], size=n_gen)
+    synth_mask = real_train.mask[idx]
+    synth_lengths = (
+        real_train.lengths[idx]
+        if real_train.lengths is not None
+        else synth_mask.sum(dim=1).clamp(min=1.0).long()
+    )
     synth = TrajectoryBatch(
         X=real_train.X[idx],
         A=real_train.A[idx],
         T=real_train.T[idx],
         Y=real_train.Y[idx],
-        mask=real_train.mask[idx],
-        lengths=real_train.lengths[idx],
+        mask=synth_mask,
+        lengths=synth_lengths,
     )
 
     ro = gen_model.rollout(synth, do_t=None, policy=None, horizon=None, t0=0, teacher_forcing=False)
@@ -461,7 +476,7 @@ def run_tstr_trts(
         X=synth.X,
         A=synth.A,
         T=synth.T,
-        Y=torch.as_tensor(y_sample),
+        Y=torch.as_tensor(y_sample, device=synth.X.device),
         mask=synth.mask,
         lengths=synth.lengths,
     )
@@ -472,9 +487,29 @@ def run_tstr_trts(
     )
     rows = []
     for setting, train_batch in [("TRTS", real_train), ("TSTR", synth)]:
+        current_n = int(train_batch.X.shape[0])
+        if current_n > max_train_samples:
+            keep_idx = rng.choice(current_n, max_train_samples, replace=False)
+            mask = train_batch.mask[keep_idx]
+            lengths = (
+                train_batch.lengths[keep_idx]
+                if train_batch.lengths is not None
+                else mask.sum(dim=1).clamp(min=1.0).long()
+            )
+            train_batch_sampled = TrajectoryBatch(
+                X=train_batch.X[keep_idx],
+                A=train_batch.A[keep_idx],
+                T=train_batch.T[keep_idx],
+                Y=train_batch.Y[keep_idx],
+                mask=mask,
+                lengths=lengths,
+            )
+        else:
+            train_batch_sampled = train_batch
+
         if predictor == "logreg":
             x_train, y_train = _flatten_batch_logreg(
-                train_batch, a_hash_vocab=A_HASH_VOCAB, t_vocab=t_vocab, t_hash_vocab=T_HASH_VOCAB
+                train_batch_sampled, a_hash_vocab=A_HASH_VOCAB, t_vocab=t_vocab, t_hash_vocab=T_HASH_VOCAB
             )
             x_test, y_test = _flatten_batch_logreg(
                 real_test, a_hash_vocab=A_HASH_VOCAB, t_vocab=t_vocab, t_hash_vocab=T_HASH_VOCAB
@@ -482,10 +517,10 @@ def run_tstr_trts(
             clf = _train_logreg(x_train, y_train)
             y_prob = clf.predict_proba(x_test)[:, 1]
         elif predictor == "mlp":
-            model = _train_mlp(train_batch, t_vocab=t_vocab)
+            model = _train_mlp(train_batch_sampled, t_vocab=t_vocab)
             y_prob, y_test = _predict_mlp(model, real_test)
         elif predictor == "sakt":
-            model = _train_sakt(train_batch, t_vocab=t_vocab)
+            model = _train_sakt(train_batch_sampled, t_vocab=t_vocab)
             y_prob_full = _predict_sakt(model, real_test)
             y_test_full = real_test.Y.detach().cpu().numpy()
             m = real_test.mask.detach().cpu().numpy()
@@ -510,7 +545,7 @@ def run_tstr_trts(
                 "rmse": metrics["rmse"],
                 "brier": metrics["brier"],
                 "ece": metrics["ece"],
-                "n_train": int(train_batch.X.shape[0]),
+                "n_train": int(train_batch_sampled.X.shape[0]),
                 "n_test": int(real_test.X.shape[0]),
             }
         )

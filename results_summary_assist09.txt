@@ -1,0 +1,204 @@
+dr_policy_values
+     model  dataset   policy  horizon  dr_value  dm_value  correction   w_mean  w_max  supported
+       crn assist09   always       29  0.002397  0.003023   -0.000626 0.245336   10.0        1.0
+       crn assist09 early_on       29  0.545478  0.547962   -0.002484 0.169224   10.0        1.0
+       crn assist09  late_on       29  0.678153  0.668719    0.009434 0.732177   10.0        1.0
+       crn assist09    never       29  0.781495  0.772346    0.009149 0.820245   10.0        1.0
+ diffusion assist09   always       29       NaN       NaN         NaN      NaN    NaN        0.0
+ diffusion assist09 early_on       29       NaN       NaN         NaN      NaN    NaN        0.0
+ diffusion assist09  late_on       29       NaN       NaN         NaN      NaN    NaN        0.0
+ diffusion assist09    never       29       NaN       NaN         NaN      NaN    NaN        0.0
+     rcgan assist09   always       29  0.064221  0.078717   -0.014496 0.246345   10.0        1.0
+     rcgan assist09 early_on       29  0.552020  0.560545   -0.008525 0.170210   10.0        1.0
+     rcgan assist09  late_on       29  0.733490  0.722419    0.011071 0.733027   10.0        1.0
+     rcgan assist09    never       29  0.802098  0.778761    0.023338 0.821243   10.0        1.0
+scm_causal assist09   always       29  0.045029  0.049593   -0.004563 0.246559   10.0        1.0
+scm_causal assist09 early_on       29  0.658465  0.660707   -0.002242 0.170433   10.0        1.0
+scm_causal assist09  late_on       29  0.843195  0.776367    0.066828 0.735886   10.0        1.0
+scm_causal assist09    never       29  0.954853  0.891631    0.063222 0.824412   10.0        1.0
+   timegan assist09   always       29  0.024443  0.030306   -0.005864 0.245556   10.0        1.0
+   timegan assist09 early_on       29  0.516417  0.521638   -0.005221 0.169415   10.0        1.0
+   timegan assist09  late_on       29  0.661380  0.633473    0.027907 0.731617   10.0        1.0
+   timegan assist09    never       29  0.756950  0.726439    0.030511 0.819380   10.0        1.0
+       vae assist09   always       29  0.001292  0.001709   -0.000418 0.245111   10.0        1.0
+       vae assist09 early_on       29  0.522141  0.522837   -0.000696 0.168994   10.0        1.0
+       vae assist09  late_on       29  0.680273  0.675440    0.004833 0.734156   10.0        1.0
+       vae assist09    never       29  0.784563  0.781715    0.002849 0.821629   10.0        1.0
+
+dr_policy_summary
+     model  dataset  horizon  dr_value_mean  dm_value_mean  correction_mean  policy_supported
+       crn assist09       29       0.501881       0.498013         0.003868               1.0
+ diffusion assist09       29            NaN            NaN              NaN               0.0
+     rcgan assist09       29       0.537957       0.535110         0.002847               1.0
+scm_causal assist09       29       0.625386       0.594574         0.030811               1.0
+   timegan assist09       29       0.489797       0.477964         0.011833               1.0
+       vae assist09       29       0.497067       0.495425         0.001642               1.0
+
+factual_auc
+     model  dataset  factual_auc  n_samples  supported
+       crn assist09     0.829351      15206        1.0
+ diffusion assist09          NaN          0        0.0
+     rcgan assist09     0.832763      15206        1.0
+scm_causal assist09     0.733327      15206        1.0
+   timegan assist09     0.820373      15206        1.0
+       vae assist09     0.855865      15206        1.0
+
+oracle_ite_metrics
+     model  dataset  t0  horizon  pehe  ite_rmse  ate_true  ate_hat  ate_abs_error  ate_rmse  n_effective  tau_true_mean  tau_hat_mean  n_gen
+       crn assist09  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn assist09   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn assist09  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn assist09   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn assist09  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn assist09   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn assist09   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn assist09   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       crn assist09   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion assist09  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion assist09  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion assist09  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion assist09   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion assist09   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion assist09   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion assist09   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion assist09   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+ diffusion assist09   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan assist09  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan assist09  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan assist09   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan assist09   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan assist09   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan assist09   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan assist09   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan assist09  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+     rcgan assist09   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal assist09   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal assist09  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal assist09  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal assist09  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal assist09   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal assist09   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal assist09   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal assist09   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+scm_causal assist09   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan assist09   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan assist09   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan assist09   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan assist09   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan assist09  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan assist09   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan assist09   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan assist09  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+   timegan assist09  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae assist09  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae assist09  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae assist09   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae assist09   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae assist09   5       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae assist09   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae assist09   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae assist09   0       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+       vae assist09  10       29   NaN       NaN       NaN      NaN            NaN       NaN            0            NaN           NaN      0
+
+oracle_policy_metrics
+     model  dataset   policy  horizon  oracle_value  gen_value  value_abs_error  regret_oracle
+       crn assist09   always       29           NaN        NaN              NaN            NaN
+       crn assist09 early_on       29           NaN        NaN              NaN            NaN
+       crn assist09  late_on       29           NaN        NaN              NaN            NaN
+       crn assist09    never       29           NaN        NaN              NaN            NaN
+ diffusion assist09   always       29           NaN        NaN              NaN            NaN
+ diffusion assist09 early_on       29           NaN        NaN              NaN            NaN
+ diffusion assist09  late_on       29           NaN        NaN              NaN            NaN
+ diffusion assist09    never       29           NaN        NaN              NaN            NaN
+     rcgan assist09   always       29           NaN        NaN              NaN            NaN
+     rcgan assist09 early_on       29           NaN        NaN              NaN            NaN
+     rcgan assist09  late_on       29           NaN        NaN              NaN            NaN
+     rcgan assist09    never       29           NaN        NaN              NaN            NaN
+scm_causal assist09   always       29           NaN        NaN              NaN            NaN
+scm_causal assist09 early_on       29           NaN        NaN              NaN            NaN
+scm_causal assist09  late_on       29           NaN        NaN              NaN            NaN
+scm_causal assist09    never       29           NaN        NaN              NaN            NaN
+   timegan assist09   always       29           NaN        NaN              NaN            NaN
+   timegan assist09 early_on       29           NaN        NaN              NaN            NaN
+   timegan assist09  late_on       29           NaN        NaN              NaN            NaN
+   timegan assist09    never       29           NaN        NaN              NaN            NaN
+       vae assist09   always       29           NaN        NaN              NaN            NaN
+       vae assist09 early_on       29           NaN        NaN              NaN            NaN
+       vae assist09  late_on       29           NaN        NaN              NaN            NaN
+       vae assist09    never       29           NaN        NaN              NaN            NaN
+
+tstr_trts
+     model  dataset predictor setting      auc     rmse    brier      ece  n_train  n_test
+       crn assist09    logreg    TRTS 0.842752 0.363841 0.132380 0.026529     3082     770
+       crn assist09    logreg    TSTR 0.828713 0.368386 0.135708 0.011545     2048     770
+       crn assist09       mlp    TRTS 0.591768 0.487882 0.238029 0.095064     3082     770
+       crn assist09       mlp    TSTR 0.681979 0.479562 0.229980 0.080640     2048     770
+       crn assist09      sakt    TRTS 0.693933 0.477661 0.228160 0.134649     3082     770
+       crn assist09      sakt    TSTR 0.706762 0.508075 0.258140 0.221969     2048     770
+ diffusion assist09    logreg    TRTS 0.842895 0.363020 0.131784 0.016060     3082     770
+ diffusion assist09    logreg    TSTR 0.826763 0.440367 0.193923 0.219740     2048     770
+ diffusion assist09       mlp    TRTS 0.715327 0.468267 0.219274 0.133635     3082     770
+ diffusion assist09       mlp    TSTR 0.493859 0.519190 0.269558 0.185218     2048     770
+ diffusion assist09      sakt    TRTS 0.745278 0.495601 0.245620 0.269375     3082     770
+ diffusion assist09      sakt    TSTR 0.616319 0.480169 0.230562 0.041245     2048     770
+     rcgan assist09    logreg    TRTS 0.842281 0.379560 0.144066 0.097895     3082     770
+     rcgan assist09    logreg    TSTR 0.824945 0.372429 0.138703 0.031668     2048     770
+     rcgan assist09       mlp    TRTS 0.751688 0.460754 0.212295 0.149618     3082     770
+     rcgan assist09       mlp    TSTR 0.597925 0.479931 0.230334 0.037865     2048     770
+     rcgan assist09      sakt    TRTS 0.698984 0.511830 0.261970 0.205689     3082     770
+     rcgan assist09      sakt    TSTR 0.713866 0.475690 0.226281 0.106505     2048     770
+scm_causal assist09    logreg    TRTS 0.842887 0.362530 0.131428 0.008707     3082     770
+scm_causal assist09    logreg    TSTR 0.826609 0.376948 0.142090 0.068024     2048     770
+scm_causal assist09       mlp    TRTS 0.459968 0.492692 0.242745 0.097088     3082     770
+scm_causal assist09       mlp    TSTR 0.631758 0.484987 0.235212 0.112245     2048     770
+scm_causal assist09      sakt    TRTS 0.613558 0.479646 0.230061 0.047036     3082     770
+scm_causal assist09      sakt    TSTR 0.676185 0.463546 0.214875 0.036257     2048     770
+   timegan assist09    logreg    TRTS 0.842928 0.362466 0.131381 0.013216     3082     770
+   timegan assist09    logreg    TSTR 0.822219 0.370253 0.137087 0.021400     2048     770
+   timegan assist09       mlp    TRTS 0.650658 0.478722 0.229175 0.136683     3082     770
+   timegan assist09       mlp    TSTR 0.536955 0.487160 0.237325 0.067715     2048     770
+   timegan assist09      sakt    TRTS 0.628229 0.488942 0.239065 0.112537     3082     770
+   timegan assist09      sakt    TSTR 0.716462 0.498489 0.248491 0.213565     2048     770
+       vae assist09    logreg    TRTS 0.843046 0.364017 0.132508 0.030323     3082     770
+       vae assist09    logreg    TSTR 0.833256 0.368299 0.135644 0.026901     2048     770
+       vae assist09       mlp    TRTS 0.539796 0.483913 0.234172 0.037932     3082     770
+       vae assist09       mlp    TSTR 0.762195 0.453698 0.205842 0.138585     2048     770
+       vae assist09      sakt    TRTS 0.629665 0.482920 0.233212 0.076544     3082     770
+       vae assist09      sakt    TSTR 0.644615 0.495514 0.245534 0.139133     2048     770
+
+leakage_metrics
+     model  dataset  t_leakage_auc
+       crn assist09            NaN
+ diffusion assist09            NaN
+     rcgan assist09            NaN
+scm_causal assist09       0.615432
+   timegan assist09            NaN
+       vae assist09            NaN
+
+privacy_summary
+     model  dataset publish_mode  nn_mean  nn_p01  nn_p05  nn_p10  x_noise_scale  a_flip_prob  t_flip_prob  attack_auc  attack_acc  attack_balanced_acc
+       crn assist09       y_only 0.027141     0.0     0.0     0.0            0.0          0.0          0.0    0.500000    0.493080             0.501867
+ diffusion assist09       y_only 0.043548     0.0     0.0     0.0            0.0          0.0          0.0    0.492182    0.518166             0.497432
+     rcgan assist09       y_only 0.035015     0.0     0.0     0.0            0.0          0.0          0.0    0.507428    0.560554             0.510115
+scm_causal assist09       y_only 0.033216     0.0     0.0     0.0            0.0          0.0          0.0    0.519992    0.558824             0.504357
+   timegan assist09       y_only 0.029403     0.0     0.0     0.0            0.0          0.0          0.0    0.506042    0.481834             0.502568
+       vae assist09       y_only 0.026376     0.0     0.0     0.0            0.0          0.0          0.0    0.499817    0.485294             0.510971
+
+run_config
+     model  dataset  do_horizon_train  do_horizon_eval  causal_every  cf_every
+       crn assist09               NaN               29           NaN       NaN
+ diffusion assist09               NaN               29           NaN       NaN
+     rcgan assist09               NaN               29           NaN       NaN
+scm_causal assist09               3.0               29          20.0      10.0
+   timegan assist09               NaN               29           NaN       NaN
+       vae assist09               NaN               29           NaN       NaN
+
+oracle_availability
+unsupported_ratio: 1.000
+datasets_without_oracle: assist09
+
+oracle_irt_synth_summary
+pehe: mean=nan median=nan p25=nan p75=nan
+ate_rmse: mean=nan median=nan p25=nan p75=nan
+policy_regret: mean=nan median=nan p25=nan p75=nan
+

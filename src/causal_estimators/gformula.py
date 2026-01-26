@@ -149,8 +149,9 @@ class GFormula(CausalEstimator):
         y_prev = torch.zeros(X.shape[0], 1, device=device)
         y_pred = []
 
+        t_end = min(seq_len, t0 + horizon + 1)
         for t in range(seq_len):
-            if t == t0:
+            if t0 <= t < t_end:
                 t_use = torch.full_like(T[:, t], int(action))
             else:
                 t_use = T[:, t]

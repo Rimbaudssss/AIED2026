@@ -1,0 +1,7 @@
+model,dataset,t_leakage_auc
+scm_causal,irt_synth,0.6689067782960645
+rcgan,irt_synth,
+vae,irt_synth,
+diffusion,irt_synth,
+crn,irt_synth,
+timegan,irt_synth,

@@ -1,0 +1,7 @@
+model,dataset,factual_auc,n_samples,supported,skip_reason
+scm_causal,irt_synth,0.6914212915066342,120000,1.0,
+rcgan,irt_synth,0.7088943140994388,120000,1.0,
+vae,irt_synth,0.7212475316970034,120000,1.0,
+diffusion,irt_synth,,0,0.0,unsupported model=diffusion
+crn,irt_synth,0.7179950129403998,120000,1.0,
+timegan,irt_synth,0.5919920641684281,120000,1.0,

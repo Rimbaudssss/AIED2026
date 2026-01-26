@@ -37,6 +37,44 @@ def _device_from_arg(device: str) -> torch.device:
     return torch.device(device)
 
 
+def _rbf_kernel(x: torch.Tensor, y: torch.Tensor, sigma: torch.Tensor, eps: float) -> torch.Tensor:
+    dist2 = torch.cdist(x, y) ** 2
+    return torch.exp(-dist2 / (2.0 * sigma**2 + eps))
+
+
+def weighted_mmd_rbf(
+    x: torch.Tensor,
+    z: torch.Tensor,
+    w: torch.Tensor,
+    *,
+    sigma: float,
+    eps: float,
+) -> torch.Tensor:
+    if x.ndim == 1:
+        x = x[:, None]
+    if z.ndim == 1:
+        z = z[:, None]
+
+    x = x.float()
+    z = z.float()
+    w = w.float()
+
+    if x.numel() == 0 or z.numel() == 0:
+        return torch.tensor(0.0, device=x.device)
+
+    w = w / (w.sum() + eps)
+    sigma_t = torch.tensor(float(sigma), device=x.device)
+
+    k_xx = _rbf_kernel(x, x, sigma_t, eps)
+    k_zz = _rbf_kernel(z, z, sigma_t, eps)
+    k_xz = _rbf_kernel(x, z, sigma_t, eps)
+
+    term_xx = (w[:, None] * w[None, :] * k_xx).sum()
+    term_zz = k_zz.mean()
+    term_xz = (w[:, None] * k_xz).sum() / float(z.shape[0])
+    return (term_xx + term_zz - 2.0 * term_xz).clamp(min=0.0)
+
+
 def _build_dataset(args) -> tuple[torch.utils.data.Dataset, dict]:
     if args.data_npz:
         ds = NPZSequenceDataset(args.data_npz)
@@ -146,6 +184,12 @@ def main(argv: Optional[list[str]] = None) -> int:
     p.add_argument("--w_do", type=float, default=0.5)
     p.add_argument("--w_advT", type=float, default=0.1)
     p.add_argument("--w_advT_causal", type=float, default=None)
+    p.add_argument(
+        "--advT_on_kc",
+        action="store_true",
+        default=False,
+        help="Enable GRL on K_c (off by default; can hurt adaptive-policy settings).",
+    )
     p.add_argument("--w_t_pred_spurious", type=float, default=0.1)
     p.add_argument("--w_cf", type=float, default=0.0)
     p.add_argument("--grl_lambda", type=float, default=1.0)
@@ -157,8 +201,23 @@ def main(argv: Optional[list[str]] = None) -> int:
     p.add_argument("--do_min_arm_samples", type=int, default=8)
     p.add_argument("--do_actions", type=str, default="0,1", help="comma-separated action ids")
     p.add_argument("--cf_num_time_samples", type=int, default=1, help="counterfactual time samples per batch")
+    p.add_argument("--causal_every", type=int, default=20, help="compute do-loss every N steps")
+    p.add_argument("--cf_every", type=int, default=20, help="compute cf-loss every N steps")
     p.add_argument("--do_horizon", type=int, default=5, help="multi-step do-alignment horizon")
-    p.add_argument("--ref_estimator", type=str, default="gformula", choices=["gformula", "iptw_msm"])
+    p.add_argument("--do_huber_delta", type=float, default=1.0, help="Huber delta for do-alignment loss")
+    p.add_argument(
+        "--do_weighted_mmd",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Use propensity-weighted MMD in single-step do-alignment fallback.",
+    )
+    p.add_argument("--do_eps", type=float, default=0.001)
+    p.add_argument("--do_w_clip", type=float, default=10.0)
+    p.add_argument("--do_sigma", type=float, default=1.0)
+    p.add_argument("--do_ess_min", type=float, default=5.0)
+    p.add_argument("--do_warmup_epochs", type=int, default=0)
+    p.add_argument("--do_debug", action="store_true", default=False)
+    p.add_argument("--ref_estimator", type=str, default="iptw_msm", choices=["gformula", "iptw_msm"])
     p.add_argument("--disc_input", type=str, default="logits", choices=["logits", "sampled"])
 
     args = p.parse_args(argv)
@@ -238,6 +297,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     opt_d = torch.optim.Adam(d_seq.parameters(), lr=args.lr_d)
 
     do_actions = [int(x.strip()) for x in args.do_actions.split(",") if x.strip()]
+    loss_do_fn = torch.nn.L1Loss()
 
     ref_estimator = None
     if args.w_do > 0.0 and int(args.do_horizon) > 0:
@@ -250,7 +310,7 @@ def main(argv: Optional[list[str]] = None) -> int:
             X=X_full, A=A_full, T=T_full, Y=Y_full, mask=M_full, lengths=compute_lengths(M_full)
         )
         if args.ref_estimator == "iptw_msm":
-            ref_estimator = IPTWMSM()
+            ref_estimator = IPTWMSM(clip=10.0)
         else:
             ref_estimator = GFormula()
         ref_estimator.fit(full_batch)
@@ -263,12 +323,17 @@ def main(argv: Optional[list[str]] = None) -> int:
         if t_policy_clf is not None:
             t_policy_clf.train()
 
+        causal_every = max(1, int(args.causal_every))
+        cf_every = max(1, int(args.cf_every))
+        global_step = 0
         for ep in range(1, epochs + 1):
             for batch in dl:
                 batch = move_batch(batch, device)
                 X, A, T, Y, M = batch.X, batch.A, batch.T, batch.Y, batch.mask
 
                 bsz, seq_len = A.shape[0], A.shape[1]
+                should_causal = (global_step % causal_every == 0)
+                should_cf = (global_step % cf_every == 0)
                 tf_eps_mode = "zero" if name == "A" else "random"
                 eps_seq = (
                     torch.zeros(bsz, seq_len, gen_cfg.d_eps, device=device)
@@ -336,12 +401,15 @@ def main(argv: Optional[list[str]] = None) -> int:
                 loss_advT = torch.tensor(0.0, device=device)
                 loss_t_pred = torch.tensor(0.0, device=device)
                 loss_cf = torch.tensor(0.0, device=device)
+                do_weight = float(args.w_do)
+                if use_causal and int(args.do_warmup_epochs) > 0:
+                    do_weight *= min(1.0, ep / float(args.do_warmup_epochs))
                 if use_causal:
                     if not (gen_cfg.t_is_discrete and T.ndim == 2):
                         # do-alignment and advT are implemented for discrete actions in this scaffold.
                         pass
                     else:
-                        if args.w_do > 0.0 and int(args.do_horizon) > 0 and ref_estimator is not None:
+                        if do_weight > 0.0 and should_causal and int(args.do_horizon) > 0 and ref_estimator is not None:
                             t0 = int(torch.randint(low=0, high=seq_len, size=(1,), device=device).item())
                             action = int(
                                 do_actions[
@@ -351,11 +419,12 @@ def main(argv: Optional[list[str]] = None) -> int:
                             horizon_eff = min(int(args.do_horizon), max(0, seq_len - t0 - 1))
                             steps = t0 + horizon_eff + 1
                             t_do = torch.full((bsz,), action, device=device, dtype=T.dtype)
+                            do_map = {t: t_do for t in range(t0, steps)}
                             ro_do = gen.rollout(  # type: ignore[attr-defined]
                                 x=X,
                                 a=A,
                                 t_obs=T,
-                                do_t={t0: t_do},
+                                do_t=do_map,
                                 mask=M,
                                 eps=eps_seq,
                                 steps=steps,
@@ -387,12 +456,12 @@ def main(argv: Optional[list[str]] = None) -> int:
                                 seed=int(args.seed),
                             )
                             ref_mu = torch.as_tensor(ref["mu"], device=device).float()
-                            loss_do = torch.mean((gen_mu[: ref_mu.shape[0]] - ref_mu) ** 2)
+                            loss_do = loss_do_fn(gen_mu[: ref_mu.shape[0]], ref_mu)
                             print(
                                 f"      loss_do_multistep={float(loss_do.item()):.4f} "
                                 f"do_horizon={int(horizon_eff)} t0_sampled={t0}"
                             )
-                        elif args.w_do > 0.0:
+                        elif do_weight > 0.0 and should_causal:
                             # Fallback: single-step MMD alignment (legacy).
                             if args.do_time_sampling == "fixed":
                                 do_time_indices = [int(args.do_time_index)]
@@ -405,11 +474,21 @@ def main(argv: Optional[list[str]] = None) -> int:
                                 do_time_indices = list(range(seq_len))
 
                             x_feat = gen.x_proj(X.float())
+                            t_probs_all = None
+                            if args.do_weighted_mmd and t_clf is not None and k_c.shape[-1] > 0:
+                                with torch.no_grad():
+                                    t_logits_all = t_clf(k_c[:, :-1, :].detach())
+                                    t_probs_all = torch.softmax(t_logits_all, dim=-1)
                             do_terms = 0
                             for t_idx in do_time_indices:
                                 if not (0 <= t_idx < seq_len):
                                     continue
+                                if t_probs_all is not None and t_idx >= t_probs_all.shape[1]:
+                                    continue
                                 valid = M[:, t_idx] > 0.5
+                                valid_idx = valid.nonzero(as_tuple=False).squeeze(-1)
+                                if valid_idx.numel() == 0:
+                                    continue
                                 if valid.sum().item() < args.do_min_arm_samples:
                                     continue
 
@@ -425,18 +504,52 @@ def main(argv: Optional[list[str]] = None) -> int:
                                     feat_do = torch.cat([x_feat, k_t, y_prob_do], dim=-1)[valid]
 
                                     sel = (T[:, t_idx].long() == a_val) & valid
-                                    if sel.sum().item() < args.do_min_arm_samples:
+                                    sel_idx = sel.nonzero(as_tuple=False).squeeze(-1)
+                                    if sel_idx.numel() < args.do_min_arm_samples:
                                         continue
-                                    y_real = Y[sel, t_idx].float().view(-1, 1)
-                                    feat_real = torch.cat([x_feat[sel], k_t[sel], y_real], dim=-1)
-                                    loss_do = loss_do + mmd_rbf(feat_real, feat_do)
+                                    y_real = Y[sel_idx, t_idx].float().view(-1, 1)
+                                    feat_real = torch.cat([x_feat[sel_idx], k_t[sel_idx], y_real], dim=-1)
+                                    if (not torch.isfinite(feat_real).all()) or (not torch.isfinite(feat_do).all()):
+                                        continue
+                                    if args.do_weighted_mmd and t_probs_all is not None:
+                                        e = t_probs_all[sel_idx, t_idx, a_val].detach()
+                                        e = e.clamp(min=args.do_eps, max=1.0 - args.do_eps)
+                                        p_a = t_probs_all[valid_idx, t_idx, a_val].detach().mean().clamp(min=args.do_eps)
+                                        w_raw = (p_a / e).clamp(max=args.do_w_clip)
+                                        w = w_raw / (w_raw.sum() + args.do_eps)
+                                        ess = 1.0 / (w.pow(2).sum() + args.do_eps)
+                                        if ess < args.do_ess_min:
+                                            if args.do_debug:
+                                                print(
+                                                    f"      skip_weighted_mmd t={t_idx} a={a_val} "
+                                                    f"ess={float(ess.item()):.2f} n={int(sel.sum().item())} "
+                                                    f"w_max={float(w_raw.max().item()):.2f}"
+                                                )
+                                            continue
+                                        loss_do = loss_do + weighted_mmd_rbf(
+                                            feat_real,
+                                            feat_do,
+                                            w,
+                                            sigma=float(args.do_sigma),
+                                            eps=float(args.do_eps),
+                                        )
+                                    else:
+                                        loss_do = loss_do + mmd_rbf(feat_real, feat_do)
                                     do_terms += 1
 
                             if do_terms > 0:
                                 loss_do = loss_do / float(do_terms)
+                            else:
+                                loss_do = torch.tensor(0.0, device=device)
 
-                        # Adversarial deconfounding (GRL): make latent K_c less predictive of T_t.
-                        if w_advT_causal > 0.0 and t_clf is not None and opt_tclf is not None and k_c.shape[-1] > 0:
+                        # Optional GRL on K_c (disabled by default to avoid removing policy-dependent signal).
+                        if (
+                            w_advT_causal > 0.0
+                            and args.advT_on_kc
+                            and t_clf is not None
+                            and opt_tclf is not None
+                            and k_c.shape[-1] > 0
+                        ):
                             with torch.no_grad():
                                 k_repr_detached = k_c[:, :-1, :].detach()
                             t_logits_clf = t_clf(k_repr_detached)
@@ -467,7 +580,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                             loss_t_pred = treatment_ce_loss(t_logits_policy, T.long(), mask=M)
 
                         # Counterfactual consistency: intervening at time t must not change K_{0:t}.
-                        if args.w_cf > 0.0:
+                        if args.w_cf > 0.0 and should_cf:
                             num_actions = int(meta["t_vocab_size"] or args.t_vocab_size)
                             cf_time_indices = (
                                 torch.randint(low=0, high=seq_len, size=(int(args.cf_num_time_samples),), device=device)
@@ -501,7 +614,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 if use_gan:
                     loss_g = loss_g + args.w_adv * loss_adv
                 if use_causal:
-                    loss_g = loss_g + args.w_do * loss_do
+                    loss_g = loss_g + do_weight * loss_do
                     loss_g = loss_g + w_advT_causal * loss_advT
                     loss_g = loss_g + w_t_pred_spurious * loss_t_pred
                     loss_g = loss_g + args.w_cf * loss_cf
@@ -509,6 +622,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 opt_g.zero_grad(set_to_none=True)
                 loss_g.backward()
                 opt_g.step()
+                global_step += 1
 
             ckpt = {
                 "stage": name,

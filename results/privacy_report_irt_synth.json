@@ -1,0 +1,158 @@
+[
+  {
+    "dataset": "irt_synth",
+    "model": "scm_causal",
+    "nn_distance": {
+      "metric": "embedding_l2",
+      "mean": 0.00023445516218938145,
+      "p01": 0.0,
+      "p05": 0.0,
+      "p10": 0.0
+    },
+    "publish_mode": "y_only",
+    "perturbation": {
+      "x_noise_scale": 0.0,
+      "a_flip_prob": 0.0,
+      "t_flip_prob": 0.0
+    },
+    "mia": {
+      "attack_auc": 0.49327642511249437,
+      "attack_acc": 0.5115,
+      "attack_balanced_acc": 0.49481683047905445,
+      "features": [
+        "recon_error",
+        "avg_confidence"
+      ]
+    }
+  },
+  {
+    "dataset": "irt_synth",
+    "model": "rcgan",
+    "nn_distance": {
+      "metric": "embedding_l2",
+      "mean": 0.00030775608663269685,
+      "p01": 0.0,
+      "p05": 0.0,
+      "p10": 0.0
+    },
+    "publish_mode": "y_only",
+    "perturbation": {
+      "x_noise_scale": 0.0,
+      "a_flip_prob": 0.0,
+      "t_flip_prob": 0.0
+    },
+    "mia": {
+      "attack_auc": 0.5542092436068945,
+      "attack_acc": 0.5566666666666666,
+      "attack_balanced_acc": 0.5422862607657354,
+      "features": [
+        "recon_error",
+        "avg_confidence"
+      ]
+    }
+  },
+  {
+    "dataset": "irt_synth",
+    "model": "vae",
+    "nn_distance": {
+      "metric": "embedding_l2",
+      "mean": 0.0004553647729392332,
+      "p01": 0.0,
+      "p05": 0.0,
+      "p10": 0.0
+    },
+    "publish_mode": "y_only",
+    "perturbation": {
+      "x_noise_scale": 0.0,
+      "a_flip_prob": 0.0,
+      "t_flip_prob": 0.0
+    },
+    "mia": {
+      "attack_auc": 0.5319625907970238,
+      "attack_acc": 0.5418333333333333,
+      "attack_balanced_acc": 0.5249512156021625,
+      "features": [
+        "recon_error",
+        "avg_confidence"
+      ]
+    }
+  },
+  {
+    "dataset": "irt_synth",
+    "model": "diffusion",
+    "nn_distance": {
+      "metric": "embedding_l2",
+      "mean": 0.006282998248744898,
+      "p01": 0.0,
+      "p05": 0.0,
+      "p10": 0.0
+    },
+    "publish_mode": "y_only",
+    "perturbation": {
+      "x_noise_scale": 0.0,
+      "a_flip_prob": 0.0,
+      "t_flip_prob": 0.0
+    },
+    "mia": {
+      "attack_auc": 0.49230626513283726,
+      "attack_acc": 0.501,
+      "attack_balanced_acc": 0.49412514234541016,
+      "features": [
+        "recon_error",
+        "avg_confidence"
+      ]
+    }
+  },
+  {
+    "dataset": "irt_synth",
+    "model": "crn",
+    "nn_distance": {
+      "metric": "embedding_l2",
+      "mean": 0.00040412119134286204,
+      "p01": 0.0,
+      "p05": 0.0,
+      "p10": 0.0
+    },
+    "publish_mode": "y_only",
+    "perturbation": {
+      "x_noise_scale": 0.0,
+      "a_flip_prob": 0.0,
+      "t_flip_prob": 0.0
+    },
+    "mia": {
+      "attack_auc": 0.4956436085528862,
+      "attack_acc": 0.5015,
+      "attack_balanced_acc": 0.4972242645026479,
+      "features": [
+        "recon_error",
+        "avg_confidence"
+      ]
+    }
+  },
+  {
+    "dataset": "irt_synth",
+    "model": "timegan",
+    "nn_distance": {
+      "metric": "embedding_l2",
+      "mean": 0.001326928904318063,
+      "p01": 0.0,
+      "p05": 0.0,
+      "p10": 0.0
+    },
+    "publish_mode": "y_only",
+    "perturbation": {
+      "x_noise_scale": 0.0,
+      "a_flip_prob": 0.0,
+      "t_flip_prob": 0.0
+    },
+    "mia": {
+      "attack_auc": 0.4928017100797134,
+      "attack_acc": 0.4698333333333333,
+      "attack_balanced_acc": 0.4910204922110803,
+      "features": [
+        "recon_error",
+        "avg_confidence"
+      ]
+    }
+  }
+]

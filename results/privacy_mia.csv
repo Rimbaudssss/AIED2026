@@ -1,0 +1,7 @@
+model,dataset,attack_features,attack_auc,attack_acc,attack_balanced_acc,n_in,n_out
+scm_causal,irt_synth,"recon_error,avg_confidence",0.49327642511249437,0.5115,0.49481683047905445,16000,4000
+rcgan,irt_synth,"recon_error,avg_confidence",0.5542092436068945,0.5566666666666666,0.5422862607657354,16000,4000
+vae,irt_synth,"recon_error,avg_confidence",0.5319625907970238,0.5418333333333333,0.5249512156021625,16000,4000
+diffusion,irt_synth,"recon_error,avg_confidence",0.49230626513283726,0.501,0.49412514234541016,16000,4000
+crn,irt_synth,"recon_error,avg_confidence",0.4956436085528862,0.5015,0.4972242645026479,16000,4000
+timegan,irt_synth,"recon_error,avg_confidence",0.4928017100797134,0.4698333333333333,0.4910204922110803,16000,4000
