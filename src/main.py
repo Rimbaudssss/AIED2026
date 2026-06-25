@@ -80,12 +80,11 @@ DATASET_PATHS = {
 
 
 # Choose which datasets / models to run
-ACTIVE_DATASETS = ["statics"]  # options: ["oulad","assist09",  "statics","irt_synth"]
+ACTIVE_DATASETS = ["irt_synth"]  # options: ["oulad","assist09",  "statics","irt_synth"]
 ACTIVE_MODELS = [
-
-    "scm_causal", "rcgan", "vae", "diffusion", "crn", "timegan"
-
-]  # options: [ "scm_causal", "rcgan", "vae", "diffusion", "crn", "timegan"]
+    "scm_fidelity",
+]
+# options: [ "scm_causal", "scm_causal_wo_do", "scm_causal_wo_debias", "scm_causal_wo_cf", "rcgan", "vae", "diffusion", "crn", "timegan", "scm", "scm_fidelity"]
 
 # Common training knobs (defaults)
 COMMON_KNOBS = dict(
@@ -159,8 +158,8 @@ DATASET_SPECIFIC_KNOBS = {
     "k_c_ratio": 0.5,
     "w_advT_causal": 0.05,
 
-    "w_y": 1,          # 强迫模型记住基本事实。
-    "w_do": 0.8,         # 适当提高因果权重，在削弱 GAN 后，让它主导生成规律。
+    "w_y": 1,          # 强迫模型记住基本事实�?
+    "w_do": 0.8,         # 适当提高因果权重，在削弱 GAN 后，让它主导生成规律�?
 
     "do_horizon_train": 2,
     "epochs_c": 20
@@ -188,23 +187,23 @@ _SCM_BASE_KNOBS = dict(
     cf_num_time_samples=1,
 )
 
+_SCM_CAUSAL_KNOBS = dict(
+    _SCM_BASE_KNOBS,
+    w_advT_causal=0.02,
+    w_t_pred_spurious=0.1,
+    do_horizon_train=1,
+    w_do=0.05,
+    cf_every=10,
+    w_cf=0.02,
+)
+
 MODEL_KNOBS = {
     "scm": dict(_SCM_BASE_KNOBS, w_advT_causal=0.0, w_t_pred_spurious=0.1),
-    "scm_fidelity": dict(
-        _SCM_BASE_KNOBS,
-        w_do=0.0,
-        w_cf=0.0,
-        w_advT_causal=0.0,
-        w_t_pred_spurious=0.0,
-    ),
-    "scm_causal": dict(
-    _SCM_BASE_KNOBS, 
-    w_advT_causal=0.02,    # <--- 改为 0.0，彻底关掉 Kc 的 GRL
-    w_t_pred_spurious=0.1, 
-    do_horizon_train=1,
-    w_do=0.05,             
-    cf_every=10,
-    w_cf=0.02),
+    "scm_fidelity": dict(_SCM_CAUSAL_KNOBS, w_do=0.0),
+    "scm_causal": dict(_SCM_CAUSAL_KNOBS),
+    "scm_causal_wo_do": dict(_SCM_CAUSAL_KNOBS, w_do=0.0),
+    "scm_causal_wo_debias": dict(_SCM_CAUSAL_KNOBS, w_advT_causal=0.0),
+    "scm_causal_wo_cf": dict(_SCM_CAUSAL_KNOBS, w_cf=0.0),
     "rcgan": dict(
         epochs_a=30,
         epochs_b=30,
@@ -1217,7 +1216,7 @@ def _train_scm_or_rcgan(
 ) -> Path:
     out_dir.mkdir(parents=True, exist_ok=True)
     nan_debugger = None
-    if model_name == "scm_causal":
+    if str(model_name).startswith("scm_causal"):
         try:
             from src.diagnostics import NaNDebugger
 
@@ -2375,7 +2374,11 @@ def main(argv: Optional[list[str]] = None) -> int:
             if dataset_knobs:
                 model_dataset_knobs = dict(dataset_knobs)
                 model_dataset_knobs.pop("ref_estimator", None)
-                if model_key != "scm_causal":
+                if str(model_key).startswith("scm_causal_wo_"):
+                    model_dataset_knobs.pop("w_do", None)
+                    model_dataset_knobs.pop("w_advT_causal", None)
+                    model_dataset_knobs.pop("w_cf", None)
+                elif model_key != "scm_causal":
                     model_dataset_knobs.pop("w_do", None)
                 knobs.update(model_dataset_knobs)
                 knobs["ref_estimator"] = ref_estimator
@@ -3100,6 +3103,84 @@ def main(argv: Optional[list[str]] = None) -> int:
     run_config_manifest = run_config_df.where(pd.notnull(run_config_df), None).to_dict(orient="records")
     manifest["run_config"] = run_config_manifest
 
+    ablation_models = {
+        "scm_causal": "full",
+        "scm_causal_wo_do": "w/o L_do",
+        "scm_causal_wo_debias": "w/o L_debias",
+        "scm_causal_wo_cf": "w/o L_cf",
+    }
+
+    def _ablation_weight(model_key: str, key: str) -> float:
+        return float(MODEL_KNOBS.get(model_key, {}).get(key, np.nan))
+
+    ablation_cols = [
+        "model",
+        "variant",
+        "dataset",
+        "horizon",
+        "dr_value_mean",
+        "dm_value_mean",
+        "correction_mean",
+        "policy_supported",
+        "policy_skip_reason",
+        "w_do",
+        "w_advT_causal",
+        "w_cf",
+        "factual_auc",
+    ]
+
+    if dr_summary_df.empty:
+        ablation_df = pd.DataFrame(columns=ablation_cols)
+    else:
+        ablation_df = dr_summary_df[dr_summary_df["model"].isin(ablation_models)].copy()
+        if not ablation_df.empty:
+            ablation_df["variant"] = ablation_df["model"].map(ablation_models)
+            ablation_df["w_do"] = ablation_df["model"].map(lambda m: _ablation_weight(m, "w_do"))
+            ablation_df["w_advT_causal"] = ablation_df["model"].map(
+                lambda m: _ablation_weight(m, "w_advT_causal")
+            )
+            ablation_df["w_cf"] = ablation_df["model"].map(lambda m: _ablation_weight(m, "w_cf"))
+
+    if "variant" not in ablation_df.columns:
+        ablation_df["variant"] = ablation_df.get("model", pd.Series(dtype=object)).map(ablation_models)
+    if "w_do" not in ablation_df.columns:
+        ablation_df["w_do"] = ablation_df.get("model", pd.Series(dtype=object)).map(
+            lambda m: _ablation_weight(m, "w_do")
+        )
+    if "w_advT_causal" not in ablation_df.columns:
+        ablation_df["w_advT_causal"] = ablation_df.get("model", pd.Series(dtype=object)).map(
+            lambda m: _ablation_weight(m, "w_advT_causal")
+        )
+    if "w_cf" not in ablation_df.columns:
+        ablation_df["w_cf"] = ablation_df.get("model", pd.Series(dtype=object)).map(
+            lambda m: _ablation_weight(m, "w_cf")
+        )
+
+    if not factual_auc_df.empty:
+        ablation_auc = factual_auc_df[factual_auc_df["model"].isin(ablation_models)][
+            ["model", "dataset", "factual_auc"]
+        ].copy()
+        if not ablation_auc.empty:
+            ablation_df = ablation_df.merge(ablation_auc, on=["model", "dataset"], how="left")
+        elif "factual_auc" not in ablation_df.columns:
+            ablation_df["factual_auc"] = np.nan
+    elif "factual_auc" not in ablation_df.columns:
+        ablation_df["factual_auc"] = np.nan
+
+    if ablation_df.empty:
+        ablation_df = pd.DataFrame(columns=ablation_cols)
+    else:
+        ablation_df = ablation_df.reindex(columns=ablation_cols + [c for c in ablation_df.columns if c not in ablation_cols])
+
+    ablation_df.to_csv(results_dir / "ablation_scm_causal.csv", index=False)
+    add_artifact(
+        manifest,
+        kind="table",
+        model="scm_causal_ablation",
+        dataset=",".join(datasets),
+        path="results/ablation_scm_causal.csv",
+        meta={},
+    )
     metrics_tables = {
         "dr_policy_values": dr_df,
         "dr_policy_summary": dr_summary_df,
@@ -3110,6 +3191,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         "leakage_metrics": leakage_df,
         "privacy_summary": privacy_summary_df,
         "run_config": run_config_df,
+        "ablation_scm_causal": ablation_df,
     }
     write_results_summary(metrics_tables, str(report_path))
     report_base = Path(report_path)
@@ -3144,3 +3226,11 @@ if __name__ == "__main__":
         main()
     else:
         raise SystemExit(main())
+
+
+
+
+
+
+
+
