@@ -1,4 +1,6 @@
 __pycache__/
+.venv/
+.venv_gpu/
 *.py[cod]
 *.pyo
 .pytest_cache/

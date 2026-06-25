@@ -1,0 +1,51 @@
+{
+  "dataset_name": "assistments_las2016",
+  "feature_columns": [
+    "student_prior_average_correctness",
+    "Prior Problem Count",
+    "Prior Correct Count",
+    "Prior Percent Correct",
+    "Class ID",
+    "Class Section ID",
+    "Teacher ID",
+    "school_id",
+    "District ID",
+    "State ID",
+    "Prior Assignments Assigned",
+    "Prior Assignment Count",
+    "Prior Completion Count",
+    "Prior Percent Completion",
+    "Prior Class Percent Completion",
+    "Z-Scored Mastery Speed",
+    "Prior Homework Assigned",
+    "Prior Homework Count",
+    "Prior Homework Completion Count",
+    "Prior Homework Percent Completion",
+    "Prior Class Homework Percent Completion",
+    "Z-Scored HW Mastery Speed"
+  ],
+  "excluded_columns": [
+    "assignment_completed",
+    "condition",
+    "dataset_name",
+    "dependent_measure",
+    "experiment_id",
+    "independent_measure_pair",
+    "normalized_student_learning",
+    "student_id",
+    "task_id",
+    "task_key",
+    "y0_prior",
+    "y_binary"
+  ],
+  "post_treatment_columns_explicitly_dropped": [
+    "ExperiencedCondition",
+    "Could See Video",
+    "complete",
+    "ProblemCount",
+    "log(count)"
+  ],
+  "uses_true_ate_in_training": false,
+  "uses_arm_means_in_training": false,
+  "uses_condition_as_feature": false
+}

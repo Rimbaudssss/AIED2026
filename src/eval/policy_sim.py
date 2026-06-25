@@ -37,7 +37,8 @@ def main(argv: Optional[list[str]] = None) -> int:
     p.add_argument("--x_index", type=int, default=0, help="Which X dimension to group by")
     args = p.parse_args(argv)
 
-    device = torch.device("cuda" if args.device == "auto" and torch.cuda.is_available() else args.device)
+    device_name = "cuda" if args.device == "auto" and torch.cuda.is_available() else "cpu" if args.device == "auto" else args.device
+    device = torch.device(device_name)
 
     ckpt = torch.load(args.ckpt, map_location=device)
     gen, model_name = load_rollout_model_from_checkpoint(ckpt, device=device)
@@ -57,16 +58,16 @@ def main(argv: Optional[list[str]] = None) -> int:
             for batch in dl:
                 batch = move_batch(batch, device)
                 X, A, T, Y, M = batch.X, batch.A, batch.T, batch.Y, batch.mask
-            ro = _rollout(
-                gen,
-                causal_only=True,
-                x=X,
-                a=A,
-                t_obs=None,
-                policy=policy,
-                mask=M,
-                stochastic_y=False,
-            )
+                ro = _rollout(
+                    gen,
+                    causal_only=True,
+                    x=X,
+                    a=A,
+                    t_obs=None,
+                    policy=policy,
+                    mask=M,
+                    stochastic_y=False,
+                )
                 y = ro["y"]  # [B,T,1] probs
                 if y.ndim == 2:
                     y = y[..., None]

@@ -70,6 +70,7 @@ from src.model.scm_generator import SCMGenerator, SCMGeneratorConfig
 # Dataset path mapping
 DATASET_PATHS = {
     "assist09": "DataSet/assist2009/assist09_processed.npz",
+    "assist09_next": "DataSet/assist2009/assist09_hint_next.npz",
     "oulad": "DataSet/OULAD/oulad_processed.npz",
     "statics": "DataSet/Statics2011/statics2011_step_level.npz",
     "irt_synth": "DataSet/irt_synth/dkt_synth.npz",
@@ -130,13 +131,24 @@ DATASET_SPECIFIC_KNOBS = {
     },
 
     "assist09": {
-        
         "dynamics": "transformer",
         "batch_size": 256,
         "w_advT_causal": 0.02,
         "do_horizon_train": 2,
         "d_k": 64,
         "w_do": 0.3,
+    },
+    "assist09_next": {
+        "dynamics": "transformer",
+        "batch_size": 256,
+        "w_advT_causal": 0.02,
+        "w_t_pred_spurious": 0.10,
+        "do_horizon_train": 1,
+        "causal_every": 4,
+        "cf_every": 8,
+        "d_k": 64,
+        "w_do": 0.05,
+        "w_cf": 0.005,
     },
     "statics": {
         "dynamics": "gru",
@@ -148,22 +160,24 @@ DATASET_SPECIFIC_KNOBS = {
 
 
     },
-"irt_synth": {
-    "dynamics": "gru",
-    "d_k": 64,
-    "disc_input": "sampled",
-    "causal_every": 2,
+    "irt_synth": {
+        "dynamics": "gru",
+        "d_k": 64,
+        "disc_input": "sampled",
+        "causal_every": 4,
+        "cf_every": 8,
 
-    # --- 核心设置 ---
-    "k_c_ratio": 0.5,
-    "w_advT_causal": 0.05,
+        "k_c_ratio": 0.5,
+        "w_advT_causal": 0.05,
 
-    "w_y": 1,          # 强迫模型记住基本事实�?
-    "w_do": 0.8,         # 适当提高因果权重，在削弱 GAN 后，让它主导生成规律�?
+        "w_y": 1,
+        "w_do": 0.8,
 
-    "do_horizon_train": 2,
-    "epochs_c": 20
-}}
+        "do_horizon_train": 1,
+        "w_cf": 0.0,
+        "epochs_c": 20,
+    },
+}
 
 
 # Model-specific knobs (override defaults)
@@ -199,7 +213,13 @@ _SCM_CAUSAL_KNOBS = dict(
 
 MODEL_KNOBS = {
     "scm": dict(_SCM_BASE_KNOBS, w_advT_causal=0.0, w_t_pred_spurious=0.1),
-    "scm_fidelity": dict(_SCM_CAUSAL_KNOBS, w_do=0.0),
+    "scm_fidelity": dict(
+        _SCM_CAUSAL_KNOBS,
+        w_do=0.0,
+        w_advT_causal=0.0,
+        w_t_pred_spurious=0.0,
+        w_cf=0.0,
+    ),
     "scm_causal": dict(_SCM_CAUSAL_KNOBS),
     "scm_causal_wo_do": dict(_SCM_CAUSAL_KNOBS, w_do=0.0),
     "scm_causal_wo_debias": dict(_SCM_CAUSAL_KNOBS, w_advT_causal=0.0),
@@ -461,6 +481,14 @@ def _resolve_horizon(horizon_arg: Optional[int], *, seq_len: int) -> int:
     if horizon < 0:
         horizon = seq_len - 1
     return max(0, min(seq_len - 1, horizon))
+
+
+def _latest_checkpoint(run_dir: Path, model_key: str) -> Optional[Path]:
+    if model_key == "timegan":
+        candidate = run_dir / "ckpt_timegan.pt"
+        return candidate if candidate.exists() else None
+    matches = sorted(run_dir.glob(f"ckpt_{model_key}_*.pt"), key=lambda p: p.stat().st_mtime, reverse=True)
+    return matches[0] if matches else None
 
 
 def _build_subgroups(batch: TrajectoryBatch, names: list[str]) -> list[dict]:
@@ -1329,6 +1357,8 @@ def _train_scm_or_rcgan(
             dynamics=str(knobs.get("dynamics", "gru")),
             mlp_hidden=int(knobs.get("mlp_hidden", 128)),
             dropout=dropout,
+            y_head_hidden=int(knobs.get("y_head_hidden", 0)),
+            y_head_layers=int(knobs.get("y_head_layers", 1)),
             tf_n_layers=int(knobs.get("tf_n_layers", 2)),
             tf_n_heads=int(knobs.get("tf_n_heads", 4)),
             tf_ffn_hidden=int(knobs.get("tf_ffn_hidden", 256)),
@@ -2196,6 +2226,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     p.add_argument("--models", type=str, default=None, help="Comma-separated model keys")
     p.add_argument("--baseline", type=str, default=None, help="Alias for --models with a single key")
     p.add_argument("--out_root", type=str, default="runs/exp_runner", help="Root directory for checkpoints")
+    p.add_argument("--results_dir", type=str, default="results", help="Directory for CSV/JSON result artifacts")
     p.add_argument("--report_path", type=str, default="results_summary.txt", help="Write numeric summary here")
     p.add_argument(
         "--legacy_report_path",
@@ -2203,6 +2234,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         default="results/legacy_report.txt",
         help="Write legacy per-model summary lines here (empty or 'none' disables)",
     )
+    p.add_argument("--resume_existing", action="store_true", help="Reuse existing checkpoints in out_root when present.")
     p.add_argument("--device", type=str, default=None, help="Override COMMON_KNOBS.device (auto|cpu|cuda)")
     p.add_argument("--seed", type=int, default=None, help="Override COMMON_KNOBS.seed")
     p.add_argument("--batch_size", type=int, default=None, help="Override COMMON_KNOBS.batch_size")
@@ -2218,14 +2250,22 @@ def main(argv: Optional[list[str]] = None) -> int:
     p.add_argument("--actions", type=str, default="0,1")
     p.add_argument("--subgroups", type=str, default="all,low,high")
     p.add_argument("--policy_set", type=str, default="fixed", choices=["fixed", "ablation"])
-    p.add_argument("--eval_tstr", action="store_true", default=True)
+    p.add_argument("--eval_tstr", action=argparse.BooleanOptionalAction, default=True)
     p.add_argument("--predictors", type=str, default="logreg,mlp,sakt")
-    p.add_argument("--eval_calibration", action="store_true", default=True)
-    p.add_argument("--eval_privacy", action="store_true", default=True)
+    p.add_argument("--eval_calibration", action=argparse.BooleanOptionalAction, default=True)
+    p.add_argument("--eval_privacy", action=argparse.BooleanOptionalAction, default=True)
     p.add_argument("--disc_input", type=str, default="logits", choices=["logits", "sampled"])
     p.add_argument("--k_c_ratio", type=float, default=None, help="SCM: ratio of causal latent dims.")
+    p.add_argument("--w_do", type=float, default=None, help="SCM: do-alignment loss weight.")
+    p.add_argument("--w_cf", type=float, default=None, help="SCM: counterfactual consistency loss weight.")
     p.add_argument("--w_advT_causal", type=float, default=None, help="SCM: adversarial T loss on K_c.")
     p.add_argument("--w_t_pred_spurious", type=float, default=None, help="SCM: T prediction loss on K_s.")
+    p.add_argument("--do_horizon_train", type=int, default=None, help="SCM: horizon used inside do-alignment training loss.")
+    p.add_argument("--causal_every", type=int, default=None, help="SCM: compute causal losses every N steps.")
+    p.add_argument("--cf_every", type=int, default=None, help="SCM: compute counterfactual loss every N steps.")
+    p.add_argument("--epochs_a", type=int, default=None, help="SCM: Stage A supervised epochs.")
+    p.add_argument("--epochs_b", type=int, default=None, help="SCM: Stage B adversarial epochs.")
+    p.add_argument("--epochs_c", type=int, default=None, help="SCM: Stage C causal epochs.")
     p.add_argument("--plot_cf", action="store_true", default=True, help="Auto-generate counterfactual plots.")
     p.add_argument("--no_plot_cf", action="store_false", dest="plot_cf")
     args, unknown = p.parse_known_args(argv)
@@ -2259,7 +2299,7 @@ def main(argv: Optional[list[str]] = None) -> int:
 
     out_root = _resolve_path(args.out_root)
     out_root.mkdir(parents=True, exist_ok=True)
-    results_dir = _resolve_path("results")
+    results_dir = _resolve_path(args.results_dir)
     results_dir.mkdir(parents=True, exist_ok=True)
     report_path = _resolve_path(args.report_path)
     legacy_report_path: Optional[Path] = None
@@ -2374,21 +2414,50 @@ def main(argv: Optional[list[str]] = None) -> int:
             if dataset_knobs:
                 model_dataset_knobs = dict(dataset_knobs)
                 model_dataset_knobs.pop("ref_estimator", None)
-                if str(model_key).startswith("scm_causal_wo_"):
+                if model_key == "scm_fidelity":
+                    for causal_key in ("w_do", "w_advT_causal", "w_cf", "w_t_pred_spurious"):
+                        model_dataset_knobs.pop(causal_key, None)
+                elif model_key != "scm_causal" and not str(model_key).startswith("scm_causal_wo_"):
                     model_dataset_knobs.pop("w_do", None)
                     model_dataset_knobs.pop("w_advT_causal", None)
                     model_dataset_knobs.pop("w_cf", None)
-                elif model_key != "scm_causal":
-                    model_dataset_knobs.pop("w_do", None)
+                    model_dataset_knobs.pop("w_t_pred_spurious", None)
                 knobs.update(model_dataset_knobs)
                 knobs["ref_estimator"] = ref_estimator
+            if model_key == "scm_fidelity":
+                knobs["w_do"] = 0.0
+                knobs["w_advT_causal"] = 0.0
+                knobs["w_t_pred_spurious"] = 0.0
+                knobs["w_cf"] = 0.0
+            elif model_key == "scm_causal_wo_do":
+                knobs["w_do"] = 0.0
+            elif model_key == "scm_causal_wo_debias":
+                knobs["w_advT_causal"] = 0.0
+            elif model_key == "scm_causal_wo_cf":
+                knobs["w_cf"] = 0.0
             if str(model_key).startswith("scm"):
                 if args.k_c_ratio is not None:
                     knobs["k_c_ratio"] = float(args.k_c_ratio)
+                if args.w_do is not None:
+                    knobs["w_do"] = float(args.w_do)
+                if args.w_cf is not None:
+                    knobs["w_cf"] = float(args.w_cf)
                 if args.w_advT_causal is not None:
                     knobs["w_advT_causal"] = float(args.w_advT_causal)
                 if args.w_t_pred_spurious is not None:
                     knobs["w_t_pred_spurious"] = float(args.w_t_pred_spurious)
+                if args.do_horizon_train is not None:
+                    knobs["do_horizon_train"] = int(args.do_horizon_train)
+                if args.causal_every is not None:
+                    knobs["causal_every"] = int(args.causal_every)
+                if args.cf_every is not None:
+                    knobs["cf_every"] = int(args.cf_every)
+                if args.epochs_a is not None:
+                    knobs["epochs_a"] = int(args.epochs_a)
+                if args.epochs_b is not None:
+                    knobs["epochs_b"] = int(args.epochs_b)
+                if args.epochs_c is not None:
+                    knobs["epochs_c"] = int(args.epochs_c)
             is_scm_model = str(model_key).startswith("scm")
             do_horizon_train = int(knobs.get("do_horizon_train", do_horizon)) if is_scm_model else np.nan
             causal_every = (
@@ -2405,6 +2474,14 @@ def main(argv: Optional[list[str]] = None) -> int:
                     "do_horizon_eval": int(do_horizon),
                     "causal_every": causal_every,
                     "cf_every": cf_every,
+                    "k_c_ratio": float(knobs.get("k_c_ratio", np.nan)) if is_scm_model else np.nan,
+                    "w_do": float(knobs.get("w_do", np.nan)) if is_scm_model else np.nan,
+                    "w_advT_causal": float(knobs.get("w_advT_causal", np.nan)) if is_scm_model else np.nan,
+                    "w_t_pred_spurious": float(knobs.get("w_t_pred_spurious", np.nan)) if is_scm_model else np.nan,
+                    "w_cf": float(knobs.get("w_cf", np.nan)) if is_scm_model else np.nan,
+                    "epochs_a": int(knobs.get("epochs_a", 0)) if is_scm_model else np.nan,
+                    "epochs_b": int(knobs.get("epochs_b", 0)) if is_scm_model else np.nan,
+                    "epochs_c": int(knobs.get("epochs_c", 0)) if is_scm_model else np.nan,
                 }
             )
             legacy_ate_mae = float("nan")
@@ -2418,7 +2495,10 @@ def main(argv: Optional[list[str]] = None) -> int:
             run_dir = out_root / ds_name / model_key / f"seed{int(common_ds['seed'])}"
             run_dir.mkdir(parents=True, exist_ok=True)
 
-            if model_key == "rcgan" or str(model_key).startswith("scm"):
+            ckpt_path = _latest_checkpoint(run_dir, model_key) if bool(args.resume_existing) else None
+            if ckpt_path is not None:
+                print(f"[resume] {ds_name}/{model_key}: using {ckpt_path.as_posix()}")
+            elif model_key == "rcgan" or str(model_key).startswith("scm"):
                 ckpt_path = _train_scm_or_rcgan(
                     model_key, train_dl=train_dl, meta=meta, device=device, out_dir=run_dir, knobs=knobs
                 )
@@ -3166,6 +3246,21 @@ def main(argv: Optional[list[str]] = None) -> int:
             ablation_df["factual_auc"] = np.nan
     elif "factual_auc" not in ablation_df.columns:
         ablation_df["factual_auc"] = np.nan
+
+    if not ablation_df.empty and not run_config_df.empty:
+        actual_cols = ["model", "dataset", "w_do", "w_advT_causal", "w_cf"]
+        if all(c in run_config_df.columns for c in actual_cols):
+            actual = run_config_df[actual_cols].drop_duplicates(["model", "dataset"]).rename(
+                columns={c: f"{c}_actual" for c in actual_cols if c not in {"model", "dataset"}}
+            )
+            ablation_df = ablation_df.merge(actual, on=["model", "dataset"], how="left")
+            for col in ("w_do", "w_advT_causal", "w_cf"):
+                actual_col = f"{col}_actual"
+                if actual_col in ablation_df.columns:
+                    ablation_df[col] = ablation_df[actual_col].where(
+                        ablation_df[actual_col].notna(), ablation_df[col]
+                    )
+                    ablation_df = ablation_df.drop(columns=[actual_col])
 
     if ablation_df.empty:
         ablation_df = pd.DataFrame(columns=ablation_cols)

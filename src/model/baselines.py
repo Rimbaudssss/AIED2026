@@ -927,7 +927,8 @@ def load_rollout_model_from_checkpoint(ckpt: dict, *, device: torch.device) -> T
     if cfg_dict is None or state is None:
         raise ValueError("Checkpoint missing model config/state.")
 
-    if model_name in {"scm", "scm_fidelity", "scm_causal"}:
+    is_scm_model = model_name in {"scm", "scm_fidelity", "scm_causal"} or model_name.startswith("scm_causal_wo_")
+    if is_scm_model:
         cfg_dict = dict(cfg_dict)
         cfg_dict.setdefault("k_c_ratio", 1.0)
         cfg = SCMGeneratorConfig(**cfg_dict)
@@ -950,7 +951,7 @@ def load_rollout_model_from_checkpoint(ckpt: dict, *, device: torch.device) -> T
     else:
         raise ValueError(f"Unknown model={model_name}")
 
-    strict = model_name not in {"scm", "scm_fidelity", "scm_causal"}
+    strict = not is_scm_model
     model.load_state_dict(state, strict=strict)
     if model_name == "timegan":
         # Optional: attach generation helpers without pushing large tensors to GPU.

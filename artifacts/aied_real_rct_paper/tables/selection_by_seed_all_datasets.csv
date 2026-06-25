@@ -1,0 +1,358 @@
+task_key,seed,n_full,n_biased,n0_biased,n1_biased,retention,dataset,dataset_label,dataset_short
+PSA25TA||No Emotion vs. Emotion||posttest,42,841,439,115,324,0.5219976218787158,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA29FC||No Emotion vs. Emotion||posttest,42,370,192,50,142,0.518918918918919,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA2KMP||Non-Adaptive vs. Adaptive||posttest,42,1982,1052,575,477,0.5307769929364279,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA2KMQ||Non-Adaptive vs. Adaptive||posttest,42,356,194,101,93,0.5449438202247191,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA2KNM||Non-Motivational vs. Motivational||posttest,42,1433,776,278,498,0.5415212840195395,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA2KNP||Non-Motivational vs. Motivational||posttest,42,397,208,84,124,0.5239294710327456,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA2KNR||Non-Motivational vs. Motivational||posttest,42,2033,1081,574,507,0.5317265125430398,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA2KPV||Non-Adaptive vs. Adaptive||posttest,42,749,380,177,203,0.507343124165554,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA2KQB||Non-Motivational vs. Motivational||posttest,42,319,156,77,79,0.4890282131661442,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA52JK||Multiple Choice vs. Fill-In||posttest,42,2336,1240,668,572,0.5308219178082192,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA55VC||Multiple Choice vs. Fill-In||posttest,42,1721,923,488,435,0.536316095293434,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA59TP||3 PTM vs. 4 PTM||posttest,42,897,487,251,236,0.5429208472686734,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA59TP||3 PTM vs. 5 PTM||posttest,42,874,428,218,210,0.4897025171624714,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA59TP||4 PTM vs. 5 PTM||posttest,42,869,434,221,213,0.4994246260069045,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA59TP||No Choice vs. Choice||posttest,42,2563,1333,705,628,0.5200936402653141,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA59TP||Problems Required for Mastery_No_Choice vs. Problems Required for Mastery_Choice||posttest,42,2563,1327,688,639,0.5177526336324619,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA59TQ||Non-Motivational vs. Motivational||posttest,42,1781,915,482,433,0.5137563166760247,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA59VC||Non-Adaptive vs. Adaptive||posttest,42,2099,1135,594,541,0.5407336827060505,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA7GUA||Non-Motivational vs. Motivational||posttest,42,1755,925,459,466,0.5270655270655271,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA98J7||No Choice vs. Choice||posttest,42,2484,1314,684,630,0.5289855072463768,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA98J7||Text Color_No_Choice vs. Text Color_Choice||posttest,42,2484,1320,660,660,0.5314009661835749,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA9XWV||Non-Motivational vs. Motivational||posttest,42,531,274,93,181,0.5160075329566854,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAGF4||No Feedback vs. Common Wrong Answer Feedback||problems to mastery,42,1758,972,511,461,0.552901023890785,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAH9CV||Non-Motivational vs. Motivational||problems to mastery,42,190,100,51,49,0.5263157894736842,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAHQV||No Feedback vs. Common Wrong Answer Feedback||problems to mastery,42,5288,2784,1409,1375,0.5264750378214826,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAKUSU||Non-Motivational vs. Motivational||problems to mastery,42,990,493,165,328,0.4979797979797979,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAR5JG||Answer Only vs. Scaffolding||problem set correctness,42,358,181,64,117,0.505586592178771,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAR9Y9||Non-Adaptive vs. Adaptive||problems to mastery,42,1271,674,328,346,0.5302911093627065,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSARZX2||No Choice vs. Choice||problem set correctness,42,410,204,102,102,0.4975609756097561,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSARZX2||Problem Difficulty_No_Choice vs. Problem Difficulty_Choice||problem set correctness,42,410,199,98,101,0.4853658536585366,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSASA4B||Non-Adaptive vs. Adaptive||posttest,42,394,207,108,99,0.5253807106598984,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSASDZY||Non-Adaptive vs. Adaptive||problems to mastery,42,489,249,151,98,0.50920245398773,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSASRKH||Answer Only vs. Hint||problems to mastery,42,233,128,64,64,0.5493562231759657,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSASRKH||Answer Only vs. Scaffolding||problems to mastery,42,242,146,61,85,0.6033057851239669,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATNB2||Answer Only vs. Scaffolding||problems to mastery,42,685,371,189,182,0.5416058394160584,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATNB2||Answer Only vs. Video Scaffolding||problems to mastery,42,698,365,188,177,0.5229226361031518,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATNB2||Scaffolding vs. Video Scaffolding||problems to mastery,42,709,386,186,200,0.5444287729196051,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATNB2||Text vs. Video||problems to mastery,42,709,353,181,172,0.4978843441466855,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATNCQ||Answer Only vs. Hint||problems to mastery,42,130,76,40,36,0.5846153846153846,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATNCQ||Answer Only vs. Scaffolding||problems to mastery,42,122,75,36,39,0.6147540983606558,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATZEJ||Hint vs. Video Hint||problems to mastery,42,1056,568,288,280,0.5378787878787878,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATZEJ||No Choice vs. Choice||problems to mastery,42,2113,1087,572,515,0.5144344533838144,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATZEJ||Text vs. Video||problems to mastery,42,1056,570,284,286,0.5397727272727273,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATZEJ||Video or Text_No_Choice vs. Video or Text_Choice||problems to mastery,42,2113,1086,556,530,0.513961192617132,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU4JD||No Choice vs. Choice||problem set correctness,42,550,307,155,152,0.5581818181818182,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU4JD||Problem Difficulty_No_Choice vs. Problem Difficulty_Choice||problem set correctness,42,550,286,148,138,0.52,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU6Y4||Answer Only vs. Example||problems to mastery,42,177,97,54,43,0.5480225988700564,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU6Y4||Answer Only vs. Hint||problems to mastery,42,194,113,60,53,0.5824742268041238,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU85Y||Answer Only vs. Example||problems to mastery,42,218,113,62,51,0.518348623853211,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU85Y||Answer Only vs. Scaffolding||problems to mastery,42,229,119,57,62,0.519650655021834,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU88D||Answer Only vs. Hint||problems to mastery,42,261,142,69,73,0.5440613026819924,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU88D||Answer Only vs. Scaffolding||problems to mastery,42,285,157,69,88,0.5508771929824562,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU88D||Answer Only vs. Video Scaffolding||problems to mastery,42,263,120,55,65,0.4562737642585551,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU88D||Scaffolding vs. Video Scaffolding||problems to mastery,42,298,158,87,71,0.5302013422818792,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU88D||Text vs. Video||problems to mastery,42,298,151,87,64,0.5067114093959731,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUK57||Answer Only vs. Example||problems to mastery,42,370,213,118,95,0.5756756756756757,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUK57||Answer Only vs. Hint||problems to mastery,42,374,190,91,99,0.5080213903743316,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUK57||Answer Only vs. Video Example||problems to mastery,42,366,200,109,91,0.546448087431694,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUK57||Example vs. Video Example||problems to mastery,42,358,192,97,95,0.5363128491620112,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUK57||Text vs. Video||problems to mastery,42,358,194,98,96,0.5418994413407822,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUKPM||Non-Adaptive vs. Adaptive||problems to mastery,42,368,184,79,105,0.5,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUTWT||2 PTM vs. 3 PTM||completion,42,355,183,93,90,0.5154929577464789,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUTWT||2 PTM vs. 4 PTM||completion,42,325,162,93,69,0.4984615384615384,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUTWT||3 PTM vs. 4 PTM||completion,42,330,166,93,73,0.503030303030303,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUTWT||No Choice vs. Choice||completion,42,1013,552,279,273,0.5449160908193484,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUTWT||Problems Required for Mastery_No_Choice vs. Problems Required for Mastery_Choice||completion,42,1013,536,272,264,0.5291214215202369,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUTWU||No Choice vs. Choice||problem set correctness,42,1008,517,272,245,0.5128968253968254,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUTWU||Problem Difficulty_No_Choice vs. Problem Difficulty_Choice||problem set correctness,42,1008,526,277,249,0.5218253968253969,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUUKY||No Choice vs. Choice||problem set correctness,42,1500,769,368,401,0.5126666666666667,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUUKY||Problem Difficulty_No_Choice vs. Problem Difficulty_Choice||problem set correctness,42,1500,782,373,409,0.5213333333333333,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAV89B||Non-Motivational vs. Motivational||problems to mastery,42,1722,922,321,601,0.5354239256678281,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAVTMK||2 PTM vs. 3 PTM||posttest,42,646,351,197,154,0.5433436532507739,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAVTMK||2 PTM vs. 4 PTM||posttest,42,642,326,177,149,0.5077881619937694,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAVTMK||2 PTM vs. 5 PTM||posttest,42,655,337,173,164,0.5145038167938931,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAVTMK||3 PTM vs. 4 PTM||posttest,42,620,340,177,163,0.5483870967741935,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAVTMK||3 PTM vs. 5 PTM||posttest,42,633,328,159,169,0.5181674565560821,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAVTMK||4 PTM vs. 5 PTM||posttest,42,629,328,169,159,0.5214626391096979,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAWHF4||No Choice vs. Choice||problems to mastery,42,1148,600,326,274,0.5226480836236934,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAWHF4||Video or Text_No_Choice vs. Video or Text_Choice||problems to mastery,42,1148,600,313,287,0.5226480836236934,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAWU6Z||Non-Motivational vs. Motivational||problems to mastery,42,956,475,179,296,0.4968619246861924,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAZGQM||2 PTM vs. 3 PTM||posttest,42,166,87,52,35,0.5240963855421686,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAZGQM||2 PTM vs. 4 PTM||posttest,42,178,93,52,41,0.5224719101123596,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAZGQM||2 PTM vs. 5 PTM||posttest,42,173,98,49,49,0.5664739884393064,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAZGQM||3 PTM vs. 4 PTM||posttest,42,156,81,34,47,0.5192307692307693,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAZGQM||3 PTM vs. 5 PTM||posttest,42,151,79,38,41,0.5231788079470199,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAZGQM||4 PTM vs. 5 PTM||posttest,42,163,87,47,40,0.5337423312883436,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA25TA||No Emotion vs. Emotion||posttest,43,841,436,112,324,0.5184304399524375,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA29FC||No Emotion vs. Emotion||posttest,43,370,192,38,154,0.518918918918919,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA2KMP||Non-Adaptive vs. Adaptive||posttest,43,1982,1067,580,487,0.5383451059535822,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA2KMQ||Non-Adaptive vs. Adaptive||posttest,43,356,185,89,96,0.5196629213483146,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA2KNM||Non-Motivational vs. Motivational||posttest,43,1433,757,251,506,0.5282623866015352,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA2KNP||Non-Motivational vs. Motivational||posttest,43,397,191,65,126,0.4811083123425693,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA2KNR||Non-Motivational vs. Motivational||posttest,43,2033,1095,566,529,0.5386128873585834,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA2KPV||Non-Adaptive vs. Adaptive||posttest,43,749,405,172,233,0.540720961281709,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA2KQB||Non-Motivational vs. Motivational||posttest,43,319,169,75,94,0.5297805642633229,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA52JK||Multiple Choice vs. Fill-In||posttest,43,2336,1224,645,579,0.523972602739726,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA55VC||Multiple Choice vs. Fill-In||posttest,43,1721,900,474,426,0.5229517722254503,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA59TP||3 PTM vs. 4 PTM||posttest,43,897,462,226,236,0.5150501672240803,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA59TP||3 PTM vs. 5 PTM||posttest,43,874,443,240,203,0.5068649885583524,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA59TP||4 PTM vs. 5 PTM||posttest,43,869,470,239,231,0.5408515535097813,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA59TP||No Choice vs. Choice||posttest,43,2563,1388,720,668,0.5415528677331253,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA59TP||Problems Required for Mastery_No_Choice vs. Problems Required for Mastery_Choice||posttest,43,2563,1368,722,646,0.5337495122902848,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA59TQ||Non-Motivational vs. Motivational||posttest,43,1781,930,466,464,0.5221785513756316,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA59VC||Non-Adaptive vs. Adaptive||posttest,43,2099,1104,554,550,0.5259647451167222,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA7GUA||Non-Motivational vs. Motivational||posttest,43,1755,933,479,454,0.5316239316239316,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA98J7||No Choice vs. Choice||posttest,43,2484,1342,672,670,0.5402576489533011,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA98J7||Text Color_No_Choice vs. Text Color_Choice||posttest,43,2484,1327,676,651,0.534219001610306,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA9XWV||Non-Motivational vs. Motivational||posttest,43,531,271,98,173,0.5103578154425612,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAGF4||No Feedback vs. Common Wrong Answer Feedback||problems to mastery,43,1758,896,463,433,0.5096700796359499,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAH9CV||Non-Motivational vs. Motivational||problems to mastery,43,190,100,44,56,0.5263157894736842,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAHQV||No Feedback vs. Common Wrong Answer Feedback||problems to mastery,43,5288,2859,1448,1411,0.5406580937972768,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAKUSU||Non-Motivational vs. Motivational||problems to mastery,43,990,522,161,361,0.5272727272727272,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAR5JG||Answer Only vs. Scaffolding||problem set correctness,43,358,208,68,140,0.5810055865921788,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAR9Y9||Non-Adaptive vs. Adaptive||problems to mastery,43,1271,694,345,349,0.5460267505900865,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSARZX2||No Choice vs. Choice||problem set correctness,43,410,210,103,107,0.5121951219512195,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSARZX2||Problem Difficulty_No_Choice vs. Problem Difficulty_Choice||problem set correctness,43,410,199,88,111,0.4853658536585366,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSASA4B||Non-Adaptive vs. Adaptive||posttest,43,394,220,118,102,0.5583756345177665,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSASDZY||Non-Adaptive vs. Adaptive||problems to mastery,43,489,264,139,125,0.5398773006134969,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSASRKH||Answer Only vs. Hint||problems to mastery,43,233,121,48,73,0.51931330472103,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSASRKH||Answer Only vs. Scaffolding||problems to mastery,43,242,119,50,69,0.4917355371900826,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATNB2||Answer Only vs. Scaffolding||problems to mastery,43,685,367,167,200,0.5357664233576642,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATNB2||Answer Only vs. Video Scaffolding||problems to mastery,43,698,377,180,197,0.5401146131805158,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATNB2||Scaffolding vs. Video Scaffolding||problems to mastery,43,709,402,205,197,0.5669957686882934,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATNB2||Text vs. Video||problems to mastery,43,709,359,180,179,0.5063469675599436,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATNCQ||Answer Only vs. Hint||problems to mastery,43,130,66,31,35,0.5076923076923077,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATNCQ||Answer Only vs. Scaffolding||problems to mastery,43,122,76,35,41,0.6229508196721312,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATZEJ||Hint vs. Video Hint||problems to mastery,43,1056,546,281,265,0.5170454545454546,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATZEJ||No Choice vs. Choice||problems to mastery,43,2113,1104,574,530,0.522479886417416,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATZEJ||Text vs. Video||problems to mastery,43,1056,561,273,288,0.53125,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATZEJ||Video or Text_No_Choice vs. Video or Text_Choice||problems to mastery,43,2113,1087,556,531,0.5144344533838144,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU4JD||No Choice vs. Choice||problem set correctness,43,550,274,152,122,0.4981818181818181,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU4JD||Problem Difficulty_No_Choice vs. Problem Difficulty_Choice||problem set correctness,43,550,281,135,146,0.5109090909090909,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU6Y4||Answer Only vs. Example||problems to mastery,43,177,91,52,39,0.5141242937853108,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU6Y4||Answer Only vs. Hint||problems to mastery,43,194,106,52,54,0.5463917525773195,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU85Y||Answer Only vs. Example||problems to mastery,43,218,109,62,47,0.5,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU85Y||Answer Only vs. Scaffolding||problems to mastery,43,229,121,71,50,0.5283842794759825,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU88D||Answer Only vs. Hint||problems to mastery,43,261,134,66,68,0.5134099616858238,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU88D||Answer Only vs. Scaffolding||problems to mastery,43,285,154,75,79,0.5403508771929825,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU88D||Answer Only vs. Video Scaffolding||problems to mastery,43,263,146,67,79,0.5551330798479087,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU88D||Scaffolding vs. Video Scaffolding||problems to mastery,43,298,161,86,75,0.540268456375839,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU88D||Text vs. Video||problems to mastery,43,298,172,90,82,0.5771812080536913,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUK57||Answer Only vs. Example||problems to mastery,43,370,181,92,89,0.4891891891891892,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUK57||Answer Only vs. Hint||problems to mastery,43,374,207,109,98,0.553475935828877,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUK57||Answer Only vs. Video Example||problems to mastery,43,366,204,109,95,0.5573770491803278,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUK57||Example vs. Video Example||problems to mastery,43,358,192,97,95,0.5363128491620112,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUK57||Text vs. Video||problems to mastery,43,358,205,94,111,0.5726256983240223,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUKPM||Non-Adaptive vs. Adaptive||problems to mastery,43,368,211,104,107,0.5733695652173914,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUTWT||2 PTM vs. 3 PTM||completion,43,355,181,87,94,0.5098591549295775,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUTWT||2 PTM vs. 4 PTM||completion,43,325,164,97,67,0.5046153846153846,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUTWT||3 PTM vs. 4 PTM||completion,43,330,176,97,79,0.5333333333333333,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUTWT||No Choice vs. Choice||completion,43,1013,518,275,243,0.5113524185587365,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUTWT||Problems Required for Mastery_No_Choice vs. Problems Required for Mastery_Choice||completion,43,1013,491,263,228,0.4846989141164857,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUTWU||No Choice vs. Choice||problem set correctness,43,1008,527,274,253,0.5228174603174603,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUTWU||Problem Difficulty_No_Choice vs. Problem Difficulty_Choice||problem set correctness,43,1008,505,286,219,0.5009920634920635,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUUKY||No Choice vs. Choice||problem set correctness,43,1500,781,380,401,0.5206666666666667,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUUKY||Problem Difficulty_No_Choice vs. Problem Difficulty_Choice||problem set correctness,43,1500,793,398,395,0.5286666666666666,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAV89B||Non-Motivational vs. Motivational||problems to mastery,43,1722,875,301,574,0.508130081300813,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAVTMK||2 PTM vs. 3 PTM||posttest,43,646,331,167,164,0.5123839009287926,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAVTMK||2 PTM vs. 4 PTM||posttest,43,642,321,159,162,0.5,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAVTMK||2 PTM vs. 5 PTM||posttest,43,655,345,179,166,0.5267175572519084,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAVTMK||3 PTM vs. 4 PTM||posttest,43,620,334,170,164,0.5387096774193548,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAVTMK||3 PTM vs. 5 PTM||posttest,43,633,352,172,180,0.5560821484992101,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAVTMK||4 PTM vs. 5 PTM||posttest,43,629,351,186,165,0.5580286168521462,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAWHF4||No Choice vs. Choice||problems to mastery,43,1148,607,311,296,0.5287456445993032,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAWHF4||Video or Text_No_Choice vs. Video or Text_Choice||problems to mastery,43,1148,632,325,307,0.5505226480836237,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAWU6Z||Non-Motivational vs. Motivational||problems to mastery,43,956,503,184,319,0.5261506276150628,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAZGQM||2 PTM vs. 3 PTM||posttest,43,166,86,55,31,0.5180722891566265,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAZGQM||2 PTM vs. 4 PTM||posttest,43,178,88,48,40,0.4943820224719101,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAZGQM||2 PTM vs. 5 PTM||posttest,43,173,90,50,40,0.5202312138728323,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAZGQM||3 PTM vs. 4 PTM||posttest,43,156,77,34,43,0.4935897435897436,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAZGQM||3 PTM vs. 5 PTM||posttest,43,151,79,36,43,0.5231788079470199,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAZGQM||4 PTM vs. 5 PTM||posttest,43,163,85,42,43,0.5214723926380368,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA25TA||No Emotion vs. Emotion||posttest,44,841,463,119,344,0.5505350772889417,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA29FC||No Emotion vs. Emotion||posttest,44,370,204,36,168,0.5513513513513514,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA2KMP||Non-Adaptive vs. Adaptive||posttest,44,1982,980,521,459,0.4944500504540868,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA2KMQ||Non-Adaptive vs. Adaptive||posttest,44,356,183,94,89,0.5140449438202247,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA2KNM||Non-Motivational vs. Motivational||posttest,44,1433,721,250,471,0.5031402651779484,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA2KNP||Non-Motivational vs. Motivational||posttest,44,397,209,74,135,0.5264483627204031,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA2KNR||Non-Motivational vs. Motivational||posttest,44,2033,1056,547,509,0.5194294146581406,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA2KPV||Non-Adaptive vs. Adaptive||posttest,44,749,415,200,215,0.5540720961281709,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA2KQB||Non-Motivational vs. Motivational||posttest,44,319,183,92,91,0.5736677115987461,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA52JK||Multiple Choice vs. Fill-In||posttest,44,2336,1218,651,567,0.521404109589041,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA55VC||Multiple Choice vs. Fill-In||posttest,44,1721,885,441,444,0.5142359093550262,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA59TP||3 PTM vs. 4 PTM||posttest,44,897,484,258,226,0.5395763656633222,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA59TP||3 PTM vs. 5 PTM||posttest,44,874,470,255,215,0.5377574370709383,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA59TP||4 PTM vs. 5 PTM||posttest,44,869,452,250,202,0.520138089758343,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA59TP||No Choice vs. Choice||posttest,44,2563,1351,711,640,0.5271166601638705,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA59TP||Problems Required for Mastery_No_Choice vs. Problems Required for Mastery_Choice||posttest,44,2563,1345,709,636,0.5247756535310183,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA59TQ||Non-Motivational vs. Motivational||posttest,44,1781,916,479,437,0.5143177989893318,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA59VC||Non-Adaptive vs. Adaptive||posttest,44,2099,1082,554,528,0.5154835636017151,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA7GUA||Non-Motivational vs. Motivational||posttest,44,1755,929,476,453,0.5293447293447293,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA98J7||No Choice vs. Choice||posttest,44,2484,1293,654,639,0.5205314009661836,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA98J7||Text Color_No_Choice vs. Text Color_Choice||posttest,44,2484,1282,674,608,0.5161030595813204,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSA9XWV||Non-Motivational vs. Motivational||posttest,44,531,265,89,176,0.4990583804143126,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAGF4||No Feedback vs. Common Wrong Answer Feedback||problems to mastery,44,1758,938,489,449,0.5335608646188851,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAH9CV||Non-Motivational vs. Motivational||problems to mastery,44,190,101,49,52,0.531578947368421,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAHQV||No Feedback vs. Common Wrong Answer Feedback||problems to mastery,44,5288,2757,1434,1323,0.5213691376701967,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAKUSU||Non-Motivational vs. Motivational||problems to mastery,44,990,490,153,337,0.494949494949495,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAR5JG||Answer Only vs. Scaffolding||problem set correctness,44,358,187,58,129,0.5223463687150838,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAR9Y9||Non-Adaptive vs. Adaptive||problems to mastery,44,1271,667,334,333,0.5247836349331235,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSARZX2||No Choice vs. Choice||problem set correctness,44,410,218,109,109,0.5317073170731708,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSARZX2||Problem Difficulty_No_Choice vs. Problem Difficulty_Choice||problem set correctness,44,410,217,105,112,0.5292682926829269,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSASA4B||Non-Adaptive vs. Adaptive||posttest,44,394,217,114,103,0.550761421319797,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSASDZY||Non-Adaptive vs. Adaptive||problems to mastery,44,489,253,141,112,0.5173824130879345,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSASRKH||Answer Only vs. Hint||problems to mastery,44,233,119,51,68,0.5107296137339056,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSASRKH||Answer Only vs. Scaffolding||problems to mastery,44,242,122,46,76,0.5041322314049587,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATNB2||Answer Only vs. Scaffolding||problems to mastery,44,685,336,175,161,0.4905109489051095,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATNB2||Answer Only vs. Video Scaffolding||problems to mastery,44,698,354,180,174,0.5071633237822349,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATNB2||Scaffolding vs. Video Scaffolding||problems to mastery,44,709,384,206,178,0.5416078984485191,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATNB2||Text vs. Video||problems to mastery,44,709,361,187,174,0.5091678420310296,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATNCQ||Answer Only vs. Hint||problems to mastery,44,130,68,37,31,0.5230769230769231,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATNCQ||Answer Only vs. Scaffolding||problems to mastery,44,122,73,36,37,0.5983606557377049,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATZEJ||Hint vs. Video Hint||problems to mastery,44,1056,556,288,268,0.5265151515151515,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATZEJ||No Choice vs. Choice||problems to mastery,44,2113,1090,549,541,0.5158542356838618,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATZEJ||Text vs. Video||problems to mastery,44,1056,557,284,273,0.5274621212121212,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSATZEJ||Video or Text_No_Choice vs. Video or Text_Choice||problems to mastery,44,2113,1080,536,544,0.5111216280170374,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU4JD||No Choice vs. Choice||problem set correctness,44,550,274,148,126,0.4981818181818181,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU4JD||Problem Difficulty_No_Choice vs. Problem Difficulty_Choice||problem set correctness,44,550,261,140,121,0.4745454545454545,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU6Y4||Answer Only vs. Example||problems to mastery,44,177,87,51,36,0.4915254237288136,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU6Y4||Answer Only vs. Hint||problems to mastery,44,194,92,53,39,0.4742268041237113,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU85Y||Answer Only vs. Example||problems to mastery,44,218,129,77,52,0.591743119266055,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU85Y||Answer Only vs. Scaffolding||problems to mastery,44,229,126,67,59,0.5502183406113537,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU88D||Answer Only vs. Hint||problems to mastery,44,261,130,71,59,0.4980842911877394,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU88D||Answer Only vs. Scaffolding||problems to mastery,44,285,147,69,78,0.5157894736842106,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU88D||Answer Only vs. Video Scaffolding||problems to mastery,44,263,134,65,69,0.5095057034220533,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU88D||Scaffolding vs. Video Scaffolding||problems to mastery,44,298,145,81,64,0.4865771812080537,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAU88D||Text vs. Video||problems to mastery,44,298,157,91,66,0.5268456375838926,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUK57||Answer Only vs. Example||problems to mastery,44,370,192,94,98,0.518918918918919,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUK57||Answer Only vs. Hint||problems to mastery,44,374,191,100,91,0.5106951871657754,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUK57||Answer Only vs. Video Example||problems to mastery,44,366,180,92,88,0.4918032786885246,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUK57||Example vs. Video Example||problems to mastery,44,358,188,94,94,0.5251396648044693,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUK57||Text vs. Video||problems to mastery,44,358,184,97,87,0.5139664804469274,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUKPM||Non-Adaptive vs. Adaptive||problems to mastery,44,368,188,88,100,0.5108695652173914,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUTWT||2 PTM vs. 3 PTM||completion,44,355,176,95,81,0.4957746478873239,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUTWT||2 PTM vs. 4 PTM||completion,44,325,176,92,84,0.5415384615384615,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUTWT||3 PTM vs. 4 PTM||completion,44,330,153,85,68,0.4636363636363636,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUTWT||No Choice vs. Choice||completion,44,1013,522,277,245,0.5153010858835143,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUTWT||Problems Required for Mastery_No_Choice vs. Problems Required for Mastery_Choice||completion,44,1013,510,263,247,0.5034550839091807,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUTWU||No Choice vs. Choice||problem set correctness,44,1008,554,287,267,0.5496031746031746,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUTWU||Problem Difficulty_No_Choice vs. Problem Difficulty_Choice||problem set correctness,44,1008,511,263,248,0.5069444444444444,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUUKY||No Choice vs. Choice||problem set correctness,44,1500,773,396,377,0.5153333333333333,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAUUKY||Problem Difficulty_No_Choice vs. Problem Difficulty_Choice||problem set correctness,44,1500,836,406,430,0.5573333333333333,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAV89B||Non-Motivational vs. Motivational||problems to mastery,44,1722,840,281,559,0.4878048780487805,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAVTMK||2 PTM vs. 3 PTM||posttest,44,646,355,189,166,0.5495356037151703,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAVTMK||2 PTM vs. 4 PTM||posttest,44,642,343,181,162,0.5342679127725857,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAVTMK||2 PTM vs. 5 PTM||posttest,44,655,355,178,177,0.5419847328244275,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAVTMK||3 PTM vs. 4 PTM||posttest,44,620,332,178,154,0.535483870967742,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAVTMK||3 PTM vs. 5 PTM||posttest,44,633,338,174,164,0.5339652448657188,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAVTMK||4 PTM vs. 5 PTM||posttest,44,629,317,161,156,0.5039745627980922,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAWHF4||No Choice vs. Choice||problems to mastery,44,1148,585,323,262,0.509581881533101,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAWHF4||Video or Text_No_Choice vs. Video or Text_Choice||problems to mastery,44,1148,606,317,289,0.5278745644599303,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAWU6Z||Non-Motivational vs. Motivational||problems to mastery,44,956,518,197,321,0.5418410041841004,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAZGQM||2 PTM vs. 3 PTM||posttest,44,166,91,56,35,0.5481927710843374,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAZGQM||2 PTM vs. 4 PTM||posttest,44,178,93,53,40,0.5224719101123596,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAZGQM||2 PTM vs. 5 PTM||posttest,44,173,88,52,36,0.5086705202312138,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAZGQM||3 PTM vs. 4 PTM||posttest,44,156,79,43,36,0.5064102564102564,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAZGQM||3 PTM vs. 5 PTM||posttest,44,151,78,44,34,0.5165562913907285,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+PSAZGQM||4 PTM vs. 5 PTM||posttest,44,163,80,41,39,0.4907975460122699,assistments_rct88,ASSISTments expanded RCT release,RCT88/89
+226210||Control vs. Experiment||completion,42,1185,631,329,302,0.5324894514767933,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+237447||Control vs. Experiment||completion,42,692,373,183,190,0.5390173410404624,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+241501||Control vs. Experiment||completion,42,381,212,104,108,0.5564304461942258,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+241622||Control vs. Experiment||completion,42,627,327,181,146,0.5215311004784688,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+243393||Control vs. Experiment||completion,42,1797,961,500,461,0.5347801892042293,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+246482||Control vs. Experiment||completion,42,457,260,133,127,0.5689277899343544,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+246627||Control vs. Experiment||completion,42,514,285,162,123,0.5544747081712063,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+246647||Control vs. Experiment||completion,42,538,293,156,137,0.5446096654275093,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+250476||Control vs. Experiment||completion,42,402,212,104,108,0.527363184079602,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+255116||Control vs. Experiment||completion,42,534,285,142,143,0.5337078651685393,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+256017||Control vs. Experiment||completion,42,412,222,101,121,0.5388349514563107,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+256027||Control vs. Experiment||completion,42,335,176,92,84,0.5253731343283582,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+259379||Control vs. Experiment||completion,42,497,257,125,132,0.5171026156941649,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+263015||Control vs. Experiment||completion,42,704,360,174,186,0.5113636363636364,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+263052||Control vs. Experiment||completion,42,523,255,132,123,0.4875717017208413,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+263057||Control vs. Experiment||completion,42,136,67,33,34,0.4926470588235294,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+263109||Control vs. Experiment||completion,42,428,242,132,110,0.5654205607476636,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+263115||Control vs. Experiment||completion,42,754,379,191,188,0.5026525198938993,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+293151||Control vs. Experiment||completion,42,1259,664,365,299,0.5274027005559968,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+303899||Control vs. Experiment||completion,42,1917,1019,514,505,0.5315597287428273,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+377658||Control vs. Experiment||completion,42,429,210,98,112,0.4895104895104895,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+377938||Control vs. Experiment||completion,42,426,234,117,117,0.5492957746478874,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+226210||Control vs. Experiment||completion,43,1185,616,328,288,0.5198312236286919,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+237447||Control vs. Experiment||completion,43,692,353,182,171,0.5101156069364162,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+241501||Control vs. Experiment||completion,43,381,197,102,95,0.5170603674540682,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+241622||Control vs. Experiment||completion,43,627,357,195,162,0.569377990430622,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+243393||Control vs. Experiment||completion,43,1797,931,487,444,0.5180856983861992,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+246482||Control vs. Experiment||completion,43,457,231,120,111,0.5054704595185996,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+246627||Control vs. Experiment||completion,43,514,272,141,131,0.5291828793774319,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+246647||Control vs. Experiment||completion,43,538,289,143,146,0.5371747211895911,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+250476||Control vs. Experiment||completion,43,402,204,99,105,0.5074626865671642,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+255116||Control vs. Experiment||completion,43,534,279,135,144,0.5224719101123596,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+256017||Control vs. Experiment||completion,43,412,205,99,106,0.4975728155339806,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+256027||Control vs. Experiment||completion,43,335,164,91,73,0.4895522388059701,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+259379||Control vs. Experiment||completion,43,497,248,129,119,0.4989939637826961,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+263015||Control vs. Experiment||completion,43,704,367,193,174,0.5213068181818182,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+263052||Control vs. Experiment||completion,43,523,261,142,119,0.4990439770554493,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+263057||Control vs. Experiment||completion,43,136,68,36,32,0.5,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+263109||Control vs. Experiment||completion,43,428,231,135,96,0.5397196261682243,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+263115||Control vs. Experiment||completion,43,754,378,192,186,0.5013262599469496,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+293151||Control vs. Experiment||completion,43,1259,643,335,308,0.5107227958697379,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+303899||Control vs. Experiment||completion,43,1917,947,504,443,0.4940010432968179,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+377658||Control vs. Experiment||completion,43,429,198,96,102,0.4615384615384615,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+377938||Control vs. Experiment||completion,43,426,225,126,99,0.528169014084507,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+226210||Control vs. Experiment||completion,44,1185,663,360,303,0.5594936708860759,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+237447||Control vs. Experiment||completion,44,692,326,153,173,0.4710982658959537,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+241501||Control vs. Experiment||completion,44,381,201,97,104,0.5275590551181102,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+241622||Control vs. Experiment||completion,44,627,323,180,143,0.5151515151515151,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+243393||Control vs. Experiment||completion,44,1797,922,480,442,0.5130773511407902,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+246482||Control vs. Experiment||completion,44,457,258,120,138,0.5645514223194749,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+246627||Control vs. Experiment||completion,44,514,261,141,120,0.5077821011673151,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+246647||Control vs. Experiment||completion,44,538,281,143,138,0.5223048327137546,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+250476||Control vs. Experiment||completion,44,402,217,113,104,0.5398009950248757,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+255116||Control vs. Experiment||completion,44,534,287,139,148,0.5374531835205992,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+256017||Control vs. Experiment||completion,44,412,218,108,110,0.529126213592233,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+256027||Control vs. Experiment||completion,44,335,198,105,93,0.591044776119403,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+259379||Control vs. Experiment||completion,44,497,273,141,132,0.5492957746478874,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+263015||Control vs. Experiment||completion,44,704,369,200,169,0.5241477272727273,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+263052||Control vs. Experiment||completion,44,523,298,151,147,0.5697896749521989,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+263057||Control vs. Experiment||completion,44,136,80,42,38,0.5882352941176471,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+263109||Control vs. Experiment||completion,44,428,232,117,115,0.5420560747663551,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+263115||Control vs. Experiment||completion,44,754,400,197,203,0.5305039787798409,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+293151||Control vs. Experiment||completion,44,1259,646,349,297,0.5131056393963463,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+303899||Control vs. Experiment||completion,44,1917,1073,539,534,0.5597287428273344,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+377658||Control vs. Experiment||completion,44,429,235,102,133,0.5477855477855478,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+377938||Control vs. Experiment||completion,44,426,219,116,103,0.5140845070422535,assistments_las2016,LAS2016 22 randomized experiments,LAS2016
+694143||Control vs. Treatment||completion,42,855,443,215,228,0.5181286549707602,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+694165||Control vs. Treatment||completion,42,505,279,153,126,0.5524752475247525,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+694197||Control vs. Treatment||completion,42,1831,962,521,441,0.525395958492627,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+694202||Control vs. Treatment||completion,42,166,88,47,41,0.5301204819277109,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+694203||Control vs. Treatment||completion,42,508,264,130,134,0.5196850393700787,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+694244||Control vs. Treatment||completion,42,26,22,12,10,0.8461538461538461,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+714180||Control vs. Treatment||completion,42,157,97,43,54,0.6178343949044586,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+754873||Control vs. Treatment||completion,42,472,256,123,133,0.5423728813559322,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+796926||Control vs. Treatment||completion,42,955,544,287,257,0.5696335078534032,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+800112||Control vs. Treatment||completion,42,557,290,148,142,0.5206463195691203,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+803956||Control vs. Treatment||completion,42,954,493,254,239,0.5167714884696016,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+694143||Control vs. Treatment||completion,43,855,460,226,234,0.5380116959064327,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+694165||Control vs. Treatment||completion,43,505,248,122,126,0.4910891089108911,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+694197||Control vs. Treatment||completion,43,1831,1001,533,468,0.5466957946477334,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+694202||Control vs. Treatment||completion,43,166,78,32,46,0.4698795180722891,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+694203||Control vs. Treatment||completion,43,508,264,126,138,0.5196850393700787,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+694244||Control vs. Treatment||completion,43,26,21,11,10,0.8076923076923077,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+714180||Control vs. Treatment||completion,43,157,75,39,36,0.4777070063694267,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+754873||Control vs. Treatment||completion,43,472,253,119,134,0.5360169491525424,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+796926||Control vs. Treatment||completion,43,955,499,272,227,0.5225130890052356,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+800112||Control vs. Treatment||completion,43,557,303,146,157,0.5439856373429084,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+803956||Control vs. Treatment||completion,43,954,492,267,225,0.5157232704402516,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+694143||Control vs. Treatment||completion,44,855,447,226,221,0.5228070175438596,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+694165||Control vs. Treatment||completion,44,505,274,141,133,0.5425742574257426,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+694197||Control vs. Treatment||completion,44,1831,913,476,437,0.4986346258874932,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+694202||Control vs. Treatment||completion,44,166,87,42,45,0.5240963855421686,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+694203||Control vs. Treatment||completion,44,508,273,137,136,0.5374015748031497,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+694244||Control vs. Treatment||completion,44,26,21,11,10,0.8076923076923077,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+714180||Control vs. Treatment||completion,44,157,80,42,38,0.5095541401273885,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+754873||Control vs. Treatment||completion,44,472,245,121,124,0.5190677966101694,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+796926||Control vs. Treatment||completion,44,955,497,265,232,0.5204188481675392,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+800112||Control vs. Treatment||completion,44,557,303,148,155,0.5439856373429084,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2
+803956||Control vs. Treatment||completion,44,954,508,248,260,0.5324947589098532,assistments_abtest_study2,ASSISTments OSF Study2 A/B tests,Study2

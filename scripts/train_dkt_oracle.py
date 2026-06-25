@@ -11,9 +11,6 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import os
-os.chdir(r"C:\Users\Administrator\Desktop\AIED2026")
-
 # Allow running as a script (e.g., `python scripts/train_dkt_oracle.py`) from repo root.
 if __package__ in (None, ""):
     _repo_root = Path(__file__).resolve().parents[1]

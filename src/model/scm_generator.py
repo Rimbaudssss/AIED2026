@@ -36,6 +36,8 @@ class SCMGeneratorConfig:
     dynamics: str = "gru"  # gru | mlp | transformer
     mlp_hidden: int = 128
     dropout: float = 0.1
+    y_head_hidden: int = 0
+    y_head_layers: int = 1
 
     # Transformer dynamics (used when dynamics="transformer")
     tf_n_layers: int = 2
@@ -233,13 +235,29 @@ class SCMGenerator(nn.Module):
 
         d_obs_in = cfg.d_k + d_a + d_t + cfg.d_x
         if cfg.y_dist == "bernoulli":
-            self.y_head = nn.Linear(d_obs_in, 1)
+            d_obs_out = 1
         elif cfg.y_dist == "gaussian":
-            self.y_head = nn.Linear(d_obs_in, cfg.d_y)
+            d_obs_out = cfg.d_y
         elif cfg.y_dist == "categorical":
-            self.y_head = nn.Linear(d_obs_in, cfg.y_vocab_size)
+            d_obs_out = cfg.y_vocab_size
         else:
             raise ValueError(f"Unknown y_dist={cfg.y_dist}")
+        if int(cfg.y_head_hidden) > 0 and int(cfg.y_head_layers) > 0:
+            layers: list[nn.Module] = []
+            d_cur = d_obs_in
+            for _ in range(int(cfg.y_head_layers)):
+                layers.extend(
+                    [
+                        nn.Linear(d_cur, int(cfg.y_head_hidden)),
+                        nn.GELU(),
+                        nn.Dropout(float(cfg.dropout)),
+                    ]
+                )
+                d_cur = int(cfg.y_head_hidden)
+            layers.append(nn.Linear(d_cur, int(d_obs_out)))
+            self.y_head = nn.Sequential(*layers)
+        else:
+            self.y_head = nn.Linear(d_obs_in, int(d_obs_out))
 
         self.supervisor = Supervisor(cfg.d_k, self.d_inp, hidden=cfg.mlp_hidden, dropout=cfg.dropout)
         self.t_head: Optional[TreatmentClassifier] = None
