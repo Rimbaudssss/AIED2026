@@ -1,0 +1,93 @@
+Experiment ID,Independent Variable,Dependent Variable,Research Question Category
+PSA25TA,emotions and/or pictures in word problems,posttest,emotions or pictures in word problems
+PSA29FC,emotions and/or pictures in word problems,posttest,emotions or pictures in word problems
+PSA2KKV,encouragement to use hints,posttest,motivational messages
+PSA2KKZ,frustration question with or without some pre-help,posttest,video vs. no video
+PSA2KMP,skillbuilder vs intervention,posttest,adaptive homework
+PSA2KMQ,first problem correct video vs. no video,posttest,adaptive homework
+PSA2KNM,motivational video vs text,posttest,motivational messages
+PSA2KNP,motivational video vs text,posttest,motivational messages
+PSA2KNR,image reminder,posttest,motivational messages
+PSA2KNW,video input instructions,posttest,video vs. no video
+PSA2KNX,image explanation 3 ways,posttest,image
+PSA2KP9,video reminder,posttest,video vs. no video
+PSA2KPT,screen capture vs human video,posttest,video vs. no video
+PSA2KPV,adaptive vs nonadaptive,posttest,adaptive homework
+PSA2KQB,frustation question,posttest,motivational messages
+PSA4MS2,spacing and order of terms in systems of equations,posttest,text presentation
+PSA52JK,multiple choice,posttest,question/answer type
+PSA55VC,multiple choice,posttest,question/answer type
+PSA59TP,student choice in problems to mastery,posttest,no choice vs. choice
+PSA59TQ,encouragement messages,posttest,motivational messages
+PSA59VC,adaptive vs nonadaptive,posttest,adaptive homework
+PSA6DUN,screen capture vs human video,posttest,video vs. no video
+PSA7GUA,encouragement messages,posttest,motivational messages
+PSA98J7,"choice or red, blue, or black text",posttest,no choice vs. choice
+PSA9XWV,average hints vs average problem messages,posttest,motivational messages
+PSABANRN,"order of topic presentation: mean, median, range, mode",problems to mastery,order
+PSABARYW,black vs red/blue colored values in problems,posttest,text presentation
+PSABCXRT,common wrong answers,posttest,common wrong answer feedback
+PSABF5JC,video problems before non-video skillbuilder vs normal skill builder with video,problems to mastery,video vs. no video
+PSAGF4,common wrong answer feedback,problems to mastery,common wrong answer feedback
+PSAH9CV,comics between problems,problems to mastery,motivational messages
+PSAHQV,common wrong answer feedback,problems to mastery,common wrong answer feedback
+PSAJ2EE,text vs video hints,problems to mastery,text vs. video
+PSAJ43P,text hint vs video hint,problems to mastery,text vs. video
+PSAJ4YN,text vs video answer,problems to mastery,text vs. video
+PSAJ4ZU,text vs video answer,problems to mastery,text vs. video
+PSAJ4ZZ,text hint vs video first,problems to mastery,text vs. video
+PSAJDQG,comics between problems,problems to mastery,motivational messages
+PSAJDQJ,additional instructional video,problems to mastery,video vs. no video
+PSAJJXN,comics in problems,problems to mastery,motivational messages
+PSAJVP8,text vs video answer,problems to mastery,text vs. video
+PSAJVPW,text vs video answer,problems to mastery,text vs. video
+PSAJY7C,screen capture vs human video answer,problems to mastery,video vs. no video
+PSAKUSU,positive reinforcement messages,problems to mastery,motivational messages
+PSAM4NK,text hint vs video hint,problem set correctness,text vs. video
+PSAMC2V,"video tutor voice: female, male, or none",problems to mastery,video vs. no video
+PSAMGHG,common wrong answer feedback,problems to mastery,common wrong answer feedback
+PSAMQJD,"HistogramQ: video and illustration vs ""wrong answer""",problems to mastery,video vs. no video
+PSAMR8Z,text hint vs video hint,problems to mastery,text vs. video
+PSAP8PW,video example vs text hint vs answer,problems to mastery,text vs. video
+PSAPTW7,video scaffold vs text hint vs answer,problems to mastery,text vs. video
+PSAQJFP,spacing between numbers in PEMDAS problems,problems to mastery,text presentation
+PSAR5JG,scaffold with image vs scaffold without image vs no scaffold,problem set correctness,scaffold
+PSAR9Y9,adaptive,problems to mastery,adaptive homework
+PSARZX2,"no choice vs. choice, challenge vs standard",problem set correctness,no choice vs. choice
+PSAS25R,text vs video answer,problems to mastery,text vs. video
+PSASA4B,adaptive,posttest,adaptive homework
+PSASA67,text vs video first problem correct,posttest,text vs. video
+PSASDZY,adaptive,problems to mastery,adaptive homework
+PSASRKH,text vs video vs hint,problems to mastery,text vs. video
+PSATNB2,text vs video scaffold vs hint,problems to mastery,text vs. video
+PSATNCQ,correctness only vs hints only vs worked examples - text vs worked examples - video,problems to mastery,text vs. video
+PSATP2Z,video vs. no video,posttest,video vs. no video
+PSATZEJ,choice of: text vs video hints,problems to mastery,no choice vs. choice
+PSAU4JD,"no choice vs. choice, challenge vs standard",problem set correctness,no choice vs. choice
+PSAU5XF,hint vs. answer,posttest,hints
+PSAU6Y4,text vs video scaffold,problems to mastery,text vs. video
+PSAU7GZ,text vs video scaffold,problems to mastery,text vs. video
+PSAU85Y,text vs video scaffold,problems to mastery,text vs. video
+PSAU88D,answer vs hint vs text vs video,problems to mastery,text vs. video
+PSAUK57,"correctness only vs treatments (hints only, worked text examples, worked video examples)",problems to mastery,text vs. video
+PSAUKPM,adaptive vs non-adaptive,problems to mastery,adaptive homework
+PSAUKPR,video problems vs text,problems to mastery,text vs. video
+PSAUTWT,"no choice vs choice of more, less, or standard practice practice in skill builder",completion,no choice vs. choice
+PSAUTWU,choice of harder or easier problems,problem set correctness,no choice vs. choice
+PSAUUKY,"no choice vs. choice, challenge vs standard",problem set correctness,no choice vs. choice
+PSAV89B,"message before problem section: assess confidence vs ""moving on"" message vs none",problems to mastery,motivational messages
+PSAVDFE,1 hint vs 5 hints vs scaffold,posttest-pretest,hints
+PSAVK69,"scaffolding attempts: 1, 2, or 3",posttest-pretest,number of attempts
+PSAVTMK,"completion count: 3 vs 2, 4, or 5",posttest,number of problems
+PSAWHF4,choice of in problem hints: video or text vs random assign,problems to mastery,no choice vs. choice
+PSAWU6Z,"message before problem section: assess confidence vs ""moving on"" message vs none",problems to mastery,motivational messages
+PSAXBAF,skill builder vs assessment and worked out problems if more practice needed,posttest,adaptive homework
+PSAXD6K,2 hints vs 5 hints,posttest,hints
+PSAXJC2,"skill builder: 3 in a row vs 2, 4, or 5",posttest,number of problems
+PSAXP7W,remediation problems vs normal skill builder,posttest,adaptive homework
+PSAXTEE,theory first then real world skill builder vs the reverse,problems to mastery,order
+PSAYCFH,video hints or not,posttest,video vs. no video
+PSAYN42,no remediation vs choose one or all remediation vs give all remediation,posttest,no choice vs. choice
+PSAZ2G4,no choice vs. choice,posttest,no choice vs. choice
+PSAZ5HX,type of question being asked,posttest-pretest,question/answer type
+PSAZGQM,Number of problems for mastery,posttest,number of problems

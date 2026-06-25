@@ -1,0 +1,24 @@
+ASSISTments Data Terms of Use
+
+Effective October 30, 2020
+
+By downloading or using ASSISTments data, you agree to the following terms of use:
+
+You will cite ASSISTments and the specific dataset of interest (using the dataset’s DOI, if available) in any public release of your work.
+
+You will not use or reference ASSISTments data for any commercial purpose. 
+
+You will make any and all outcomes available to the public using free and open access practices.
+
+You will not make any attempts to de-anonymize ASSISTments data.
+
+You will not redistribute ASSISTments data. You may distribute code that processes or manipulates the data, but you may not redistribute the data itself. If working with collaborators, all team members must access the dataset from its original source.
+
+You will not attempt to identify ASSISTments users directly, or to modify or create any supplemental or third party datasets that identify ASSISTments users. If you are able to identify ASSISTments users in this or any ASSISTments dataset, you will:
+    a) email research@assistments.org with a copy of the dataset, any supplemental files, and a written explanation of how the data was de-anonymized,
+    b) delete all de-anonymized data and related outcomes, and
+    c) halt pursuit of or redact publication of any outcome that risks identifying and/or harming ASSISTments users.
+
+Worcester Polytechnic Institute and The ASSISTments Foundation follow open science practices for data accessibility and archiving, but make no guarantees about the quality or permanence of ASSISTments data.
+
+In using this dataset you agree to indemnify and hold harmless Worcester Polytechnic Institute and The ASSISTments Foundation of and from any and all claims, demands, losses, causes of action, damage, lawsuits, judgments, including attorneys' fees and costs, arising out of or relating to your use and analysis of ASSISTments data.

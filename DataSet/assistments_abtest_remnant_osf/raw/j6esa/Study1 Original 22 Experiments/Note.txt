@@ -1,0 +1,20 @@
+Note: 
+
+In 
+
+Selent, D., Patikorn, T. & Heffernan, N. T. (2016) ASSISTments Dataset from Multiple Randomized Controlled Experiments. A “Work in progress” category presented at Learning at Scale 2016. At ACM Digital Library, 181-184.
+
+You will find the file is called ThisOne.csv
+
+
+But in this repository is it renamed 
+ TreatmentAssignment_Covariate_Outcome_Study1.csv
+
+
+
+-For those really interested, in the Selent paper the link as 
+
+https://sites.google.com/site/las2016data/data/ThisOne.xlsx
+
+But the correct link is 
+https://sites.google.com/site/las2016data/data/thison

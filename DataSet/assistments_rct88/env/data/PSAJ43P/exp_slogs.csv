@@ -1,0 +1,150 @@
+experiment_id,student_id,problem_id,problem_part,scaffold_id,experiment_tag_path,action,timestamp,assistments_reference_action_log_id
+PSAJ43P,6310,,,,,assignment_started,2019-04-07 18:57:01.198000-04:00,1828308
+PSAJ43P,6310,PRAV3ZU,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment]/Intro Video [ignore],problem_started,2019-04-07 18:57:01.744000-04:00,1828312
+PSAJ43P,6310,PRAV3ZU,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment]/Intro Video [ignore],correct_response,2019-04-07 19:11:56.166000-04:00,1828326
+PSAJ43P,6310,PRAV3ZU,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment]/Intro Video [ignore],problem_finished,2019-04-07 19:11:56.169000-04:00,1828327
+PSAJ43P,6310,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],continue_selected,2019-04-07 19:12:00.193000-04:00,1828329
+PSAJ43P,6310,PRAVEUC,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_started,2019-04-07 19:12:00.266000-04:00,1828330
+PSAJ43P,6310,PRAVEUC,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],scaffolding_requested,2019-04-07 19:14:19.047000-04:00,1828332
+PSAJ43P,6310,PRAVEUC,1.0,828301.0,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_started,2019-04-07 19:14:19.314000-04:00,1828335
+PSAJ43P,6310,PRAVEUC,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],correct_response,2019-04-07 19:14:50.565000-04:00,1828336
+PSAJ43P,6310,PRAVEUC,1.0,828301.0,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_finished,2019-04-07 19:14:50.588000-04:00,1828337
+PSAJ43P,6310,PRAVEUC,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_finished,2019-04-07 19:14:50.649000-04:00,1828341
+PSAJ43P,6310,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],continue_selected,2019-04-07 19:14:51.420000-04:00,1828342
+PSAJ43P,6310,PRAVEUG,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_started,2019-04-07 19:14:51.485000-04:00,1828343
+PSAJ43P,6310,PRAVEUG,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],scaffolding_requested,2019-04-07 19:20:26.410000-04:00,1828362
+PSAJ43P,6310,PRAVEUG,1.0,828309.0,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_started,2019-04-07 19:20:26.718000-04:00,1828365
+PSAJ43P,6310,PRAVEUG,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],correct_response,2019-04-07 19:20:50.499000-04:00,1828366
+PSAJ43P,6310,PRAVEUG,1.0,828309.0,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_finished,2019-04-07 19:20:50.525000-04:00,1828367
+PSAJ43P,6310,PRAVEUG,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_finished,2019-04-07 19:20:50.602000-04:00,1828371
+PSAJ43P,6310,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],continue_selected,2019-04-07 19:20:51.334000-04:00,1828372
+PSAJ43P,6310,PRAVEUE,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_started,2019-04-07 19:20:51.391000-04:00,1828373
+PSAJ43P,6310,PRAVEUE,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],correct_response,2019-04-07 19:22:02.018000-04:00,1828390
+PSAJ43P,6310,PRAVEUE,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_finished,2019-04-07 19:22:02.019000-04:00,1828391
+PSAJ43P,6310,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],continue_selected,2019-04-07 19:22:03.966000-04:00,1828392
+PSAJ43P,6310,PRAVEUJ,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_started,2019-04-07 19:22:04.015000-04:00,1828393
+PSAJ43P,6310,PRAVEUJ,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],correct_response,2019-04-07 19:22:58.878000-04:00,1828398
+PSAJ43P,6310,PRAVEUJ,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_finished,2019-04-07 19:22:58.880000-04:00,1828399
+PSAJ43P,6310,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],continue_selected,2019-04-07 19:22:59.486000-04:00,1828400
+PSAJ43P,6310,PRAVEUF,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_started,2019-04-07 19:22:59.527000-04:00,1828401
+PSAJ43P,6310,PRAVEUF,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],correct_response,2019-04-07 19:24:17.790000-04:00,1828408
+PSAJ43P,6310,PRAVEUF,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_finished,2019-04-07 19:24:17.791000-04:00,1828409
+PSAJ43P,6310,,,,,assignment_finished,2019-04-07 19:24:17.835000-04:00,1828411
+PSAJ43P,7689,,,,,assignment_started,2019-04-24 07:14:19.945000-04:00,2292166
+PSAJ43P,7689,PRAV3ZU,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control]/Intro Video [ignore],problem_started,2019-04-24 07:14:20.280000-04:00,2292170
+PSAJ43P,7689,PRAV3ZU,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control]/Intro Video [ignore],wrong_response,2019-04-24 07:15:14.088000-04:00,2292171
+PSAJ43P,7689,PRAV3ZU,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control]/Intro Video [ignore],problem_finished,2019-04-24 07:15:14.090000-04:00,2292172
+PSAJ43P,7689,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],continue_selected,2019-04-24 07:15:18.383000-04:00,2292174
+PSAJ43P,7689,PRAVEQY,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],problem_started,2019-04-24 07:15:18.423000-04:00,2292175
+PSAJ43P,7689,PRAVEQY,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],wrong_response,2019-04-24 07:19:34.034000-04:00,2292204
+PSAJ43P,7689,PRAVEQY,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],scaffolding_requested,2019-04-24 07:19:34.036000-04:00,2292206
+PSAJ43P,7689,PRAVEQY,1.0,855748.0,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],problem_started,2019-04-24 07:19:34.150000-04:00,2292209
+PSAJ43P,7689,PRAVEQY,1.0,855748.0,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],correct_response,2019-04-24 07:21:05.258000-04:00,2292219
+PSAJ43P,7689,PRAVEQY,1.0,855748.0,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],problem_finished,2019-04-24 07:21:05.260000-04:00,2292220
+PSAJ43P,7689,PRAVEQY,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],problem_finished,2019-04-24 07:21:05.306000-04:00,2292224
+PSAJ43P,7689,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],continue_selected,2019-04-24 07:21:15.991000-04:00,2292225
+PSAJ43P,7689,PRAVESK,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],problem_started,2019-04-24 07:21:16.021000-04:00,2292226
+PSAJ43P,7689,PRAVESK,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],correct_response,2019-04-24 07:24:24.690000-04:00,2292245
+PSAJ43P,7689,PRAVESK,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],problem_finished,2019-04-24 07:24:24.692000-04:00,2292246
+PSAJ43P,7689,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],continue_selected,2019-04-24 07:24:26.166000-04:00,2292247
+PSAJ43P,7689,PRAVEQZ,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],problem_started,2019-04-24 07:24:26.197000-04:00,2292248
+PSAJ43P,7689,PRAVEQZ,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],correct_response,2019-04-24 07:32:04.424000-04:00,2292270
+PSAJ43P,7689,PRAVEQZ,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],problem_finished,2019-04-24 07:32:04.426000-04:00,2292271
+PSAJ43P,7689,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],continue_selected,2019-04-24 07:32:05.670000-04:00,2292272
+PSAJ43P,7689,PRAVESM,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],problem_started,2019-04-24 07:32:05.702000-04:00,2292273
+PSAJ43P,7689,PRAVESM,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],correct_response,2019-04-24 07:33:24.536000-04:00,2292274
+PSAJ43P,7689,PRAVESM,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],problem_finished,2019-04-24 07:33:24.537000-04:00,2292275
+PSAJ43P,7689,,,,,assignment_finished,2019-04-24 07:33:24.572000-04:00,2292277
+PSAJ43P,281944,,,,,assignment_started,2020-04-16 10:34:17.686000-04:00,89137272
+PSAJ43P,281944,PRAV3ZU,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control]/Intro Video [ignore],problem_started,2020-04-16 10:34:20.217000-04:00,89137276
+PSAJ43P,281944,PRAV3ZU,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control]/Intro Video [ignore],correct_response,2020-04-16 10:34:47.667000-04:00,89139519
+PSAJ43P,281944,PRAV3ZU,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control]/Intro Video [ignore],problem_finished,2020-04-16 10:34:47.679000-04:00,89139711
+PSAJ43P,281944,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],continue_selected,2020-04-16 10:34:49.806000-04:00,89139713
+PSAJ43P,281944,PRAVEQY,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],problem_started,2020-04-16 10:34:49.890000-04:00,89139714
+PSAJ43P,281944,PRAVEQY,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],correct_response,2020-04-16 10:35:23.392000-04:00,89142545
+PSAJ43P,281944,PRAVEQY,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],problem_finished,2020-04-16 10:35:23.398000-04:00,89142641
+PSAJ43P,281944,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],continue_selected,2020-04-16 10:35:24.372000-04:00,89142642
+PSAJ43P,281944,PRAVESK,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],problem_started,2020-04-16 10:35:24.428000-04:00,89142643
+PSAJ43P,281944,PRAVESK,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],correct_response,2020-04-16 10:35:59.162000-04:00,89145807
+PSAJ43P,281944,PRAVESK,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],problem_finished,2020-04-16 10:35:59.170000-04:00,89146753
+PSAJ43P,281944,,,,,assignment_finished,2020-04-16 10:35:59.239000-04:00,89146755
+PSAJ43P,282143,,,,,assignment_started,2020-04-17 07:54:11.659000-04:00,91585058
+PSAJ43P,282143,PRAV3ZU,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control]/Intro Video [ignore],problem_started,2020-04-17 07:54:12.494000-04:00,91585062
+PSAJ43P,282143,PRAV3ZU,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control]/Intro Video [ignore],wrong_response,2020-04-17 07:54:37.016000-04:00,91585146
+PSAJ43P,282143,PRAV3ZU,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control]/Intro Video [ignore],problem_finished,2020-04-17 07:54:37.033000-04:00,91585181
+PSAJ43P,282143,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],continue_selected,2020-04-17 07:54:39.937000-04:00,91585183
+PSAJ43P,282143,PRAVEQY,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],problem_started,2020-04-17 07:54:40.167000-04:00,91585184
+PSAJ43P,282143,PRAVEQY,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],correct_response,2020-04-17 07:56:01.971000-04:00,91585600
+PSAJ43P,282143,PRAVEQY,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],problem_finished,2020-04-17 07:56:01.985000-04:00,91585614
+PSAJ43P,282143,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],continue_selected,2020-04-17 07:56:03.054000-04:00,91585615
+PSAJ43P,282143,PRAVESK,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],problem_started,2020-04-17 07:56:03.219000-04:00,91585616
+PSAJ43P,282143,PRAVESK,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],correct_response,2020-04-17 07:57:31.425000-04:00,91585989
+PSAJ43P,282143,PRAVESK,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],problem_finished,2020-04-17 07:57:31.434000-04:00,91585996
+PSAJ43P,282143,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],continue_selected,2020-04-17 07:57:32.835000-04:00,91585997
+PSAJ43P,282143,PRAVEQZ,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],problem_started,2020-04-17 07:57:33.041000-04:00,91585998
+PSAJ43P,282143,PRAVEQZ,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],correct_response,2020-04-17 07:58:05.852000-04:00,91586145
+PSAJ43P,282143,PRAVEQZ,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469C [control],problem_finished,2020-04-17 07:58:05.860000-04:00,91586151
+PSAJ43P,282143,,,,,assignment_finished,2020-04-17 07:58:05.931000-04:00,91586153
+PSAJ43P,359722,,,,,assignment_started,2021-02-08 10:39:35.932000-05:00,589394813
+PSAJ43P,359722,PRAV3ZU,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment]/Intro Video [ignore],problem_started,2021-02-08 10:39:36.693000-05:00,589394817
+PSAJ43P,359722,PRAV3ZU,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment]/Intro Video [ignore],correct_response,2021-02-08 10:40:07.723000-05:00,589397116
+PSAJ43P,359722,PRAV3ZU,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment]/Intro Video [ignore],problem_finished,2021-02-08 10:40:07.731000-05:00,589397228
+PSAJ43P,359722,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],continue_selected,2021-02-08 10:40:09.512000-05:00,589397230
+PSAJ43P,359722,PRAVEUC,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_started,2021-02-08 10:40:09.582000-05:00,589397231
+PSAJ43P,359722,PRAVEUC,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],correct_response,2021-02-08 10:45:11.308000-05:00,589418526
+PSAJ43P,359722,PRAVEUC,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_finished,2021-02-08 10:45:11.310000-05:00,589418618
+PSAJ43P,359722,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],continue_selected,2021-02-08 10:45:12.271000-05:00,589418619
+PSAJ43P,359722,PRAVEUG,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_started,2021-02-08 10:45:12.306000-05:00,589418620
+PSAJ43P,359722,PRAVEUG,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],wrong_response,2021-02-08 10:48:11.028000-05:00,589431896
+PSAJ43P,359722,PRAVEUG,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],scaffolding_requested,2021-02-08 10:48:11.030000-05:00,589431960
+PSAJ43P,359722,PRAVEUG,1.0,828309.0,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_started,2021-02-08 10:48:11.711000-05:00,589431963
+PSAJ43P,359722,PRAVEUG,1.0,828309.0,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],correct_response,2021-02-08 10:49:21.873000-05:00,589437396
+PSAJ43P,359722,PRAVEUG,1.0,828309.0,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_finished,2021-02-08 10:49:21.875000-05:00,589438174
+PSAJ43P,359722,PRAVEUG,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_finished,2021-02-08 10:49:21.923000-05:00,589438178
+PSAJ43P,359722,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],continue_selected,2021-02-08 10:49:31.084000-05:00,589438180
+PSAJ43P,359722,PRAVEUE,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_started,2021-02-08 10:49:31.130000-05:00,589438183
+PSAJ43P,359722,PRAVEUE,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],correct_response,2021-02-08 10:51:06.778000-05:00,589445574
+PSAJ43P,359722,PRAVEUE,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_finished,2021-02-08 10:51:06.779000-05:00,589445720
+PSAJ43P,359722,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],continue_selected,2021-02-08 10:51:09.014000-05:00,589445721
+PSAJ43P,359722,PRAVEUJ,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_started,2021-02-08 10:51:09.055000-05:00,589445722
+PSAJ43P,359722,PRAVEUJ,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],wrong_response,2021-02-08 10:52:32.447000-05:00,589452012
+PSAJ43P,359722,PRAVEUJ,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],scaffolding_requested,2021-02-08 10:52:32.449000-05:00,589452069
+PSAJ43P,359722,PRAVEUJ,1.0,828311.0,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_started,2021-02-08 10:52:33.299000-05:00,589452072
+PSAJ43P,359722,PRAVEUJ,1.0,828311.0,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],wrong_response,2021-02-08 10:53:34.361000-05:00,589457105
+PSAJ43P,359722,PRAVEUJ,1.0,828311.0,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],correct_response,2021-02-08 10:53:39.575000-05:00,589457542
+PSAJ43P,359722,PRAVEUJ,1.0,828311.0,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_finished,2021-02-08 10:53:39.576000-05:00,589457543
+PSAJ43P,359722,PRAVEUJ,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_finished,2021-02-08 10:53:39.622000-05:00,589457712
+PSAJ43P,359722,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],continue_selected,2021-02-08 10:53:42.115000-05:00,589457713
+PSAJ43P,359722,PRAVEUF,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_started,2021-02-08 10:53:42.160000-05:00,589457714
+PSAJ43P,359722,PRAVEUF,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],correct_response,2021-02-08 10:54:50.966000-05:00,589463284
+PSAJ43P,359722,PRAVEUF,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_finished,2021-02-08 10:54:50.968000-05:00,589463389
+PSAJ43P,359722,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],continue_selected,2021-02-08 10:54:52.512000-05:00,589463390
+PSAJ43P,359722,PRAVEUK,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_started,2021-02-08 10:54:52.550000-05:00,589463391
+PSAJ43P,359722,PRAVEUK,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],correct_response,2021-02-08 10:56:48.776000-05:00,589473466
+PSAJ43P,359722,PRAVEUK,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_finished,2021-02-08 10:56:48.777000-05:00,589473534
+PSAJ43P,359722,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],continue_selected,2021-02-08 10:56:49.462000-05:00,589473535
+PSAJ43P,359722,PRAVERH,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_started,2021-02-08 10:56:49.505000-05:00,589473538
+PSAJ43P,359722,PRAVERH,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],correct_response,2021-02-08 10:57:05.265000-05:00,589475011
+PSAJ43P,359722,PRAVERH,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_finished,2021-02-08 10:57:05.267000-05:00,589475315
+PSAJ43P,359722,,,,,assignment_finished,2021-02-08 10:57:05.300000-05:00,589475317
+PSAJ43P,359805,,,,,assignment_started,2021-02-09 10:08:47.771000-05:00,592204947
+PSAJ43P,359805,PRAV3ZU,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment]/Intro Video [ignore],problem_started,2021-02-09 10:08:49.249000-05:00,592204951
+PSAJ43P,359805,PRAV3ZU,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment]/Intro Video [ignore],correct_response,2021-02-09 10:09:22.446000-05:00,592207678
+PSAJ43P,359805,PRAV3ZU,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment]/Intro Video [ignore],problem_finished,2021-02-09 10:09:22.452000-05:00,592207774
+PSAJ43P,359805,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],continue_selected,2021-02-09 10:09:23.780000-05:00,592207777
+PSAJ43P,359805,PRAVEUC,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_started,2021-02-09 10:09:23.919000-05:00,592207778
+PSAJ43P,359805,PRAVEUC,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],correct_response,2021-02-09 10:10:16.909000-05:00,592212025
+PSAJ43P,359805,PRAVEUC,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_finished,2021-02-09 10:10:16.916000-05:00,592212172
+PSAJ43P,359805,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],continue_selected,2021-02-09 10:10:18.326000-05:00,592212173
+PSAJ43P,359805,PRAVEUG,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_started,2021-02-09 10:10:18.430000-05:00,592212174
+PSAJ43P,359805,PRAVEUG,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],correct_response,2021-02-09 10:14:05.210000-05:00,592230936
+PSAJ43P,359805,PRAVEUG,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_finished,2021-02-09 10:14:05.214000-05:00,592231155
+PSAJ43P,359805,,,,,assignment_finished,2021-02-09 10:14:05.289000-05:00,592231157
+PSAJ43P,398118,,,,,assignment_started,2020-07-23 14:45:46.097000-04:00,185423721
+PSAJ43P,398118,PRAV3ZU,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment]/Intro Video [ignore],problem_started,2020-07-23 14:45:47.221000-04:00,185423725
+PSAJ43P,398118,PRAV3ZU,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment]/Intro Video [ignore],wrong_response,2020-07-23 14:46:18.474000-04:00,185423785
+PSAJ43P,398118,PRAV3ZU,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment]/Intro Video [ignore],problem_finished,2020-07-23 14:46:18.482000-04:00,185423791
+PSAJ43P,398118,,,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],continue_selected,2020-07-23 14:46:22.971000-04:00,185423793
+PSAJ43P,398118,PRAVEUC,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_started,2020-07-23 14:46:23.172000-04:00,185423794
+PSAJ43P,398118,PRAVEUC,1.0,,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],scaffolding_requested,2020-07-23 14:49:07.246000-04:00,185424048
+PSAJ43P,398118,PRAVEUC,1.0,828301.0,Converting Radians -Degrees F-TF.A.1 EX/9823469E [treatment],problem_started,2020-07-23 14:49:07.744000-04:00,185424051

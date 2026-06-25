@@ -1,0 +1,1281 @@
+experiment_id,student_id,problem_id,problem_part,scaffold_id,experiment_tag_path,action,timestamp,assistments_reference_action_log_id
+PSAJVPW,6310,,,,,assignment_started,2019-04-07 20:03:29.699000-04:00,1829172
+PSAJVPW,6310,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2019-04-07 20:03:30.209000-04:00,1829176
+PSAJVPW,6310,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2019-04-07 20:04:09.810000-04:00,1829177
+PSAJVPW,6310,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2019-04-07 20:04:09.813000-04:00,1829178
+PSAJVPW,6310,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2019-04-07 20:04:10.687000-04:00,1829180
+PSAJVPW,6310,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2019-04-07 20:04:10.744000-04:00,1829181
+PSAJVPW,6310,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],scaffolding_requested,2019-04-07 20:04:34.755000-04:00,1829191
+PSAJVPW,6310,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2019-04-07 20:04:34.926000-04:00,1829197
+PSAJVPW,6310,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],wrong_response,2019-04-07 20:05:02.713000-04:00,1829207
+PSAJVPW,6310,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2019-04-07 20:05:07.955000-04:00,1829208
+PSAJVPW,6310,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2019-04-07 20:05:07.977000-04:00,1829209
+PSAJVPW,6310,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2019-04-07 20:05:08.029000-04:00,1829213
+PSAJVPW,6310,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2019-04-07 20:05:08.593000-04:00,1829214
+PSAJVPW,6310,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2019-04-07 20:05:08.635000-04:00,1829215
+PSAJVPW,6310,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],wrong_response,2019-04-07 20:05:57.682000-04:00,1829219
+PSAJVPW,6310,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],scaffolding_requested,2019-04-07 20:05:57.684000-04:00,1829221
+PSAJVPW,6310,PRAVCQT,1.0,825863.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2019-04-07 20:05:57.868000-04:00,1829224
+PSAJVPW,6310,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2019-04-07 20:06:29.141000-04:00,1829230
+PSAJVPW,6310,PRAVCQT,1.0,825863.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2019-04-07 20:06:29.160000-04:00,1829231
+PSAJVPW,6310,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2019-04-07 20:06:29.222000-04:00,1829235
+PSAJVPW,6310,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2019-04-07 20:06:29.686000-04:00,1829236
+PSAJVPW,6310,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2019-04-07 20:06:29.741000-04:00,1829237
+PSAJVPW,6310,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2019-04-07 20:07:10.654000-04:00,1829246
+PSAJVPW,6310,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2019-04-07 20:07:10.656000-04:00,1829247
+PSAJVPW,6310,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2019-04-07 20:07:11.467000-04:00,1829248
+PSAJVPW,6310,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2019-04-07 20:07:11.508000-04:00,1829249
+PSAJVPW,6310,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],wrong_response,2019-04-07 20:08:00.204000-04:00,1829262
+PSAJVPW,6310,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],scaffolding_requested,2019-04-07 20:08:00.206000-04:00,1829267
+PSAJVPW,6310,PRAVCQK,1.0,844009.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2019-04-07 20:08:00.415000-04:00,1829270
+PSAJVPW,6310,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2019-04-07 20:08:26.313000-04:00,1829271
+PSAJVPW,6310,PRAVCQK,1.0,844009.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2019-04-07 20:08:26.335000-04:00,1829272
+PSAJVPW,6310,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2019-04-07 20:08:26.398000-04:00,1829276
+PSAJVPW,6310,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2019-04-07 20:08:26.962000-04:00,1829277
+PSAJVPW,6310,PRAVCQM,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2019-04-07 20:08:27.018000-04:00,1829278
+PSAJVPW,6310,PRAVCQM,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],wrong_response,2019-04-07 20:08:52.646000-04:00,1829282
+PSAJVPW,6310,PRAVCQM,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],scaffolding_requested,2019-04-07 20:08:52.648000-04:00,1829284
+PSAJVPW,6310,PRAVCQM,1.0,844016.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2019-04-07 20:08:52.847000-04:00,1829287
+PSAJVPW,6310,PRAVCQM,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2019-04-07 20:09:18.403000-04:00,1829288
+PSAJVPW,6310,PRAVCQM,1.0,844016.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2019-04-07 20:09:18.430000-04:00,1829289
+PSAJVPW,6310,PRAVCQM,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2019-04-07 20:09:18.494000-04:00,1829293
+PSAJVPW,6310,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2019-04-07 20:09:19.084000-04:00,1829294
+PSAJVPW,6310,PRAVCQG,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2019-04-07 20:09:19.132000-04:00,1829295
+PSAJVPW,6310,PRAVCQG,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],wrong_response,2019-04-07 20:10:09.521000-04:00,1829313
+PSAJVPW,6310,PRAVCQG,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],scaffolding_requested,2019-04-07 20:10:09.523000-04:00,1829322
+PSAJVPW,6310,PRAVCQG,1.0,844002.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2019-04-07 20:10:09.708000-04:00,1829325
+PSAJVPW,6310,PRAVCQG,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2019-04-07 20:10:42.573000-04:00,1829332
+PSAJVPW,6310,PRAVCQG,1.0,844002.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2019-04-07 20:10:42.596000-04:00,1829333
+PSAJVPW,6310,PRAVCQG,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2019-04-07 20:10:42.649000-04:00,1829337
+PSAJVPW,6310,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2019-04-07 20:10:43.230000-04:00,1829338
+PSAJVPW,6310,PRAU8X6,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2019-04-07 20:10:43.278000-04:00,1829339
+PSAJVPW,6310,PRAU8X6,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],wrong_response,2019-04-07 20:11:12.871000-04:00,1829346
+PSAJVPW,6310,,,,,assignment_resumed,2019-04-08 18:45:01.651000-04:00,1868014
+PSAJVPW,6310,,,,,assignment_resumed,2019-04-15 17:14:33.947000-04:00,2087751
+PSAJVPW,6310,PRAU8X6,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2019-04-15 17:17:51.759000-04:00,2087832
+PSAJVPW,6310,PRAU8X6,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2019-04-15 17:17:51.767000-04:00,2087833
+PSAJVPW,6310,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2019-04-15 17:17:53.311000-04:00,2087834
+PSAJVPW,6310,PRAU8ZF,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2019-04-15 17:17:53.410000-04:00,2087835
+PSAJVPW,6310,PRAU8ZF,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2019-04-15 17:20:22.310000-04:00,2087876
+PSAJVPW,6310,PRAU8ZF,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2019-04-15 17:20:22.314000-04:00,2087877
+PSAJVPW,6310,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2019-04-15 17:20:23.554000-04:00,2087878
+PSAJVPW,6310,PRAU8YR,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2019-04-15 17:20:23.642000-04:00,2087879
+PSAJVPW,6310,PRAU8YR,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2019-04-15 17:21:48.896000-04:00,2087901
+PSAJVPW,6310,PRAU8YR,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2019-04-15 17:21:48.906000-04:00,2087902
+PSAJVPW,6310,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2019-04-15 17:21:50.169000-04:00,2087903
+PSAJVPW,6310,PRAU8ZR,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2019-04-15 17:21:50.267000-04:00,2087904
+PSAJVPW,6310,PRAU8ZR,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2019-04-15 17:23:46.618000-04:00,2087948
+PSAJVPW,6310,PRAU8ZR,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2019-04-15 17:23:46.626000-04:00,2087949
+PSAJVPW,6310,,,,,assignment_finished,2019-04-15 17:23:46.678000-04:00,2087951
+PSAJVPW,7689,,,,,assignment_started,2019-04-26 07:25:39.578000-04:00,2373128
+PSAJVPW,7689,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2019-04-26 07:25:39.855000-04:00,2373132
+PSAJVPW,7689,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],correct_response,2019-04-26 07:26:00.498000-04:00,2373133
+PSAJVPW,7689,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2019-04-26 07:26:00.500000-04:00,2373134
+PSAJVPW,7689,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2019-04-26 07:26:03.098000-04:00,2373136
+PSAJVPW,7689,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2019-04-26 07:26:03.133000-04:00,2373137
+PSAJVPW,7689,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2019-04-26 07:29:32.845000-04:00,2373149
+PSAJVPW,7689,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2019-04-26 07:29:32.847000-04:00,2373150
+PSAJVPW,7689,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2019-04-26 07:29:33.602000-04:00,2373151
+PSAJVPW,7689,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2019-04-26 07:29:33.636000-04:00,2373152
+PSAJVPW,7689,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2019-04-26 07:30:39.942000-04:00,2373157
+PSAJVPW,7689,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2019-04-26 07:30:39.943000-04:00,2373158
+PSAJVPW,7689,,,,,assignment_finished,2019-04-26 07:30:39.970000-04:00,2373160
+PSAJVPW,91692,,,,,assignment_started,2020-02-27 20:06:24.536000-05:00,45712456
+PSAJVPW,91692,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-02-27 20:06:24.829000-05:00,45712460
+PSAJVPW,91692,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-02-27 20:06:30.108000-05:00,45712508
+PSAJVPW,91692,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-02-27 20:06:30.111000-05:00,45712510
+PSAJVPW,91692,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-27 20:06:30.651000-05:00,45712512
+PSAJVPW,91692,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-27 20:06:30.694000-05:00,45712513
+PSAJVPW,91692,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],wrong_response,2020-02-27 20:06:56.029000-05:00,45712657
+PSAJVPW,91692,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],scaffolding_requested,2020-02-27 20:06:56.032000-05:00,45712659
+PSAJVPW,91692,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-27 20:06:56.187000-05:00,45712662
+PSAJVPW,91692,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-27 20:07:47.496000-05:00,45712864
+PSAJVPW,91692,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-27 20:07:47.497000-05:00,45712885
+PSAJVPW,91692,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-27 20:07:47.556000-05:00,45712889
+PSAJVPW,91692,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-27 20:07:52.745000-05:00,45712890
+PSAJVPW,91692,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-27 20:07:52.797000-05:00,45712891
+PSAJVPW,91692,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-27 20:08:21.784000-05:00,45713024
+PSAJVPW,91692,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-27 20:08:21.785000-05:00,45713025
+PSAJVPW,91692,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-27 20:08:22.343000-05:00,45713026
+PSAJVPW,91692,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-27 20:08:22.375000-05:00,45713027
+PSAJVPW,91692,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-27 20:08:44.016000-05:00,45713104
+PSAJVPW,91692,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-27 20:08:44.017000-05:00,45713106
+PSAJVPW,91692,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-27 20:08:44.607000-05:00,45713107
+PSAJVPW,91692,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-27 20:08:44.641000-05:00,45713108
+PSAJVPW,91692,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],wrong_response,2020-02-27 20:09:07.430000-05:00,45713239
+PSAJVPW,91692,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],scaffolding_requested,2020-02-27 20:09:07.432000-05:00,45713241
+PSAJVPW,91692,PRAVCQK,1.0,844009.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-27 20:09:07.567000-05:00,45713244
+PSAJVPW,91692,PRAVCQK,1.0,844009.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-27 20:09:43.440000-05:00,45713366
+PSAJVPW,91692,PRAVCQK,1.0,844009.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-27 20:09:43.441000-05:00,45713375
+PSAJVPW,91692,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-27 20:09:43.503000-05:00,45713379
+PSAJVPW,91692,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-27 20:09:44.553000-05:00,45713380
+PSAJVPW,91692,PRAVCQM,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-27 20:09:44.594000-05:00,45713381
+PSAJVPW,91692,PRAVCQM,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-27 20:10:02.531000-05:00,45713437
+PSAJVPW,91692,PRAVCQM,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-27 20:10:02.532000-05:00,45713438
+PSAJVPW,91692,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-27 20:10:03.048000-05:00,45713439
+PSAJVPW,91692,PRAVCQG,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-27 20:10:03.091000-05:00,45713440
+PSAJVPW,91692,PRAVCQG,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-27 20:10:22.919000-05:00,45713477
+PSAJVPW,91692,PRAVCQG,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-27 20:10:22.920000-05:00,45713479
+PSAJVPW,91692,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-27 20:10:23.473000-05:00,45713480
+PSAJVPW,91692,PRAU8X6,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-27 20:10:23.513000-05:00,45713481
+PSAJVPW,91692,PRAU8X6,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-27 20:10:44.076000-05:00,45713551
+PSAJVPW,91692,PRAU8X6,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-27 20:10:44.077000-05:00,45713556
+PSAJVPW,91692,,,,,assignment_finished,2020-02-27 20:10:44.107000-05:00,45713558
+PSAJVPW,91693,,,,,assignment_started,2020-02-14 13:51:20.457000-05:00,42709758
+PSAJVPW,91693,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-02-14 13:51:21.014000-05:00,42709762
+PSAJVPW,91693,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],wrong_response,2020-02-14 13:51:25.358000-05:00,42709781
+PSAJVPW,91693,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-02-14 13:51:25.363000-05:00,42709782
+PSAJVPW,91693,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-14 13:51:27.279000-05:00,42709801
+PSAJVPW,91693,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-14 13:51:27.378000-05:00,42709802
+PSAJVPW,91693,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],wrong_response,2020-02-14 13:54:23.438000-05:00,42710763
+PSAJVPW,91693,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],scaffolding_requested,2020-02-14 13:54:23.447000-05:00,42710765
+PSAJVPW,91693,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-14 13:54:23.821000-05:00,42710768
+PSAJVPW,91693,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],wrong_response,2020-02-14 13:54:32.206000-05:00,42710806
+PSAJVPW,91693,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-14 13:55:31.205000-05:00,42711111
+PSAJVPW,91693,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-14 13:55:31.209000-05:00,42711112
+PSAJVPW,91693,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-14 13:55:31.354000-05:00,42711117
+PSAJVPW,91693,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-14 13:55:34.441000-05:00,42711118
+PSAJVPW,91693,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-14 13:55:34.522000-05:00,42711119
+PSAJVPW,91693,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-14 13:57:57.248000-05:00,42712179
+PSAJVPW,91693,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-14 13:57:57.251000-05:00,42712257
+PSAJVPW,91693,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-14 13:58:30.770000-05:00,42712414
+PSAJVPW,91693,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-14 13:58:30.896000-05:00,42712415
+PSAJVPW,91693,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-14 13:59:09.616000-05:00,42712647
+PSAJVPW,91693,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-14 13:59:09.619000-05:00,42712664
+PSAJVPW,91693,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-14 13:59:10.544000-05:00,42712665
+PSAJVPW,91693,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-14 13:59:10.634000-05:00,42712666
+PSAJVPW,91693,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-14 13:59:36.025000-05:00,42712883
+PSAJVPW,91693,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-14 13:59:36.028000-05:00,42712896
+PSAJVPW,91693,,,,,assignment_finished,2020-02-14 13:59:36.104000-05:00,42712898
+PSAJVPW,91695,,,,,assignment_started,2020-02-18 13:11:35.235000-05:00,43050806
+PSAJVPW,91695,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-02-18 13:11:36.710000-05:00,43050810
+PSAJVPW,91695,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-02-18 13:12:02.298000-05:00,43051046
+PSAJVPW,91695,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-02-18 13:12:02.312000-05:00,43051098
+PSAJVPW,91695,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-18 13:12:05.899000-05:00,43051100
+PSAJVPW,91695,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-18 13:12:06.660000-05:00,43051101
+PSAJVPW,91695,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],scaffolding_requested,2020-02-18 13:17:30.512000-05:00,43054258
+PSAJVPW,91695,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-18 13:17:32.940000-05:00,43054287
+PSAJVPW,91695,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],wrong_response,2020-02-18 13:18:46.980000-05:00,43055096
+PSAJVPW,91695,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-18 13:19:09.521000-05:00,43055456
+PSAJVPW,91695,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-18 13:19:09.529000-05:00,43055457
+PSAJVPW,91695,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-18 13:19:12.294000-05:00,43055528
+PSAJVPW,91695,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-18 13:19:18.657000-05:00,43055529
+PSAJVPW,91695,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-18 13:19:19.821000-05:00,43055530
+PSAJVPW,91695,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-18 13:19:52.658000-05:00,43055896
+PSAJVPW,91695,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-18 13:19:52.664000-05:00,43055938
+PSAJVPW,91695,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-18 13:19:55.705000-05:00,43055939
+PSAJVPW,91695,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-18 13:19:56.764000-05:00,43055940
+PSAJVPW,91695,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-18 13:20:33.285000-05:00,43056407
+PSAJVPW,91695,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-18 13:20:33.291000-05:00,43056455
+PSAJVPW,91695,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-18 13:20:36.333000-05:00,43056456
+PSAJVPW,91695,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-18 13:20:37.477000-05:00,43056457
+PSAJVPW,91695,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-18 13:20:59.251000-05:00,43056764
+PSAJVPW,91695,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-18 13:20:59.256000-05:00,43056786
+PSAJVPW,91695,,,,,assignment_finished,2020-02-18 13:21:01.297000-05:00,43056788
+PSAJVPW,91701,,,,,assignment_started,2020-02-17 13:28:52.726000-05:00,42837036
+PSAJVPW,91701,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-02-17 13:28:54.139000-05:00,42837040
+PSAJVPW,91701,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-02-17 13:29:02.355000-05:00,42837076
+PSAJVPW,91701,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-02-17 13:29:02.384000-05:00,42837077
+PSAJVPW,91701,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-17 13:29:04.103000-05:00,42837079
+PSAJVPW,91701,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-17 13:29:04.817000-05:00,42837080
+PSAJVPW,91701,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],scaffolding_requested,2020-02-17 13:30:33.499000-05:00,42837358
+PSAJVPW,91701,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-17 13:30:34.453000-05:00,42837365
+PSAJVPW,91701,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],wrong_response,2020-02-17 13:32:21.288000-05:00,42837867
+PSAJVPW,91701,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-17 13:32:36.123000-05:00,42837962
+PSAJVPW,91701,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-17 13:32:36.143000-05:00,42837963
+PSAJVPW,91701,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-17 13:32:36.700000-05:00,42838002
+PSAJVPW,91701,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-17 13:32:41.899000-05:00,42838003
+PSAJVPW,91701,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-17 13:32:42.659000-05:00,42838004
+PSAJVPW,91701,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-17 13:33:07.809000-05:00,42838149
+PSAJVPW,91701,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-17 13:33:07.824000-05:00,42838157
+PSAJVPW,91701,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-17 13:33:09.341000-05:00,42838158
+PSAJVPW,91701,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-17 13:33:09.734000-05:00,42838159
+PSAJVPW,91701,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-17 13:33:35.295000-05:00,42838272
+PSAJVPW,91701,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-17 13:33:35.308000-05:00,42838282
+PSAJVPW,91701,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-17 13:33:36.430000-05:00,42838283
+PSAJVPW,91701,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-17 13:33:36.676000-05:00,42838284
+PSAJVPW,91701,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-17 13:34:02.151000-05:00,42838417
+PSAJVPW,91701,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-17 13:34:02.173000-05:00,42838421
+PSAJVPW,91701,,,,,assignment_finished,2020-02-17 13:34:02.440000-05:00,42838423
+PSAJVPW,91704,,,,,assignment_started,2020-02-14 14:03:50.610000-05:00,42714558
+PSAJVPW,91704,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-02-14 14:03:51.152000-05:00,42714562
+PSAJVPW,91704,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-02-14 14:04:02.101000-05:00,42714646
+PSAJVPW,91704,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-02-14 14:04:02.107000-05:00,42714650
+PSAJVPW,91704,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-14 14:04:03.258000-05:00,42714652
+PSAJVPW,91704,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-14 14:04:03.349000-05:00,42714653
+PSAJVPW,91704,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],scaffolding_requested,2020-02-14 14:04:15.069000-05:00,42714723
+PSAJVPW,91704,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-14 14:04:15.354000-05:00,42714730
+PSAJVPW,91704,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-14 14:04:56.963000-05:00,42714941
+PSAJVPW,91704,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-14 14:04:56.968000-05:00,42715000
+PSAJVPW,91704,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-14 14:04:57.148000-05:00,42715004
+PSAJVPW,91704,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-14 14:05:03.201000-05:00,42715005
+PSAJVPW,91704,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-14 14:05:03.311000-05:00,42715006
+PSAJVPW,91704,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-14 14:05:29.738000-05:00,42715154
+PSAJVPW,91704,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-14 14:05:29.741000-05:00,42715156
+PSAJVPW,91704,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-14 14:05:30.584000-05:00,42715157
+PSAJVPW,91704,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-14 14:05:30.657000-05:00,42715158
+PSAJVPW,91704,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-14 14:05:55.673000-05:00,42715268
+PSAJVPW,91704,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-14 14:05:55.676000-05:00,42715274
+PSAJVPW,91704,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-14 14:05:56.497000-05:00,42715275
+PSAJVPW,91704,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-14 14:05:56.571000-05:00,42715276
+PSAJVPW,91704,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-14 14:06:21.259000-05:00,42715406
+PSAJVPW,91704,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-14 14:06:21.264000-05:00,42715411
+PSAJVPW,91704,,,,,assignment_finished,2020-02-14 14:06:21.346000-05:00,42715413
+PSAJVPW,91705,,,,,assignment_started,2020-02-14 13:48:24.966000-05:00,42709046
+PSAJVPW,91705,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-02-14 13:48:25.649000-05:00,42709050
+PSAJVPW,91705,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],correct_response,2020-02-14 13:48:38.672000-05:00,42709101
+PSAJVPW,91705,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-02-14 13:48:38.678000-05:00,42709102
+PSAJVPW,91705,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-02-14 13:48:40.092000-05:00,42709113
+PSAJVPW,91705,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-02-14 13:48:40.183000-05:00,42709114
+PSAJVPW,91705,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-02-14 13:49:21.160000-05:00,42709289
+PSAJVPW,91705,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-02-14 13:49:21.171000-05:00,42709291
+PSAJVPW,91705,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-02-14 13:49:21.448000-05:00,42709294
+PSAJVPW,91705,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-02-14 13:49:47.534000-05:00,42709416
+PSAJVPW,91705,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-02-14 13:49:47.590000-05:00,42709417
+PSAJVPW,91705,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-02-14 13:49:47.723000-05:00,42709421
+PSAJVPW,91705,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-02-14 13:49:48.740000-05:00,42709422
+PSAJVPW,91705,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-02-14 13:49:48.818000-05:00,42709423
+PSAJVPW,91705,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-02-14 13:50:29.349000-05:00,42709572
+PSAJVPW,91705,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-02-14 13:50:29.354000-05:00,42709575
+PSAJVPW,91705,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-02-14 13:50:30.293000-05:00,42709576
+PSAJVPW,91705,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-02-14 13:50:30.372000-05:00,42709577
+PSAJVPW,91705,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-02-14 13:51:25.152000-05:00,42709780
+PSAJVPW,91705,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-02-14 13:51:25.155000-05:00,42709788
+PSAJVPW,91705,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-02-14 13:51:26.019000-05:00,42709789
+PSAJVPW,91705,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-02-14 13:51:26.106000-05:00,42709790
+PSAJVPW,91705,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-02-14 13:51:49.055000-05:00,42709902
+PSAJVPW,91705,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-02-14 13:51:49.058000-05:00,42709910
+PSAJVPW,91705,,,,,assignment_finished,2020-02-14 13:51:49.131000-05:00,42709912
+PSAJVPW,91707,,,,,assignment_started,2020-02-14 13:49:25.455000-05:00,42709308
+PSAJVPW,91707,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-02-14 13:49:26.014000-05:00,42709312
+PSAJVPW,91707,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],correct_response,2020-02-14 13:49:33.504000-05:00,42709339
+PSAJVPW,91707,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-02-14 13:49:33.510000-05:00,42709346
+PSAJVPW,91707,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-02-14 13:49:35.241000-05:00,42709348
+PSAJVPW,91707,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-02-14 13:49:35.323000-05:00,42709349
+PSAJVPW,91707,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-02-14 13:51:38.581000-05:00,42709858
+PSAJVPW,91707,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-02-14 13:51:38.585000-05:00,42709864
+PSAJVPW,91707,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-02-14 13:51:39.799000-05:00,42709865
+PSAJVPW,91707,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-02-14 13:51:39.885000-05:00,42709866
+PSAJVPW,91707,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-02-14 13:53:10.612000-05:00,42710329
+PSAJVPW,91707,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-02-14 13:53:10.615000-05:00,42710339
+PSAJVPW,91707,,,,,assignment_finished,2020-02-14 13:53:10.688000-05:00,42710341
+PSAJVPW,91708,,,,,assignment_started,2020-02-18 10:52:26.132000-05:00,42958745
+PSAJVPW,91708,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-02-18 10:52:27.248000-05:00,42958749
+PSAJVPW,91708,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-02-18 10:52:33.769000-05:00,42958818
+PSAJVPW,91708,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-02-18 10:52:33.780000-05:00,42958824
+PSAJVPW,91708,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-18 10:52:35.258000-05:00,42958835
+PSAJVPW,91708,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-18 10:52:35.459000-05:00,42958836
+PSAJVPW,91708,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],wrong_response,2020-02-18 10:53:57.988000-05:00,42959801
+PSAJVPW,91708,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],scaffolding_requested,2020-02-18 10:53:58.004000-05:00,42959805
+PSAJVPW,91708,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-18 10:53:58.579000-05:00,42959808
+PSAJVPW,91708,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-18 10:56:34.610000-05:00,42961308
+PSAJVPW,91708,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-18 10:56:34.706000-05:00,42961309
+PSAJVPW,91708,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-18 10:56:34.918000-05:00,42961323
+PSAJVPW,91708,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-18 10:56:36.246000-05:00,42961324
+PSAJVPW,91708,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-18 10:56:36.455000-05:00,42961325
+PSAJVPW,91708,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-18 10:59:38.926000-05:00,42962739
+PSAJVPW,91708,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-18 10:59:38.931000-05:00,42962766
+PSAJVPW,91708,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-18 10:59:40.220000-05:00,42962767
+PSAJVPW,91708,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-18 10:59:40.406000-05:00,42962768
+PSAJVPW,91708,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-18 11:02:12.049000-05:00,42964025
+PSAJVPW,91708,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-18 11:02:12.065000-05:00,42964052
+PSAJVPW,91708,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-18 11:02:13.413000-05:00,42964053
+PSAJVPW,91708,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-18 11:02:13.602000-05:00,42964054
+PSAJVPW,91708,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-18 11:03:23.166000-05:00,42964697
+PSAJVPW,91708,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-18 11:03:23.172000-05:00,42964701
+PSAJVPW,91708,,,,,assignment_finished,2020-02-18 11:03:23.308000-05:00,42964703
+PSAJVPW,91713,,,,,assignment_started,2020-02-14 13:48:30.219000-05:00,42709064
+PSAJVPW,91713,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-02-14 13:48:30.791000-05:00,42709068
+PSAJVPW,91713,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-02-14 13:48:35.662000-05:00,42709077
+PSAJVPW,91713,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-02-14 13:48:35.671000-05:00,42709087
+PSAJVPW,91713,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-14 13:48:36.667000-05:00,42709089
+PSAJVPW,91713,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-14 13:48:36.741000-05:00,42709090
+PSAJVPW,91713,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-14 13:50:06.605000-05:00,42709478
+PSAJVPW,91713,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-14 13:50:06.610000-05:00,42709480
+PSAJVPW,91713,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-14 13:50:08.127000-05:00,42709481
+PSAJVPW,91713,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-14 13:50:08.212000-05:00,42709482
+PSAJVPW,91713,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-14 13:50:35.880000-05:00,42709613
+PSAJVPW,91713,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-14 13:50:35.883000-05:00,42709616
+PSAJVPW,91713,,,,,assignment_finished,2020-02-14 13:50:35.960000-05:00,42709618
+PSAJVPW,91715,,,,,assignment_started,2020-02-14 13:49:36.847000-05:00,42709365
+PSAJVPW,91715,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-02-14 13:49:37.411000-05:00,42709369
+PSAJVPW,91715,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-02-14 13:49:42.699000-05:00,42709386
+PSAJVPW,91715,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-02-14 13:49:42.705000-05:00,42709407
+PSAJVPW,91715,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-14 13:49:46.841000-05:00,42709409
+PSAJVPW,91715,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-14 13:49:46.923000-05:00,42709410
+PSAJVPW,91715,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-14 13:50:32.012000-05:00,42709593
+PSAJVPW,91715,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-14 13:50:32.017000-05:00,42709599
+PSAJVPW,91715,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-14 13:50:33.160000-05:00,42709600
+PSAJVPW,91715,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-14 13:50:33.239000-05:00,42709601
+PSAJVPW,91715,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-14 13:51:03.391000-05:00,42709695
+PSAJVPW,91715,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-14 13:51:03.398000-05:00,42709702
+PSAJVPW,91715,,,,,assignment_finished,2020-02-14 13:51:03.460000-05:00,42709704
+PSAJVPW,91722,,,,,assignment_started,2020-02-14 14:03:45.740000-05:00,42714513
+PSAJVPW,91722,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-02-14 14:03:46.385000-05:00,42714517
+PSAJVPW,91722,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],wrong_response,2020-02-14 14:03:55.341000-05:00,42714584
+PSAJVPW,91722,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-02-14 14:03:55.347000-05:00,42714600
+PSAJVPW,91722,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-14 14:03:56.200000-05:00,42714602
+PSAJVPW,91722,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-14 14:03:56.280000-05:00,42714603
+PSAJVPW,91722,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-14 14:07:41.527000-05:00,42716035
+PSAJVPW,91722,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-14 14:07:41.532000-05:00,42716044
+PSAJVPW,91722,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-14 14:07:42.132000-05:00,42716045
+PSAJVPW,91722,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-14 14:07:42.219000-05:00,42716046
+PSAJVPW,91722,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-14 14:09:43.322000-05:00,42716890
+PSAJVPW,91722,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-14 14:09:43.325000-05:00,42716904
+PSAJVPW,91722,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-14 14:09:45.305000-05:00,42716905
+PSAJVPW,91722,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-14 14:09:45.405000-05:00,42716906
+PSAJVPW,91722,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],wrong_response,2020-02-14 14:10:58.379000-05:00,42717436
+PSAJVPW,91722,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],scaffolding_requested,2020-02-14 14:10:58.386000-05:00,42717439
+PSAJVPW,91722,PRAVCQJ,1.0,844008.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-14 14:10:58.713000-05:00,42717442
+PSAJVPW,91722,PRAVCQJ,1.0,844008.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-14 14:12:34.673000-05:00,42718100
+PSAJVPW,91722,PRAVCQJ,1.0,844008.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-14 14:12:34.677000-05:00,42718116
+PSAJVPW,91722,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-14 14:12:34.818000-05:00,42718120
+PSAJVPW,91722,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-14 14:12:39.054000-05:00,42718121
+PSAJVPW,91722,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-14 14:12:39.150000-05:00,42718122
+PSAJVPW,91722,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-02-14 14:13:16.090000-05:00,42718357
+PSAJVPW,91722,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-02-14 14:13:16.096000-05:00,42718371
+PSAJVPW,91722,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-02-14 14:13:18.481000-05:00,42718372
+PSAJVPW,91722,PRAVCQM,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-02-14 14:13:18.567000-05:00,42718373
+PSAJVPW,91773,,,,,assignment_started,2020-02-14 13:49:41.085000-05:00,42709381
+PSAJVPW,91773,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-02-14 13:49:41.639000-05:00,42709385
+PSAJVPW,91773,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],correct_response,2020-02-14 13:50:30.360000-05:00,42709574
+PSAJVPW,91773,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-02-14 13:50:30.375000-05:00,42709581
+PSAJVPW,91773,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-02-14 13:50:30.663000-05:00,42709583
+PSAJVPW,91773,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-02-14 13:50:30.744000-05:00,42709584
+PSAJVPW,91773,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-02-14 13:51:39.337000-05:00,42709863
+PSAJVPW,91773,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-02-14 13:51:39.340000-05:00,42709867
+PSAJVPW,91773,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-02-14 13:51:39.749000-05:00,42709868
+PSAJVPW,91773,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-02-14 13:51:39.826000-05:00,42709869
+PSAJVPW,91773,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-02-14 13:52:08.709000-05:00,42709981
+PSAJVPW,91773,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-02-14 13:52:08.712000-05:00,42709993
+PSAJVPW,91773,,,,,assignment_finished,2020-02-14 13:52:08.776000-05:00,42709995
+PSAJVPW,795834,,,,,assignment_started,2020-10-20 11:18:08.211000-04:00,367484914
+PSAJVPW,795834,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-20 11:18:08.911000-04:00,367484918
+PSAJVPW,795834,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],correct_response,2020-10-20 11:18:16.966000-04:00,367486018
+PSAJVPW,795834,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-20 11:18:16.980000-04:00,367486338
+PSAJVPW,795834,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-20 11:18:19.275000-04:00,367486340
+PSAJVPW,795834,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-20 11:18:19.355000-04:00,367486341
+PSAJVPW,795834,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-20 11:19:19.055000-04:00,367494153
+PSAJVPW,795834,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-20 11:19:19.060000-04:00,367494394
+PSAJVPW,795834,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-20 11:19:20.609000-04:00,367494395
+PSAJVPW,795834,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-20 11:19:20.703000-04:00,367494396
+PSAJVPW,795834,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-20 11:20:07.255000-04:00,367500613
+PSAJVPW,795834,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-20 11:20:07.259000-04:00,367500720
+PSAJVPW,795834,,,,,assignment_finished,2020-10-20 11:20:07.319000-04:00,367500722
+PSAJVPW,796262,,,,,assignment_started,2020-10-20 12:42:07.067000-04:00,368185618
+PSAJVPW,796262,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-10-20 12:42:07.915000-04:00,368185622
+PSAJVPW,796262,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-10-20 12:42:42.122000-04:00,368189993
+PSAJVPW,796262,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-10-20 12:42:42.128000-04:00,368190435
+PSAJVPW,796262,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-20 12:42:45.434000-04:00,368190437
+PSAJVPW,796262,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-20 12:42:45.553000-04:00,368190438
+PSAJVPW,796262,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-20 12:48:24.966000-04:00,368235537
+PSAJVPW,796262,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-20 12:48:24.971000-04:00,368235887
+PSAJVPW,796262,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-20 12:48:27.191000-04:00,368235888
+PSAJVPW,796262,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-20 12:48:27.277000-04:00,368235889
+PSAJVPW,796262,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-20 12:48:47.491000-04:00,368238607
+PSAJVPW,796262,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-20 12:48:47.494000-04:00,368238747
+PSAJVPW,796262,,,,,assignment_finished,2020-10-20 12:48:47.563000-04:00,368238749
+PSAJVPW,796539,,,,,assignment_started,2020-10-19 15:22:14.875000-04:00,365004553
+PSAJVPW,796539,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-19 15:22:15.270000-04:00,365004557
+PSAJVPW,796539,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],wrong_response,2020-10-19 15:22:22.120000-04:00,365005193
+PSAJVPW,796539,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-19 15:22:22.125000-04:00,365005428
+PSAJVPW,796539,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-19 15:22:24.253000-04:00,365005430
+PSAJVPW,796539,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-19 15:22:24.340000-04:00,365005431
+PSAJVPW,796539,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-10-19 15:23:10.662000-04:00,365010165
+PSAJVPW,796539,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-10-19 15:23:10.665000-04:00,365010178
+PSAJVPW,796539,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-19 15:23:10.776000-04:00,365010182
+PSAJVPW,796539,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-10-19 15:23:26.461000-04:00,365011738
+PSAJVPW,796539,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-19 15:23:40.182000-04:00,365013129
+PSAJVPW,796539,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-19 15:23:40.186000-04:00,365013130
+PSAJVPW,796539,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-19 15:23:40.238000-04:00,365013722
+PSAJVPW,796539,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-19 15:23:45.434000-04:00,365013723
+PSAJVPW,796539,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-19 15:23:45.477000-04:00,365013724
+PSAJVPW,796539,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-19 15:24:04.148000-04:00,365015611
+PSAJVPW,796539,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-19 15:24:04.150000-04:00,365015806
+PSAJVPW,796539,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-19 15:24:06.100000-04:00,365015807
+PSAJVPW,796539,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-19 15:24:06.133000-04:00,365015808
+PSAJVPW,796539,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-19 15:24:57.351000-04:00,365020951
+PSAJVPW,796539,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-19 15:24:57.354000-04:00,365021140
+PSAJVPW,796539,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-19 15:24:59.053000-04:00,365021141
+PSAJVPW,796539,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-19 15:24:59.094000-04:00,365021142
+PSAJVPW,796539,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-19 15:25:38.166000-04:00,365025065
+PSAJVPW,796539,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-19 15:25:38.170000-04:00,365025447
+PSAJVPW,796539,,,,,assignment_finished,2020-10-19 15:25:38.206000-04:00,365025449
+PSAJVPW,796663,,,,,assignment_started,2020-10-15 15:44:31.165000-04:00,357069542
+PSAJVPW,796663,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-15 15:44:32.545000-04:00,357069546
+PSAJVPW,796663,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],wrong_response,2020-10-15 15:45:10.086000-04:00,357072915
+PSAJVPW,796663,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-15 15:45:10.092000-04:00,357073242
+PSAJVPW,796663,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-15 15:45:13.538000-04:00,357073244
+PSAJVPW,796663,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-15 15:45:13.635000-04:00,357073245
+PSAJVPW,796663,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-15 15:46:11.486000-04:00,357078753
+PSAJVPW,796663,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-15 15:46:11.490000-04:00,357079034
+PSAJVPW,796663,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-15 15:46:13.746000-04:00,357079035
+PSAJVPW,796663,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-15 15:46:13.834000-04:00,357079036
+PSAJVPW,796663,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-15 15:46:54.273000-04:00,357082987
+PSAJVPW,796663,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-15 15:46:54.276000-04:00,357083263
+PSAJVPW,796663,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-15 15:46:56.591000-04:00,357083264
+PSAJVPW,796663,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-15 15:46:56.670000-04:00,357083265
+PSAJVPW,796663,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-16 10:05:08.679000-04:00,358780422
+PSAJVPW,796663,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-16 10:05:08.683000-04:00,358780858
+PSAJVPW,796663,,,,,assignment_finished,2020-10-16 10:05:08.781000-04:00,358780860
+PSAJVPW,797053,,,,,assignment_started,2020-10-19 14:53:52.762000-04:00,364813431
+PSAJVPW,797053,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-19 14:53:53.511000-04:00,364813435
+PSAJVPW,797053,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],correct_response,2020-10-19 14:54:23.438000-04:00,364817328
+PSAJVPW,797053,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-19 14:54:23.446000-04:00,364817612
+PSAJVPW,797053,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-19 14:54:26.013000-04:00,364817614
+PSAJVPW,797053,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-19 14:54:26.129000-04:00,364817615
+PSAJVPW,797053,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-19 14:55:30.959000-04:00,364825704
+PSAJVPW,797053,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-19 14:55:30.963000-04:00,364825869
+PSAJVPW,797053,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-19 14:55:32.127000-04:00,364825870
+PSAJVPW,797053,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-19 14:55:32.215000-04:00,364825871
+PSAJVPW,797053,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-19 14:57:19.799000-04:00,364839093
+PSAJVPW,797053,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-19 14:57:19.803000-04:00,364840377
+PSAJVPW,797053,,,,,assignment_finished,2020-10-19 14:57:19.862000-04:00,364840379
+PSAJVPW,797966,,,,,assignment_started,2020-10-15 15:44:56.984000-04:00,357071819
+PSAJVPW,797966,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-15 15:44:58.036000-04:00,357071823
+PSAJVPW,797966,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],wrong_response,2020-10-15 15:45:16.535000-04:00,357073606
+PSAJVPW,797966,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-15 15:45:16.543000-04:00,357074541
+PSAJVPW,797966,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-15 15:45:53.129000-04:00,357077056
+PSAJVPW,797966,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-15 15:45:53.284000-04:00,357077057
+PSAJVPW,797966,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-15 15:46:20.547000-04:00,357079709
+PSAJVPW,797966,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-15 15:46:20.552000-04:00,357079920
+PSAJVPW,797966,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-15 15:46:22.008000-04:00,357079921
+PSAJVPW,797966,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-15 15:46:22.118000-04:00,357079922
+PSAJVPW,797966,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-15 15:46:49.331000-04:00,357082516
+PSAJVPW,797966,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-15 15:46:49.337000-04:00,357082751
+PSAJVPW,797966,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-15 15:46:51.822000-04:00,357082752
+PSAJVPW,797966,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-15 15:46:51.920000-04:00,357082753
+PSAJVPW,797966,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-15 15:47:31.548000-04:00,357086552
+PSAJVPW,797966,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-15 15:47:31.552000-04:00,357086658
+PSAJVPW,797966,,,,,assignment_finished,2020-10-15 15:47:31.663000-04:00,357086660
+PSAJVPW,799238,,,,,assignment_started,2020-10-19 15:04:54.105000-04:00,364893557
+PSAJVPW,799238,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-10-19 15:04:54.746000-04:00,364893562
+PSAJVPW,799238,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-10-19 15:05:15.534000-04:00,364895934
+PSAJVPW,799238,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-10-19 15:05:15.539000-04:00,364896149
+PSAJVPW,799238,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-19 15:05:17.189000-04:00,364896151
+PSAJVPW,799238,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-19 15:05:17.277000-04:00,364896152
+PSAJVPW,799238,,,,,assignment_resumed,2020-10-21 00:15:21.194000-04:00,370878276
+PSAJVPW,799238,,,,,assignment_resumed,2020-10-21 00:15:35.160000-04:00,370878287
+PSAJVPW,799238,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-21 00:16:54.653000-04:00,370879196
+PSAJVPW,799238,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-21 00:16:54.659000-04:00,370879234
+PSAJVPW,799238,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-21 00:16:56.213000-04:00,370879235
+PSAJVPW,799238,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-21 00:16:56.299000-04:00,370879236
+PSAJVPW,799238,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-21 00:17:21.593000-04:00,370879532
+PSAJVPW,799238,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-21 00:17:21.596000-04:00,370879545
+PSAJVPW,799238,,,,,assignment_finished,2020-10-21 00:17:21.666000-04:00,370879547
+PSAJVPW,799257,,,,,assignment_started,2020-10-15 15:45:28.298000-04:00,357074708
+PSAJVPW,799257,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-15 15:45:28.938000-04:00,357074712
+PSAJVPW,799257,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],wrong_response,2020-10-15 15:45:59.076000-04:00,357077616
+PSAJVPW,799257,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-15 15:45:59.093000-04:00,357077990
+PSAJVPW,799257,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-15 15:46:03.581000-04:00,357077992
+PSAJVPW,799257,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-15 15:46:03.728000-04:00,357077993
+PSAJVPW,799257,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-15 15:47:08.112000-04:00,357084386
+PSAJVPW,799257,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-15 15:47:08.115000-04:00,357084810
+PSAJVPW,799257,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-15 15:47:11.415000-04:00,357084811
+PSAJVPW,799257,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-15 15:47:11.482000-04:00,357084812
+PSAJVPW,799257,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-15 15:47:46.124000-04:00,357087777
+PSAJVPW,799257,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-15 15:47:46.131000-04:00,357088048
+PSAJVPW,799257,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-15 15:47:49.219000-04:00,357088049
+PSAJVPW,799257,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-15 15:47:49.286000-04:00,357088050
+PSAJVPW,799257,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-15 15:48:18.515000-04:00,357090675
+PSAJVPW,799257,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-15 15:48:18.517000-04:00,357090847
+PSAJVPW,799257,,,,,assignment_finished,2020-10-15 15:48:18.566000-04:00,357090849
+PSAJVPW,799432,,,,,assignment_started,2020-11-03 16:36:09.453000-05:00,416433174
+PSAJVPW,799432,,,,,assignment_resumed,2020-11-05 23:25:35.664000-05:00,416457946
+PSAJVPW,799432,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-11-05 23:25:36.230000-05:00,416457950
+PSAJVPW,799432,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],correct_response,2020-11-05 23:26:03.537000-05:00,416458246
+PSAJVPW,799432,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-11-05 23:26:03.541000-05:00,416458263
+PSAJVPW,799432,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-11-05 23:26:05.011000-05:00,416458265
+PSAJVPW,799432,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-11-05 23:26:05.237000-05:00,416458266
+PSAJVPW,799432,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-11-05 23:27:53.639000-05:00,416459512
+PSAJVPW,799432,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-11-05 23:27:53.642000-05:00,416459546
+PSAJVPW,799432,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-11-05 23:27:56.268000-05:00,416459547
+PSAJVPW,799432,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-11-05 23:27:57.085000-05:00,416459548
+PSAJVPW,799432,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-11-05 23:28:37.441000-05:00,416459916
+PSAJVPW,799432,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-11-05 23:28:37.443000-05:00,416459929
+PSAJVPW,799432,,,,,assignment_finished,2020-11-05 23:28:37.475000-05:00,416459931
+PSAJVPW,799510,,,,,assignment_started,2020-10-15 17:07:10.001000-04:00,357438597
+PSAJVPW,799510,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-15 17:07:11.159000-04:00,357438601
+PSAJVPW,799510,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],correct_response,2020-10-15 17:07:33.463000-04:00,357439857
+PSAJVPW,799510,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-15 17:07:33.468000-04:00,357439957
+PSAJVPW,799510,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-15 17:07:35.327000-04:00,357439959
+PSAJVPW,799510,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-15 17:07:35.439000-04:00,357439960
+PSAJVPW,799510,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-10-15 17:10:26.867000-04:00,357449728
+PSAJVPW,799510,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-10-15 17:10:26.878000-04:00,357450315
+PSAJVPW,799510,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-15 17:10:27.044000-04:00,357450318
+PSAJVPW,799510,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-15 17:11:11.898000-04:00,357452247
+PSAJVPW,799510,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-15 17:11:11.903000-04:00,357452444
+PSAJVPW,799510,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-15 17:11:11.967000-04:00,357452448
+PSAJVPW,799510,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-15 17:11:15.885000-04:00,357452449
+PSAJVPW,799510,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-15 17:11:15.952000-04:00,357452450
+PSAJVPW,799510,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-15 17:11:50.594000-04:00,357454380
+PSAJVPW,799510,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-15 17:11:50.604000-04:00,357454513
+PSAJVPW,799510,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-15 17:11:53.080000-04:00,357454514
+PSAJVPW,799510,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-15 17:11:53.167000-04:00,357454515
+PSAJVPW,799510,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-15 17:12:23.067000-04:00,357456158
+PSAJVPW,799510,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-15 17:12:23.078000-04:00,357456225
+PSAJVPW,799510,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-15 17:12:24.502000-04:00,357456226
+PSAJVPW,799510,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-15 17:12:24.591000-04:00,357456227
+PSAJVPW,799510,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-15 17:13:24.166000-04:00,357459558
+PSAJVPW,799510,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-15 17:13:24.177000-04:00,357459688
+PSAJVPW,799510,,,,,assignment_finished,2020-10-15 17:13:24.232000-04:00,357459690
+PSAJVPW,799516,,,,,assignment_started,2020-10-16 17:00:17.692000-04:00,360967759
+PSAJVPW,799516,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-16 17:00:18.334000-04:00,360967763
+PSAJVPW,799516,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],correct_response,2020-10-16 17:00:43.088000-04:00,360968516
+PSAJVPW,799516,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-16 17:00:43.093000-04:00,360968592
+PSAJVPW,799516,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-16 17:00:45.267000-04:00,360968594
+PSAJVPW,799516,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-16 17:00:45.404000-04:00,360968595
+PSAJVPW,799516,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-16 17:03:52.815000-04:00,360974551
+PSAJVPW,799516,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-16 17:03:52.819000-04:00,360974601
+PSAJVPW,799516,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-16 17:03:54.195000-04:00,360974602
+PSAJVPW,799516,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-16 17:03:54.280000-04:00,360974603
+PSAJVPW,799516,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-16 17:05:06.624000-04:00,360977056
+PSAJVPW,799516,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-16 17:05:06.628000-04:00,360977123
+PSAJVPW,799516,,,,,assignment_finished,2020-10-16 17:05:06.688000-04:00,360977125
+PSAJVPW,799550,,,,,assignment_started,2020-10-15 17:30:16.030000-04:00,357513302
+PSAJVPW,799550,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-15 17:30:17.385000-04:00,357513306
+PSAJVPW,799550,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],correct_response,2020-10-15 17:30:36.997000-04:00,357514381
+PSAJVPW,799550,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-15 17:30:37.011000-04:00,357514463
+PSAJVPW,799550,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-15 17:30:38.907000-04:00,357514479
+PSAJVPW,799550,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-15 17:30:39.062000-04:00,357514486
+PSAJVPW,799550,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-15 17:31:29.009000-04:00,357516982
+PSAJVPW,799550,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-15 17:31:29.015000-04:00,357517058
+PSAJVPW,799550,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-15 17:31:30.355000-04:00,357517059
+PSAJVPW,799550,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-15 17:31:30.478000-04:00,357517060
+PSAJVPW,799550,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-15 17:31:50.398000-04:00,357518183
+PSAJVPW,799550,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-15 17:31:50.403000-04:00,357518184
+PSAJVPW,799550,,,,,assignment_finished,2020-10-15 17:31:50.497000-04:00,357518188
+PSAJVPW,799557,,,,,assignment_started,2020-10-15 15:44:20.133000-04:00,357068380
+PSAJVPW,799557,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-10-15 15:44:21.315000-04:00,357068384
+PSAJVPW,799557,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-10-15 15:44:26.533000-04:00,357068857
+PSAJVPW,799557,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-10-15 15:44:26.538000-04:00,357069244
+PSAJVPW,799557,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-15 15:44:30.144000-04:00,357069246
+PSAJVPW,799557,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-15 15:44:30.251000-04:00,357069247
+PSAJVPW,799557,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-15 15:46:29.313000-04:00,357080501
+PSAJVPW,799557,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-15 15:46:29.317000-04:00,357081061
+PSAJVPW,799557,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-15 15:46:35.255000-04:00,357081062
+PSAJVPW,799557,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-15 15:46:35.327000-04:00,357081063
+PSAJVPW,799557,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-15 15:46:57.452000-04:00,357083324
+PSAJVPW,799557,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-15 15:46:57.456000-04:00,357083496
+PSAJVPW,799557,,,,,assignment_finished,2020-10-15 15:46:57.506000-04:00,357083498
+PSAJVPW,799580,,,,,assignment_started,2020-10-18 10:58:43.931000-04:00,361625658
+PSAJVPW,799580,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-18 10:58:44.642000-04:00,361625662
+PSAJVPW,799580,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],correct_response,2020-10-18 10:59:15.374000-04:00,361625772
+PSAJVPW,799580,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-18 10:59:15.380000-04:00,361625823
+PSAJVPW,799580,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-18 10:59:26.703000-04:00,361625826
+PSAJVPW,799580,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-18 10:59:26.796000-04:00,361625827
+PSAJVPW,799580,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-10-18 11:01:45.527000-04:00,361626373
+PSAJVPW,799580,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-10-18 11:01:45.533000-04:00,361626375
+PSAJVPW,799580,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-18 11:01:45.728000-04:00,361626378
+PSAJVPW,799580,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-18 11:08:28.331000-04:00,361628212
+PSAJVPW,799580,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-18 11:08:28.334000-04:00,361628249
+PSAJVPW,799580,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-18 11:08:28.436000-04:00,361628253
+PSAJVPW,799580,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-18 11:08:54.568000-04:00,361628312
+PSAJVPW,799580,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-18 11:08:54.638000-04:00,361628313
+PSAJVPW,799580,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-10-18 11:10:12.311000-04:00,361628564
+PSAJVPW,799580,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-10-18 11:10:12.315000-04:00,361628617
+PSAJVPW,799580,PRAV32P,1.0,852597.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-18 11:10:12.486000-04:00,361628620
+PSAJVPW,799580,PRAV32P,1.0,852597.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-18 11:18:25.932000-04:00,361631058
+PSAJVPW,799580,PRAV32P,1.0,852597.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-18 11:18:25.935000-04:00,361631110
+PSAJVPW,799580,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-18 11:18:26.021000-04:00,361631114
+PSAJVPW,799580,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-18 11:18:57.408000-04:00,361631201
+PSAJVPW,799580,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-18 11:18:57.491000-04:00,361631202
+PSAJVPW,799580,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-10-18 11:21:40.118000-04:00,361631969
+PSAJVPW,799580,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-10-18 11:21:40.122000-04:00,361632035
+PSAJVPW,799580,PRAV32J,1.0,852590.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-18 11:21:40.299000-04:00,361632038
+PSAJVPW,799580,,,,,assignment_resumed,2020-10-20 14:43:15.225000-04:00,369238226
+PSAJVPW,799580,PRAV32J,1.0,852590.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-20 14:43:24.409000-04:00,369239241
+PSAJVPW,799580,PRAV32J,1.0,852590.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-20 14:43:24.414000-04:00,369240184
+PSAJVPW,799580,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-20 14:43:24.545000-04:00,369240188
+PSAJVPW,799580,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-20 14:43:30.649000-04:00,369240189
+PSAJVPW,799580,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-20 14:43:30.714000-04:00,369240190
+PSAJVPW,799580,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-20 14:44:01.366000-04:00,369244328
+PSAJVPW,799580,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-20 14:44:01.370000-04:00,369244823
+PSAJVPW,799580,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-20 14:44:04.598000-04:00,369244824
+PSAJVPW,799580,PRAV32H,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-20 14:44:04.683000-04:00,369244825
+PSAJVPW,799580,PRAV32H,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-20 14:44:36.616000-04:00,369249012
+PSAJVPW,799580,PRAV32H,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-20 14:44:36.619000-04:00,369249314
+PSAJVPW,799580,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-20 14:44:38.777000-04:00,369249315
+PSAJVPW,799580,PRAV32N,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-20 14:44:38.852000-04:00,369249317
+PSAJVPW,799580,PRAV32N,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-20 14:45:08.214000-04:00,369252874
+PSAJVPW,799580,PRAV32N,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-20 14:45:08.218000-04:00,369253105
+PSAJVPW,799580,,,,,assignment_finished,2020-10-20 14:45:08.274000-04:00,369253107
+PSAJVPW,800088,,,,,assignment_started,2020-10-19 18:35:03.898000-04:00,365770343
+PSAJVPW,800088,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-10-19 18:35:04.595000-04:00,365770347
+PSAJVPW,800088,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],wrong_response,2020-10-19 18:37:33.305000-04:00,365775982
+PSAJVPW,800088,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-10-19 18:37:33.312000-04:00,365776167
+PSAJVPW,800088,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-19 18:37:37.192000-04:00,365776169
+PSAJVPW,800088,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-19 18:37:37.283000-04:00,365776170
+PSAJVPW,800088,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-19 18:38:32.583000-04:00,365778374
+PSAJVPW,800088,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-19 18:38:32.586000-04:00,365778506
+PSAJVPW,800088,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-19 18:38:35.390000-04:00,365778507
+PSAJVPW,800088,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-19 18:38:35.449000-04:00,365778508
+PSAJVPW,800088,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-19 18:39:15.360000-04:00,365780078
+PSAJVPW,800088,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-19 18:39:15.364000-04:00,365780164
+PSAJVPW,800088,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-19 18:39:18.201000-04:00,365780165
+PSAJVPW,800088,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-19 18:39:18.299000-04:00,365780166
+PSAJVPW,800088,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-19 18:40:06.486000-04:00,365782042
+PSAJVPW,800088,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-19 18:40:06.488000-04:00,365782203
+PSAJVPW,800088,,,,,assignment_finished,2020-10-19 18:40:06.547000-04:00,365782205
+PSAJVPW,800381,,,,,assignment_started,2020-10-16 16:02:42.947000-04:00,360823347
+PSAJVPW,800381,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-16 16:02:43.618000-04:00,360823351
+PSAJVPW,800381,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],correct_response,2020-10-16 16:03:08.079000-04:00,360824508
+PSAJVPW,800381,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-16 16:03:08.084000-04:00,360824575
+PSAJVPW,800381,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-16 16:03:09.408000-04:00,360824577
+PSAJVPW,800381,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-16 16:03:09.555000-04:00,360824578
+PSAJVPW,800381,,,,,assignment_resumed,2020-10-23 17:54:13.961000-04:00,381945494
+PSAJVPW,800381,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-10-23 18:19:34.817000-04:00,381992018
+PSAJVPW,800381,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-23 18:19:35.282000-04:00,381992031
+PSAJVPW,800381,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-23 18:21:52.750000-04:00,381994368
+PSAJVPW,800381,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-23 18:21:52.755000-04:00,381994529
+PSAJVPW,800381,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-23 18:21:52.904000-04:00,381994533
+PSAJVPW,800381,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-23 18:22:03.179000-04:00,381994545
+PSAJVPW,800381,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-23 18:22:03.374000-04:00,381994546
+PSAJVPW,800381,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-10-23 18:24:34.426000-04:00,381997079
+PSAJVPW,800381,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-10-23 18:24:34.431000-04:00,381997081
+PSAJVPW,800381,PRAV32P,1.0,852597.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-23 18:24:34.819000-04:00,381997084
+PSAJVPW,800381,PRAV32P,1.0,852597.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-23 18:25:00.054000-04:00,381997416
+PSAJVPW,800381,PRAV32P,1.0,852597.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-23 18:25:00.056000-04:00,381997615
+PSAJVPW,800381,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-23 18:25:00.163000-04:00,381997619
+PSAJVPW,800381,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-23 18:25:21.855000-04:00,381997829
+PSAJVPW,800381,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-23 18:25:22.087000-04:00,381997830
+PSAJVPW,800381,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-23 18:26:35.751000-04:00,381999166
+PSAJVPW,800381,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-23 18:26:35.754000-04:00,381999241
+PSAJVPW,800381,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-23 18:26:38.676000-04:00,381999242
+PSAJVPW,800381,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-23 18:26:38.876000-04:00,381999243
+PSAJVPW,800381,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-23 18:27:24.043000-04:00,382000042
+PSAJVPW,800381,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-23 18:27:24.046000-04:00,382000069
+PSAJVPW,800381,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-23 18:27:25.305000-04:00,382000072
+PSAJVPW,800381,PRAV32H,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-23 18:27:25.446000-04:00,382000073
+PSAJVPW,800381,PRAV32H,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-10-23 18:28:41.081000-04:00,382001332
+PSAJVPW,800381,PRAV32H,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-10-23 18:28:41.085000-04:00,382001335
+PSAJVPW,800381,PRAV32H,1.0,852581.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-23 18:28:41.695000-04:00,382001338
+PSAJVPW,800381,PRAV32H,1.0,852581.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-23 18:28:57.236000-04:00,382001643
+PSAJVPW,800381,PRAV32H,1.0,852581.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-23 18:28:57.238000-04:00,382001776
+PSAJVPW,800381,PRAV32H,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-23 18:28:57.383000-04:00,382001780
+PSAJVPW,800381,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-23 18:29:03.844000-04:00,382001781
+PSAJVPW,800381,PRAV32N,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-23 18:29:04.601000-04:00,382001782
+PSAJVPW,800381,PRAV32N,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-23 18:29:55.499000-04:00,382002582
+PSAJVPW,800381,PRAV32N,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-23 18:29:55.502000-04:00,382002613
+PSAJVPW,800381,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-23 18:29:57.543000-04:00,382002614
+PSAJVPW,800381,PRAU8X6,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-23 18:29:57.699000-04:00,382002615
+PSAJVPW,800381,PRAU8X6,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-10-23 18:31:04.979000-04:00,382003687
+PSAJVPW,800381,PRAU8X6,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-23 18:33:38.795000-04:00,382006007
+PSAJVPW,800381,PRAU8X6,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-23 18:33:38.800000-04:00,382006008
+PSAJVPW,800381,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-23 18:33:40.164000-04:00,382006009
+PSAJVPW,800381,PRAU8ZF,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-23 18:33:40.412000-04:00,382006010
+PSAJVPW,800381,PRAU8ZF,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-23 18:34:24.622000-04:00,382006729
+PSAJVPW,800381,PRAU8ZF,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-23 18:34:24.637000-04:00,382006747
+PSAJVPW,800381,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-23 18:34:25.836000-04:00,382006748
+PSAJVPW,800381,PRAU8YR,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-23 18:34:26.066000-04:00,382006749
+PSAJVPW,800381,PRAU8YR,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],hint_requested,2020-10-23 18:35:42.585000-04:00,382008039
+PSAJVPW,800381,PRAU8YR,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-10-23 18:38:19.683000-04:00,382010527
+PSAJVPW,800381,PRAU8YR,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],hint_requested,2020-10-23 18:38:33.667000-04:00,382010790
+PSAJVPW,800381,PRAU8YR,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-10-23 18:39:15.527000-04:00,382011379
+PSAJVPW,800381,PRAU8YR,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],answer_requested,2020-10-23 18:39:27.248000-04:00,382011561
+PSAJVPW,800381,PRAU8YR,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-23 18:39:43.615000-04:00,382011742
+PSAJVPW,800381,PRAU8YR,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-23 18:39:43.620000-04:00,382011743
+PSAJVPW,800381,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-23 18:39:45.006000-04:00,382011744
+PSAJVPW,800381,PRAU8ZR,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-23 18:39:45.150000-04:00,382011745
+PSAJVPW,800381,PRAU8ZR,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-23 18:40:54.575000-04:00,382012701
+PSAJVPW,800381,PRAU8ZR,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-23 18:40:54.577000-04:00,382012755
+PSAJVPW,800381,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-23 18:40:56.762000-04:00,382012756
+PSAJVPW,800381,PRAU82Q,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-23 18:40:57.058000-04:00,382012757
+PSAJVPW,800381,PRAU82Q,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],hint_requested,2020-10-23 18:41:13.525000-04:00,382013010
+PSAJVPW,800381,PRAU82Q,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-23 18:47:27.296000-04:00,382018203
+PSAJVPW,800381,PRAU82Q,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-23 18:47:27.300000-04:00,382018204
+PSAJVPW,800381,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-23 18:47:28.686000-04:00,382018205
+PSAJVPW,800381,PRAU8YG,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-23 18:47:28.902000-04:00,382018206
+PSAJVPW,800381,PRAU8YG,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-23 18:48:16.283000-04:00,382018895
+PSAJVPW,800381,PRAU8YG,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-23 18:48:16.287000-04:00,382018914
+PSAJVPW,800381,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-23 18:48:17.298000-04:00,382018915
+PSAJVPW,800381,PRAU8YS,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-23 18:48:17.431000-04:00,382018916
+PSAJVPW,800381,PRAU8YS,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-10-23 18:50:53.985000-04:00,382021229
+PSAJVPW,800381,PRAU8YS,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],hint_requested,2020-10-23 18:50:56.446000-04:00,382021408
+PSAJVPW,800381,PRAU8YS,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-23 18:54:19.968000-04:00,382024372
+PSAJVPW,800381,PRAU8YS,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-23 18:54:19.971000-04:00,382024373
+PSAJVPW,800381,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-23 18:54:21.158000-04:00,382024374
+PSAJVPW,800381,PRAU8ZZ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-23 18:54:21.280000-04:00,382024375
+PSAJVPW,800381,PRAU8ZZ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-23 18:55:06.099000-04:00,382025102
+PSAJVPW,800381,PRAU8ZZ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-23 18:55:06.101000-04:00,382025123
+PSAJVPW,800381,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-23 18:55:07.219000-04:00,382025124
+PSAJVPW,800381,PRAU829,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-23 18:55:07.430000-04:00,382025125
+PSAJVPW,800381,PRAU829,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-23 18:56:36.037000-04:00,382026520
+PSAJVPW,800381,PRAU829,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-23 18:56:36.041000-04:00,382026531
+PSAJVPW,800381,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-23 18:56:37.041000-04:00,382026532
+PSAJVPW,800381,PRAU8ZE,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-23 18:56:37.239000-04:00,382026533
+PSAJVPW,800381,PRAU8ZE,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-23 18:57:12.730000-04:00,382027222
+PSAJVPW,800381,PRAU8ZE,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-23 18:57:12.734000-04:00,382027227
+PSAJVPW,800381,,,,,assignment_finished,2020-10-23 18:57:12.818000-04:00,382027229
+PSAJVPW,800424,,,,,assignment_started,2020-10-21 00:54:55.453000-04:00,370898966
+PSAJVPW,800424,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-10-21 00:54:55.886000-04:00,370898970
+PSAJVPW,800424,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-10-21 00:55:01.167000-04:00,370898988
+PSAJVPW,800424,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-10-21 00:55:01.169000-04:00,370899013
+PSAJVPW,800424,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-21 00:55:03.789000-04:00,370899015
+PSAJVPW,800424,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-21 00:55:03.837000-04:00,370899016
+PSAJVPW,800424,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-21 00:55:29.938000-04:00,370899159
+PSAJVPW,800424,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-21 00:55:29.940000-04:00,370899163
+PSAJVPW,800424,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-21 00:55:30.724000-04:00,370899164
+PSAJVPW,800424,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-21 00:55:30.770000-04:00,370899165
+PSAJVPW,800424,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-21 00:55:46.306000-04:00,370899246
+PSAJVPW,800424,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-21 00:55:46.309000-04:00,370899252
+PSAJVPW,800424,,,,,assignment_finished,2020-10-21 00:55:46.338000-04:00,370899254
+PSAJVPW,802001,,,,,assignment_started,2020-10-20 09:23:02.227000-04:00,366658393
+PSAJVPW,802001,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-20 09:23:02.576000-04:00,366658397
+PSAJVPW,802001,,,,,assignment_resumed,2020-10-20 09:28:13.981000-04:00,366683664
+PSAJVPW,802001,,,,,assignment_resumed,2020-10-20 09:28:20.903000-04:00,366684205
+PSAJVPW,802001,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],correct_response,2020-10-20 09:46:44.961000-04:00,366790129
+PSAJVPW,802001,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-20 09:46:44.967000-04:00,366790548
+PSAJVPW,802001,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-20 09:46:48.400000-04:00,366790550
+PSAJVPW,802001,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-20 09:46:48.603000-04:00,366790551
+PSAJVPW,802001,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-20 09:58:34.766000-04:00,366870583
+PSAJVPW,802001,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-20 09:58:34.769000-04:00,366871645
+PSAJVPW,802001,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-20 09:58:43.919000-04:00,366871646
+PSAJVPW,802001,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-20 09:58:43.960000-04:00,366871647
+PSAJVPW,802001,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-20 10:04:40.139000-04:00,366913139
+PSAJVPW,802001,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-20 10:04:40.141000-04:00,366914211
+PSAJVPW,802001,,,,,assignment_finished,2020-10-20 10:04:40.172000-04:00,366914213
+PSAJVPW,802544,,,,,assignment_started,2020-10-19 11:59:08.877000-04:00,363419202
+PSAJVPW,802544,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-19 11:59:09.266000-04:00,363419206
+PSAJVPW,802544,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],wrong_response,2020-10-19 12:03:07.738000-04:00,363449369
+PSAJVPW,802544,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-19 12:03:07.742000-04:00,363449743
+PSAJVPW,802544,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-19 12:03:10.361000-04:00,363449745
+PSAJVPW,802544,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-19 12:03:10.412000-04:00,363449746
+PSAJVPW,802544,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-19 12:04:00.778000-04:00,363455988
+PSAJVPW,802544,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-19 12:04:00.780000-04:00,363456125
+PSAJVPW,802544,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-19 12:04:01.871000-04:00,363456126
+PSAJVPW,802544,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-19 12:04:01.908000-04:00,363456127
+PSAJVPW,802544,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-19 12:04:22.757000-04:00,363458746
+PSAJVPW,802544,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-19 12:04:22.759000-04:00,363459231
+PSAJVPW,802544,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-19 12:04:26.817000-04:00,363459232
+PSAJVPW,802544,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-19 12:04:26.856000-04:00,363459233
+PSAJVPW,802544,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-19 12:04:50.437000-04:00,363462178
+PSAJVPW,802544,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-19 12:04:50.438000-04:00,363462494
+PSAJVPW,802544,,,,,assignment_finished,2020-10-19 12:04:50.465000-04:00,363462496
+PSAJVPW,806694,,,,,assignment_started,2020-10-20 13:43:32.186000-04:00,368693730
+PSAJVPW,806694,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-20 13:43:33.591000-04:00,368693734
+PSAJVPW,806694,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],correct_response,2020-10-20 13:43:41.729000-04:00,368694869
+PSAJVPW,806694,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-20 13:43:41.735000-04:00,368695183
+PSAJVPW,806694,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-20 13:43:43.796000-04:00,368695185
+PSAJVPW,806694,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-20 13:43:43.933000-04:00,368695186
+PSAJVPW,806694,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-20 13:44:28.616000-04:00,368701911
+PSAJVPW,806694,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-20 13:44:28.620000-04:00,368702994
+PSAJVPW,806694,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-20 13:44:35.831000-04:00,368702995
+PSAJVPW,806694,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-20 13:44:35.923000-04:00,368702996
+PSAJVPW,806694,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-20 13:44:55.522000-04:00,368705952
+PSAJVPW,806694,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-20 13:44:55.527000-04:00,368706113
+PSAJVPW,806694,,,,,assignment_finished,2020-10-20 13:44:55.623000-04:00,368706115
+PSAJVPW,807019,,,,,assignment_started,2020-10-19 18:05:40.730000-04:00,365695938
+PSAJVPW,807019,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-10-19 18:06:00.202000-04:00,365696583
+PSAJVPW,807019,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-10-19 18:06:23.271000-04:00,365697517
+PSAJVPW,807019,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-10-19 18:06:23.282000-04:00,365697639
+PSAJVPW,807019,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-19 18:06:25.921000-04:00,365697641
+PSAJVPW,807019,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-19 18:06:26.117000-04:00,365697642
+PSAJVPW,807019,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-19 18:07:10.031000-04:00,365699622
+PSAJVPW,807019,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-19 18:07:10.038000-04:00,365699707
+PSAJVPW,807019,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-19 18:07:11.780000-04:00,365699708
+PSAJVPW,807019,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-19 18:07:11.925000-04:00,365699709
+PSAJVPW,807019,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-19 18:07:32.830000-04:00,365700602
+PSAJVPW,807019,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-19 18:07:32.836000-04:00,365700671
+PSAJVPW,807019,,,,,assignment_finished,2020-10-19 18:07:32.984000-04:00,365700673
+PSAJVPW,807125,,,,,assignment_started,2020-10-19 12:29:08.195000-04:00,363644507
+PSAJVPW,807125,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-10-19 12:29:08.710000-04:00,363644511
+PSAJVPW,807125,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-10-19 12:29:32.994000-04:00,363647521
+PSAJVPW,807125,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-10-19 12:29:32.997000-04:00,363648079
+PSAJVPW,807125,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-19 12:29:37.431000-04:00,363648082
+PSAJVPW,807125,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-19 12:29:37.472000-04:00,363648083
+PSAJVPW,807125,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-19 12:30:28.442000-04:00,363654276
+PSAJVPW,807125,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-19 12:30:28.444000-04:00,363654432
+PSAJVPW,807125,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-19 12:30:29.645000-04:00,363654433
+PSAJVPW,807125,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-19 12:30:29.677000-04:00,363654434
+PSAJVPW,807125,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-19 12:30:51.331000-04:00,363657108
+PSAJVPW,807125,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-19 12:30:51.332000-04:00,363657244
+PSAJVPW,807125,,,,,assignment_finished,2020-10-19 12:30:51.356000-04:00,363657246
+PSAJVPW,807239,,,,,assignment_started,2020-11-04 16:43:15.538000-05:00,411758909
+PSAJVPW,807239,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-11-04 16:43:16.413000-05:00,411758913
+PSAJVPW,807239,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-11-04 16:43:20.280000-05:00,411759099
+PSAJVPW,807239,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-11-04 16:43:20.289000-05:00,411759185
+PSAJVPW,807239,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-11-04 16:43:21.543000-05:00,411759187
+PSAJVPW,807239,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-11-04 16:43:21.764000-05:00,411759188
+PSAJVPW,807239,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-11-04 16:43:53.458000-05:00,411761046
+PSAJVPW,807239,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-11-04 16:43:53.462000-05:00,411761124
+PSAJVPW,807239,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-11-04 16:43:54.711000-05:00,411761125
+PSAJVPW,807239,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-11-04 16:43:54.844000-05:00,411761126
+PSAJVPW,807239,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-11-04 16:44:15.691000-05:00,411762304
+PSAJVPW,807239,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-11-04 16:44:15.695000-05:00,411762357
+PSAJVPW,807239,,,,,assignment_finished,2020-11-04 16:44:15.756000-05:00,411762359
+PSAJVPW,808212,,,,,assignment_started,2020-10-20 19:47:47.882000-04:00,370486451
+PSAJVPW,808212,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-20 19:47:48.242000-04:00,370486455
+PSAJVPW,808212,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],wrong_response,2020-10-20 19:48:00.537000-04:00,370486861
+PSAJVPW,808212,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-20 19:48:00.541000-04:00,370486885
+PSAJVPW,808212,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-20 19:48:01.583000-04:00,370486887
+PSAJVPW,808212,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-20 19:48:01.639000-04:00,370486888
+PSAJVPW,808212,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-20 19:48:56.499000-04:00,370488785
+PSAJVPW,808212,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-20 19:48:56.510000-04:00,370488798
+PSAJVPW,808212,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-20 19:48:57.147000-04:00,370488799
+PSAJVPW,808212,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-20 19:48:57.226000-04:00,370488800
+PSAJVPW,808212,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-20 19:49:41.107000-04:00,370490404
+PSAJVPW,808212,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-20 19:49:41.119000-04:00,370490440
+PSAJVPW,808212,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-20 19:49:41.804000-04:00,370490441
+PSAJVPW,808212,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-20 19:49:41.874000-04:00,370490442
+PSAJVPW,808212,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-20 19:50:23.664000-04:00,370491995
+PSAJVPW,808212,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-20 19:50:23.675000-04:00,370492009
+PSAJVPW,808212,,,,,assignment_finished,2020-10-20 19:50:23.733000-04:00,370492011
+PSAJVPW,817859,,,,,assignment_started,2020-10-29 16:06:20.831000-04:00,398351338
+PSAJVPW,817859,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-29 16:06:21.862000-04:00,398351342
+PSAJVPW,817859,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],correct_response,2020-10-29 16:06:49.354000-04:00,398353365
+PSAJVPW,817859,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-29 16:06:49.366000-04:00,398353532
+PSAJVPW,817859,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-29 16:06:51.359000-04:00,398353536
+PSAJVPW,817859,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-29 16:06:51.602000-04:00,398353538
+PSAJVPW,817859,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-29 16:07:13.681000-04:00,398355082
+PSAJVPW,817859,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-29 16:07:13.690000-04:00,398355220
+PSAJVPW,817859,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-29 16:07:15.740000-04:00,398355221
+PSAJVPW,817859,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-29 16:07:15.950000-04:00,398355222
+PSAJVPW,817859,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-29 16:07:34.061000-04:00,398356347
+PSAJVPW,817859,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-29 16:07:34.066000-04:00,398356508
+PSAJVPW,817859,,,,,assignment_finished,2020-10-29 16:07:34.208000-04:00,398356510
+PSAJVPW,821528,,,,,assignment_started,2020-10-20 13:27:44.410000-04:00,368557365
+PSAJVPW,821528,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-10-20 13:27:45.280000-04:00,368557369
+PSAJVPW,821528,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-10-20 13:28:19.973000-04:00,368562052
+PSAJVPW,821528,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-10-20 13:28:19.980000-04:00,368562429
+PSAJVPW,821528,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-20 13:28:22.298000-04:00,368562431
+PSAJVPW,821528,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-20 13:28:22.540000-04:00,368562432
+PSAJVPW,821528,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-20 13:29:13.462000-04:00,368569498
+PSAJVPW,821528,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-20 13:29:13.481000-04:00,368570160
+PSAJVPW,821528,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-20 13:29:18.221000-04:00,368570163
+PSAJVPW,821528,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-20 13:29:18.343000-04:00,368570166
+PSAJVPW,821528,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-20 13:30:04.516000-04:00,368576353
+PSAJVPW,821528,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-20 13:30:04.534000-04:00,368576480
+PSAJVPW,821528,,,,,assignment_finished,2020-10-20 13:30:04.643000-04:00,368576482
+PSAJVPW,832239,,,,,assignment_started,2020-10-21 23:36:45.579000-04:00,375015760
+PSAJVPW,832239,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-10-21 23:36:46.330000-04:00,375015764
+PSAJVPW,832239,,,,,assignment_resumed,2020-11-20 00:10:07.712000-05:00,454478582
+PSAJVPW,832239,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-11-20 00:10:14.018000-05:00,454478626
+PSAJVPW,832239,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-11-20 00:10:14.022000-05:00,454478636
+PSAJVPW,832239,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-11-20 00:10:14.996000-05:00,454478638
+PSAJVPW,832239,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-11-20 00:10:15.140000-05:00,454478639
+PSAJVPW,832239,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-11-20 00:10:27.919000-05:00,454478734
+PSAJVPW,832239,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-11-20 00:10:27.922000-05:00,454478736
+PSAJVPW,832239,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-11-20 00:10:28.478000-05:00,454478737
+PSAJVPW,832239,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-11-20 00:10:28.678000-05:00,454478738
+PSAJVPW,832239,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-11-20 00:10:59.096000-05:00,454478952
+PSAJVPW,832239,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-11-20 00:10:59.106000-05:00,454478960
+PSAJVPW,832239,,,,,assignment_finished,2020-11-20 00:10:59.137000-05:00,454478962
+PSAJVPW,832241,,,,,assignment_started,2020-10-24 05:01:28.249000-04:00,382225036
+PSAJVPW,832241,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-10-24 05:01:28.815000-04:00,382225040
+PSAJVPW,832241,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-10-24 05:01:52.052000-04:00,382225048
+PSAJVPW,832241,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-10-24 05:01:52.057000-04:00,382225049
+PSAJVPW,832241,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-24 05:01:52.837000-04:00,382225051
+PSAJVPW,832241,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-24 05:01:53.101000-04:00,382225052
+PSAJVPW,832241,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-24 05:02:54.139000-04:00,382225075
+PSAJVPW,832241,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-24 05:02:54.153000-04:00,382225076
+PSAJVPW,832241,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-24 05:02:54.867000-04:00,382225077
+PSAJVPW,832241,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-24 05:02:55.140000-04:00,382225078
+PSAJVPW,832241,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-24 05:03:34.194000-04:00,382225085
+PSAJVPW,832241,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-24 05:03:34.204000-04:00,382225090
+PSAJVPW,832241,,,,,assignment_finished,2020-10-24 05:03:34.259000-04:00,382225092
+PSAJVPW,848381,,,,,assignment_started,2020-10-21 09:57:10.557000-04:00,371440437
+PSAJVPW,848381,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-21 09:57:11.265000-04:00,371440441
+PSAJVPW,848381,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],wrong_response,2020-10-21 09:57:24.228000-04:00,371442024
+PSAJVPW,848381,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-21 09:57:24.236000-04:00,371442305
+PSAJVPW,848381,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-21 09:57:26.643000-04:00,371442308
+PSAJVPW,848381,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-21 09:57:26.778000-04:00,371442309
+PSAJVPW,850825,,,,,assignment_started,2020-10-22 22:00:49.496000-04:00,379118010
+PSAJVPW,850825,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-22 22:00:50.748000-04:00,379118014
+PSAJVPW,850825,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],correct_response,2020-10-22 22:01:34.928000-04:00,379119085
+PSAJVPW,850825,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-22 22:01:34.933000-04:00,379119128
+PSAJVPW,850825,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-22 22:01:36.886000-04:00,379119130
+PSAJVPW,850825,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-22 22:01:36.985000-04:00,379119131
+PSAJVPW,850825,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-10-22 22:02:10.203000-04:00,379119812
+PSAJVPW,850825,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-10-22 22:02:10.211000-04:00,379120049
+PSAJVPW,850825,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-22 22:02:10.449000-04:00,379120052
+PSAJVPW,850825,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-22 22:02:21.602000-04:00,379120085
+PSAJVPW,850825,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-22 22:02:21.606000-04:00,379120204
+PSAJVPW,850825,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-22 22:02:21.744000-04:00,379120208
+PSAJVPW,850825,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-22 22:02:27.321000-04:00,379120209
+PSAJVPW,850825,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-22 22:02:27.400000-04:00,379120210
+PSAJVPW,850825,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-10-22 22:02:30.911000-04:00,379120282
+PSAJVPW,850825,PRAV32P,1.0,852597.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-22 22:02:31.076000-04:00,379120509
+PSAJVPW,850825,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-22 22:03:20.288000-04:00,379121360
+PSAJVPW,850825,PRAV32P,1.0,852597.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-22 22:03:20.326000-04:00,379121362
+PSAJVPW,850825,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-22 22:03:20.413000-04:00,379121397
+PSAJVPW,850825,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-22 22:03:21.897000-04:00,379121398
+PSAJVPW,850825,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-22 22:03:21.986000-04:00,379121399
+PSAJVPW,850825,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-10-22 22:03:24.453000-04:00,379121441
+PSAJVPW,850825,PRAV32J,1.0,852590.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-22 22:03:24.644000-04:00,379121522
+PSAJVPW,850825,PRAV32J,1.0,852590.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-22 22:03:29.042000-04:00,379121523
+PSAJVPW,850825,PRAV32J,1.0,852590.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-22 22:03:29.044000-04:00,379121749
+PSAJVPW,850825,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-22 22:03:29.171000-04:00,379121753
+PSAJVPW,850825,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-22 22:03:51.187000-04:00,379121975
+PSAJVPW,850825,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-22 22:03:51.260000-04:00,379121976
+PSAJVPW,850825,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-10-22 22:03:54.647000-04:00,379122033
+PSAJVPW,850825,PRAV32K,1.0,852593.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-22 22:03:54.840000-04:00,379122255
+PSAJVPW,850825,PRAV32K,1.0,852593.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-22 22:04:01.592000-04:00,379122256
+PSAJVPW,850825,PRAV32K,1.0,852593.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-22 22:04:01.596000-04:00,379123234
+PSAJVPW,850825,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-22 22:04:01.725000-04:00,379123238
+PSAJVPW,852199,,,,,assignment_started,2020-11-05 18:58:29.321000-05:00,416061403
+PSAJVPW,852199,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-11-05 18:58:31.359000-05:00,416061407
+PSAJVPW,852199,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-11-05 18:58:54.503000-05:00,416062128
+PSAJVPW,852199,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-11-05 18:58:54.529000-05:00,416062137
+PSAJVPW,852199,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-11-05 18:58:57.509000-05:00,416062255
+PSAJVPW,852199,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-11-05 18:58:58.652000-05:00,416062256
+PSAJVPW,852199,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-11-05 19:01:28.287000-05:00,416067239
+PSAJVPW,852199,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-11-05 19:01:28.325000-05:00,416067326
+PSAJVPW,852199,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-11-05 19:01:29.677000-05:00,416067327
+PSAJVPW,852199,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-11-05 19:01:30.254000-05:00,416067328
+PSAJVPW,852199,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-11-05 19:02:45.158000-05:00,416069931
+PSAJVPW,852199,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-11-05 19:02:45.169000-05:00,416069936
+PSAJVPW,852199,,,,,assignment_finished,2020-11-05 19:02:45.536000-05:00,416069938
+PSAJVPW,852972,,,,,assignment_started,2020-10-26 10:43:36.682000-04:00,383682227
+PSAJVPW,852972,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-26 10:43:37.656000-04:00,383682231
+PSAJVPW,856252,,,,,assignment_started,2020-10-16 15:22:16.507000-04:00,360675676
+PSAJVPW,856252,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-16 15:22:17.434000-04:00,360675681
+PSAJVPW,856252,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],wrong_response,2020-10-16 15:23:03.327000-04:00,360678844
+PSAJVPW,856252,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-16 15:23:03.332000-04:00,360678846
+PSAJVPW,856252,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-16 15:23:07.740000-04:00,360679141
+PSAJVPW,856252,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-16 15:23:07.826000-04:00,360679142
+PSAJVPW,856252,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-10-16 15:23:36.775000-04:00,360681037
+PSAJVPW,856252,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-16 15:23:36.951000-04:00,360681056
+PSAJVPW,856252,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-16 15:24:19.500000-04:00,360683766
+PSAJVPW,856252,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-16 15:24:19.503000-04:00,360684538
+PSAJVPW,856252,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-16 15:24:19.599000-04:00,360684542
+PSAJVPW,856252,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-16 15:25:40.046000-04:00,360689454
+PSAJVPW,856252,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-16 15:25:40.102000-04:00,360689455
+PSAJVPW,856252,,,,,assignment_resumed,2020-10-29 15:10:03.073000-04:00,398076475
+PSAJVPW,856252,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-29 15:12:51.833000-04:00,398092445
+PSAJVPW,856252,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-29 15:12:51.854000-04:00,398092654
+PSAJVPW,856252,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-29 15:12:53.298000-04:00,398092655
+PSAJVPW,856252,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-29 15:12:53.583000-04:00,398092656
+PSAJVPW,856252,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-10-29 15:15:13.902000-04:00,398106004
+PSAJVPW,856252,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-10-29 15:15:13.919000-04:00,398106088
+PSAJVPW,856252,PRAV32J,1.0,852590.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-29 15:15:15.312000-04:00,398106091
+PSAJVPW,856252,PRAV32J,1.0,852590.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-29 15:15:31.997000-04:00,398107586
+PSAJVPW,856252,PRAV32J,1.0,852590.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-29 15:15:32.002000-04:00,398107942
+PSAJVPW,856252,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-29 15:15:32.193000-04:00,398107946
+PSAJVPW,856252,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-29 15:15:35.788000-04:00,398107947
+PSAJVPW,856252,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-29 15:15:36.010000-04:00,398107948
+PSAJVPW,856252,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-29 15:16:21.637000-04:00,398111993
+PSAJVPW,856252,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-29 15:16:21.640000-04:00,398112269
+PSAJVPW,856252,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-29 15:16:24.352000-04:00,398112270
+PSAJVPW,856252,PRAV32H,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-29 15:16:24.599000-04:00,398112271
+PSAJVPW,856252,PRAV32H,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-29 15:17:17.596000-04:00,398116907
+PSAJVPW,856252,PRAV32H,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-29 15:17:17.601000-04:00,398117450
+PSAJVPW,856252,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-29 15:17:22.780000-04:00,398117451
+PSAJVPW,856252,PRAV32N,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-29 15:17:23.050000-04:00,398117452
+PSAJVPW,856252,PRAV32N,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-29 15:19:49.595000-04:00,398130576
+PSAJVPW,856252,PRAV32N,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-29 15:19:49.600000-04:00,398130738
+PSAJVPW,856252,,,,,assignment_finished,2020-10-29 15:19:49.733000-04:00,398130740
+PSAJVPW,856381,,,,,assignment_started,2020-10-15 16:23:33.188000-04:00,357264842
+PSAJVPW,856381,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-10-15 16:23:33.877000-04:00,357264846
+PSAJVPW,856381,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-10-15 16:23:50.897000-04:00,357266084
+PSAJVPW,856381,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-10-15 16:23:50.902000-04:00,357266492
+PSAJVPW,856381,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-15 16:23:55.419000-04:00,357266494
+PSAJVPW,856381,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-15 16:23:55.502000-04:00,357266495
+PSAJVPW,856381,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-15 16:24:47.158000-04:00,357270464
+PSAJVPW,856381,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-15 16:24:47.162000-04:00,357270677
+PSAJVPW,856381,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-15 16:24:50.161000-04:00,357270678
+PSAJVPW,856381,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-15 16:24:50.242000-04:00,357270679
+PSAJVPW,856381,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-15 16:25:16.787000-04:00,357272680
+PSAJVPW,856381,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-15 16:25:16.792000-04:00,357272861
+PSAJVPW,856381,,,,,assignment_finished,2020-10-15 16:25:16.847000-04:00,357272863
+PSAJVPW,856546,,,,,assignment_started,2020-10-20 18:58:26.043000-04:00,370367263
+PSAJVPW,856546,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-10-20 18:58:26.448000-04:00,370367267
+PSAJVPW,856546,,,,,assignment_resumed,2020-10-22 13:58:33.546000-04:00,377382068
+PSAJVPW,856546,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-10-22 13:58:54.742000-04:00,377384950
+PSAJVPW,856546,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-10-22 13:58:54.766000-04:00,377385478
+PSAJVPW,856546,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-22 13:58:58.287000-04:00,377385480
+PSAJVPW,856546,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-22 13:58:58.876000-04:00,377385481
+PSAJVPW,856546,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-22 13:59:09.645000-04:00,377387029
+PSAJVPW,856546,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-22 13:59:09.652000-04:00,377387578
+PSAJVPW,856546,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-22 13:59:12.843000-04:00,377387580
+PSAJVPW,856546,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-22 13:59:13.143000-04:00,377387581
+PSAJVPW,856546,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-22 13:59:25.544000-04:00,377389353
+PSAJVPW,856546,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-22 13:59:25.554000-04:00,377389366
+PSAJVPW,856546,,,,,assignment_finished,2020-10-22 13:59:25.737000-04:00,377389368
+PSAJVPW,856583,,,,,assignment_started,2020-10-16 12:02:54.098000-04:00,359473388
+PSAJVPW,856583,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-10-16 12:02:55.489000-04:00,359473392
+PSAJVPW,856583,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-10-16 12:03:29.816000-04:00,359476641
+PSAJVPW,856583,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-10-16 12:03:29.826000-04:00,359477008
+PSAJVPW,856583,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-16 12:03:32.470000-04:00,359477010
+PSAJVPW,856583,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-16 12:03:32.747000-04:00,359477011
+PSAJVPW,856583,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],wrong_response,2020-10-16 15:33:04.454000-04:00,360719548
+PSAJVPW,856583,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],scaffolding_requested,2020-10-16 15:33:04.488000-04:00,360719587
+PSAJVPW,856583,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-16 15:33:05.705000-04:00,360719590
+PSAJVPW,856583,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],hint_requested,2020-10-16 15:35:02.105000-04:00,360726705
+PSAJVPW,856583,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],answer_requested,2020-10-16 15:35:04.416000-04:00,360727308
+PSAJVPW,856583,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-16 15:35:17.254000-04:00,360727554
+PSAJVPW,856583,PRAVCQH,1.0,832839.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-16 15:35:17.262000-04:00,360727555
+PSAJVPW,856583,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-16 15:35:17.505000-04:00,360728207
+PSAJVPW,856583,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-16 15:36:15.058000-04:00,360731201
+PSAJVPW,856583,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-16 15:36:15.255000-04:00,360731202
+PSAJVPW,856583,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-16 15:37:56.552000-04:00,360737135
+PSAJVPW,856583,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-16 15:37:56.559000-04:00,360737382
+PSAJVPW,856583,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-16 15:38:00.532000-04:00,360737383
+PSAJVPW,856583,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-16 15:38:00.669000-04:00,360737384
+PSAJVPW,856583,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-16 15:38:38.262000-04:00,360739606
+PSAJVPW,856583,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-16 15:38:38.268000-04:00,360739744
+PSAJVPW,856583,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-16 15:38:40.587000-04:00,360739745
+PSAJVPW,856583,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-16 15:38:40.742000-04:00,360739746
+PSAJVPW,856583,,,,,assignment_resumed,2020-10-20 11:00:15.924000-04:00,367344647
+PSAJVPW,856583,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-20 11:02:07.478000-04:00,367359023
+PSAJVPW,856583,PRAVCQK,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-20 11:02:07.491000-04:00,367360262
+PSAJVPW,856583,,,,,assignment_finished,2020-10-20 11:02:07.657000-04:00,367360268
+PSAJVPW,857428,,,,,assignment_started,2020-12-01 14:55:15.641000-05:00,469662676
+PSAJVPW,857428,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-12-01 14:55:16.126000-05:00,469662682
+PSAJVPW,857428,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],wrong_response,2020-12-01 14:55:24.095000-05:00,469663564
+PSAJVPW,857428,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-12-01 14:55:24.100000-05:00,469663642
+PSAJVPW,857428,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-12-01 14:55:24.905000-05:00,469663644
+PSAJVPW,857428,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-12-01 14:55:25.057000-05:00,469663645
+PSAJVPW,857428,,,,,assignment_resumed,2020-12-01 14:55:57.725000-05:00,469667525
+PSAJVPW,857428,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-12-01 14:58:34.042000-05:00,469686287
+PSAJVPW,857428,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-12-01 14:58:34.336000-05:00,469686302
+PSAJVPW,857428,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-12-01 15:08:40.419000-05:00,469757925
+PSAJVPW,857428,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-12-01 15:08:40.436000-05:00,469759073
+PSAJVPW,857428,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-12-01 15:08:40.567000-05:00,469759077
+PSAJVPW,857428,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-12-01 15:08:51.687000-05:00,469759194
+PSAJVPW,857428,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-12-01 15:08:51.854000-05:00,469759195
+PSAJVPW,857428,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-12-01 15:09:23.916000-05:00,469762682
+PSAJVPW,857428,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-12-01 15:09:23.920000-05:00,469762711
+PSAJVPW,857428,PRAV32P,1.0,852597.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-12-01 15:09:24.217000-05:00,469762714
+PSAJVPW,857428,PRAV32P,1.0,852597.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],answer_requested,2020-12-01 15:09:52.151000-05:00,469765660
+PSAJVPW,857428,PRAV32P,1.0,852597.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-12-01 15:12:48.588000-05:00,469784417
+PSAJVPW,857428,PRAV32P,1.0,852597.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-12-01 15:12:48.597000-05:00,469784418
+PSAJVPW,857428,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-12-01 15:12:48.751000-05:00,469784781
+PSAJVPW,857428,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-12-01 15:12:51.968000-05:00,469784782
+PSAJVPW,857428,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-12-01 15:12:52.207000-05:00,469784783
+PSAJVPW,857428,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-12-01 15:15:34.328000-05:00,469801047
+PSAJVPW,857428,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-12-01 15:15:34.343000-05:00,469801146
+PSAJVPW,857428,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-12-01 15:15:35.325000-05:00,469801147
+PSAJVPW,857428,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-12-01 15:15:35.593000-05:00,469801148
+PSAJVPW,857428,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-12-01 15:19:24.952000-05:00,469823427
+PSAJVPW,857428,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-12-01 15:19:24.970000-05:00,469823683
+PSAJVPW,857428,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-12-01 15:19:27.921000-05:00,469823684
+PSAJVPW,857428,PRAV32H,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-12-01 15:19:28.116000-05:00,469823685
+PSAJVPW,857428,PRAV32H,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-12-01 15:21:46.889000-05:00,469836976
+PSAJVPW,857428,PRAV32H,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-12-01 15:21:46.903000-05:00,469836995
+PSAJVPW,857428,,,,,assignment_finished,2020-12-01 15:21:47.071000-05:00,469836997
+PSAJVPW,859188,,,,,assignment_started,2020-10-29 15:24:49.944000-04:00,398155708
+PSAJVPW,859188,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-29 15:24:50.733000-04:00,398155712
+PSAJVPW,859188,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],correct_response,2020-10-29 15:25:01.260000-04:00,398156509
+PSAJVPW,859188,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-29 15:25:01.264000-04:00,398156667
+PSAJVPW,859188,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-29 15:25:03.110000-04:00,398156669
+PSAJVPW,859188,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-29 15:25:03.290000-04:00,398156670
+PSAJVPW,859188,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-29 15:26:20.195000-04:00,398162506
+PSAJVPW,859188,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-29 15:26:20.199000-04:00,398162620
+PSAJVPW,859188,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-29 15:26:21.236000-04:00,398162621
+PSAJVPW,859188,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-29 15:26:21.337000-04:00,398162622
+PSAJVPW,859188,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-29 15:26:56.397000-04:00,398165338
+PSAJVPW,859188,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-29 15:26:56.399000-04:00,398165407
+PSAJVPW,859188,,,,,assignment_finished,2020-10-29 15:26:56.438000-04:00,398165409
+PSAJVPW,859669,,,,,assignment_started,2020-10-19 15:24:44.048000-04:00,365019664
+PSAJVPW,859669,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-10-19 15:24:45.087000-04:00,365019668
+PSAJVPW,859669,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-10-19 15:26:34.812000-04:00,365030793
+PSAJVPW,859669,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-10-19 15:26:34.816000-04:00,365031175
+PSAJVPW,859669,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-19 15:26:38.066000-04:00,365031177
+PSAJVPW,859669,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-19 15:26:38.154000-04:00,365031178
+PSAJVPW,859669,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-19 15:57:30.675000-04:00,365197878
+PSAJVPW,859669,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-19 15:57:30.680000-04:00,365198051
+PSAJVPW,859669,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-19 15:57:32.751000-04:00,365198052
+PSAJVPW,859669,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-19 15:57:32.805000-04:00,365198053
+PSAJVPW,859669,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-19 15:58:00.124000-04:00,365200405
+PSAJVPW,859669,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-19 15:58:00.125000-04:00,365200600
+PSAJVPW,859669,,,,,assignment_finished,2020-10-19 15:58:00.157000-04:00,365200602
+PSAJVPW,863434,,,,,assignment_started,2020-10-15 15:50:17.750000-04:00,357101723
+PSAJVPW,863434,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-10-15 15:50:19.115000-04:00,357101727
+PSAJVPW,863434,,,,,assignment_resumed,2020-10-20 09:06:23.249000-04:00,366577512
+PSAJVPW,863434,,,,,assignment_resumed,2020-10-23 12:46:28.952000-04:00,380754640
+PSAJVPW,863434,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],wrong_response,2020-10-23 12:46:48.003000-04:00,380756648
+PSAJVPW,863434,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-10-23 12:46:48.012000-04:00,380756798
+PSAJVPW,863434,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-23 12:46:49.360000-04:00,380756800
+PSAJVPW,863434,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-23 12:46:49.602000-04:00,380756801
+PSAJVPW,863434,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-23 12:48:03.219000-04:00,380764238
+PSAJVPW,863434,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-23 12:48:03.227000-04:00,380764423
+PSAJVPW,863434,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-23 12:48:05.412000-04:00,380764424
+PSAJVPW,863434,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-23 12:48:05.667000-04:00,380764425
+PSAJVPW,863434,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-23 12:48:34.672000-04:00,380767444
+PSAJVPW,863434,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-23 12:48:34.680000-04:00,380767579
+PSAJVPW,863434,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-23 12:48:35.802000-04:00,380767580
+PSAJVPW,863434,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-23 12:48:36.002000-04:00,380767581
+PSAJVPW,863434,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-23 12:48:55.265000-04:00,380769419
+PSAJVPW,863434,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-23 12:48:55.272000-04:00,380769588
+PSAJVPW,863434,,,,,assignment_finished,2020-10-23 12:48:55.404000-04:00,380769590
+PSAJVPW,863630,,,,,assignment_started,2020-10-27 16:35:47.646000-04:00,390488720
+PSAJVPW,863630,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-10-27 16:35:48.730000-04:00,390488724
+PSAJVPW,863630,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-10-27 16:36:12.912000-04:00,390490320
+PSAJVPW,863630,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-10-27 16:36:12.920000-04:00,390490550
+PSAJVPW,863630,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-27 16:36:16.834000-04:00,390490552
+PSAJVPW,863630,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-27 16:36:17.073000-04:00,390490553
+PSAJVPW,863630,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-27 16:40:26.800000-04:00,390507486
+PSAJVPW,863630,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-27 16:40:26.805000-04:00,390507753
+PSAJVPW,863630,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-27 16:40:30.287000-04:00,390507754
+PSAJVPW,863630,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-27 16:40:30.507000-04:00,390507755
+PSAJVPW,863630,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-27 16:42:50.603000-04:00,390517448
+PSAJVPW,863630,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-27 16:42:50.607000-04:00,390517868
+PSAJVPW,863630,,,,,assignment_finished,2020-10-27 16:42:50.709000-04:00,390517870
+PSAJVPW,866994,,,,,assignment_started,2020-10-19 14:05:03.674000-04:00,364395502
+PSAJVPW,866994,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-10-19 14:05:04.683000-04:00,364395506
+PSAJVPW,866994,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],wrong_response,2020-10-19 14:05:24.450000-04:00,364398472
+PSAJVPW,866994,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-10-19 14:05:24.467000-04:00,364398935
+PSAJVPW,866994,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-19 14:05:26.877000-04:00,364398937
+PSAJVPW,866994,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-19 14:05:27.062000-04:00,364398938
+PSAJVPW,866994,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-19 14:22:46.501000-04:00,364555951
+PSAJVPW,866994,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-19 14:22:46.505000-04:00,364556334
+PSAJVPW,866994,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-19 14:22:48.812000-04:00,364556335
+PSAJVPW,866994,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-19 14:22:48.890000-04:00,364556336
+PSAJVPW,866994,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-19 14:23:06.994000-04:00,364559140
+PSAJVPW,866994,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-19 14:23:06.997000-04:00,364559292
+PSAJVPW,866994,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-19 14:23:08.313000-04:00,364559293
+PSAJVPW,866994,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-19 14:23:08.401000-04:00,364559294
+PSAJVPW,866994,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-19 14:23:29.192000-04:00,364562579
+PSAJVPW,866994,PRAVCQJ,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-19 14:23:29.195000-04:00,364562863
+PSAJVPW,866994,,,,,assignment_finished,2020-10-19 14:23:29.245000-04:00,364562865
+PSAJVPW,869663,,,,,assignment_started,2020-11-21 16:33:17.801000-05:00,457399311
+PSAJVPW,869663,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-11-21 16:33:18.496000-05:00,457399315
+PSAJVPW,869663,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],correct_response,2020-11-21 16:33:44.079000-05:00,457399386
+PSAJVPW,869663,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-11-21 16:33:44.089000-05:00,457399400
+PSAJVPW,869663,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-11-21 16:33:46.381000-05:00,457399402
+PSAJVPW,869663,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-11-21 16:33:46.680000-05:00,457399403
+PSAJVPW,869663,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-11-21 16:34:30.283000-05:00,457399580
+PSAJVPW,869663,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-11-21 16:34:30.293000-05:00,457399582
+PSAJVPW,869663,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-11-21 16:34:30.616000-05:00,457399585
+PSAJVPW,869663,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-11-21 16:35:12.646000-05:00,457399820
+PSAJVPW,869663,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-11-21 16:35:12.654000-05:00,457399883
+PSAJVPW,869663,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-11-21 16:35:12.794000-05:00,457399887
+PSAJVPW,869663,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-11-21 16:35:25.207000-05:00,457399892
+PSAJVPW,869663,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-11-21 16:35:25.371000-05:00,457399893
+PSAJVPW,869663,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-11-21 16:35:38.137000-05:00,457399954
+PSAJVPW,869663,PRAV32P,1.0,852597.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-11-21 16:35:38.431000-05:00,457399957
+PSAJVPW,869663,PRAV32P,1.0,852597.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-11-21 16:35:56.324000-05:00,457400036
+PSAJVPW,869663,PRAV32P,1.0,852597.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-11-21 16:35:56.329000-05:00,457400059
+PSAJVPW,869663,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-11-21 16:35:56.495000-05:00,457400063
+PSAJVPW,869663,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-11-21 16:36:00.998000-05:00,457400064
+PSAJVPW,869663,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-11-21 16:36:01.156000-05:00,457400065
+PSAJVPW,869663,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-11-21 16:37:19.393000-05:00,457400402
+PSAJVPW,869663,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-11-21 16:37:19.399000-05:00,457400405
+PSAJVPW,869663,PRAV32J,1.0,852590.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-11-21 16:37:20.087000-05:00,457400408
+PSAJVPW,869663,PRAV32J,1.0,852590.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-11-21 16:37:36.152000-05:00,457400459
+PSAJVPW,869663,PRAV32J,1.0,852590.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-11-21 16:37:36.158000-05:00,457400485
+PSAJVPW,869663,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-11-21 16:37:36.338000-05:00,457400489
+PSAJVPW,869663,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-11-21 16:37:40.286000-05:00,457400490
+PSAJVPW,869663,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-11-21 16:37:40.696000-05:00,457400491
+PSAJVPW,869663,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-11-21 16:37:55.040000-05:00,457400558
+PSAJVPW,869663,PRAV32K,1.0,852593.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-11-21 16:37:55.383000-05:00,457400561
+PSAJVPW,869663,PRAV32K,1.0,852593.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-11-21 16:38:06.405000-05:00,457400621
+PSAJVPW,869663,PRAV32K,1.0,852593.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-11-21 16:38:06.409000-05:00,482132640
+PSAJVPW,869663,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-11-21 16:38:06.616000-05:00,482132644
+PSAJVPW,871039,,,,,assignment_started,2020-10-16 10:57:00.107000-04:00,359071038
+PSAJVPW,871039,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-10-16 10:57:01.108000-04:00,359071042
+PSAJVPW,871039,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],correct_response,2020-10-16 10:57:15.553000-04:00,359072280
+PSAJVPW,871039,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_finished,2020-10-16 10:57:15.559000-04:00,359072434
+PSAJVPW,871039,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-16 10:57:17.260000-04:00,359072436
+PSAJVPW,871039,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-16 10:57:17.360000-04:00,359072437
+PSAJVPW,871039,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-16 10:57:41.275000-04:00,359074838
+PSAJVPW,871039,PRAVCQH,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-16 10:57:41.278000-04:00,359074957
+PSAJVPW,871039,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],continue_selected,2020-10-16 10:57:42.710000-04:00,359074958
+PSAJVPW,871039,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_started,2020-10-16 10:57:42.787000-04:00,359074959
+PSAJVPW,871039,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],correct_response,2020-10-16 10:57:57.637000-04:00,359076430
+PSAJVPW,871039,PRAVCQT,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment],problem_finished,2020-10-16 10:57:57.645000-04:00,359076738
+PSAJVPW,871039,,,,,assignment_finished,2020-10-16 10:57:57.739000-04:00,359076740
+PSAJVPW,876380,,,,,assignment_started,2020-10-26 06:37:22.917000-04:00,382945368
+PSAJVPW,876380,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-26 06:37:24.121000-04:00,382945372
+PSAJVPW,876380,,,,,assignment_resumed,2020-10-29 05:01:41.173000-04:00,395513531
+PSAJVPW,876380,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],wrong_response,2020-10-29 05:02:02.426000-04:00,395513549
+PSAJVPW,876380,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-29 05:02:02.436000-04:00,395513553
+PSAJVPW,876380,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-29 05:02:05.249000-04:00,395513555
+PSAJVPW,876380,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-29 05:02:05.548000-04:00,395513556
+PSAJVPW,876380,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-10-29 05:24:37.439000-04:00,395515140
+PSAJVPW,876380,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-10-29 05:24:37.461000-04:00,395515142
+PSAJVPW,876380,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-29 05:24:38.368000-04:00,395515145
+PSAJVPW,876380,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-10-29 05:24:50.196000-04:00,395515171
+PSAJVPW,876380,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-10-29 05:25:01.638000-04:00,395515201
+PSAJVPW,876380,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-29 05:32:38.094000-04:00,395515808
+PSAJVPW,876380,PRAV32G,1.0,852582.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-29 05:32:38.104000-04:00,395515809
+PSAJVPW,876380,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-29 05:32:38.291000-04:00,395515840
+PSAJVPW,876380,,,,,assignment_resumed,2020-10-29 05:40:44.162000-04:00,395516228
+PSAJVPW,876380,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-29 05:40:45.164000-04:00,395516231
+PSAJVPW,876380,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-29 05:52:04.478000-04:00,395517384
+PSAJVPW,876380,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-29 05:52:04.486000-04:00,395517385
+PSAJVPW,876380,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-29 05:52:11.719000-04:00,395517386
+PSAJVPW,876380,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-29 05:52:12.019000-04:00,395517387
+PSAJVPW,876380,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-10-29 05:52:36.103000-04:00,395517398
+PSAJVPW,876380,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-10-29 05:52:36.110000-04:00,395517400
+PSAJVPW,876380,PRAV32J,1.0,852590.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-29 05:52:36.719000-04:00,395517403
+PSAJVPW,876380,PRAV32J,1.0,852590.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-29 05:52:44.216000-04:00,395517404
+PSAJVPW,876380,PRAV32J,1.0,852590.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-29 05:52:44.221000-04:00,395517410
+PSAJVPW,876380,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-29 05:52:44.407000-04:00,395517414
+PSAJVPW,876380,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-29 05:52:52.394000-04:00,395517415
+PSAJVPW,876380,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-29 05:52:52.567000-04:00,395517416
+PSAJVPW,876380,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-29 05:53:34.321000-04:00,395517428
+PSAJVPW,876380,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-29 05:53:34.326000-04:00,395517429
+PSAJVPW,876380,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-29 05:53:37.420000-04:00,395517430
+PSAJVPW,876380,PRAV32H,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-29 05:53:37.614000-04:00,395517431
+PSAJVPW,876380,PRAV32H,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-29 05:53:58.060000-04:00,395517444
+PSAJVPW,876380,PRAV32H,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-29 05:53:58.066000-04:00,395517445
+PSAJVPW,876380,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-29 05:54:00.268000-04:00,395517446
+PSAJVPW,876380,PRAV32N,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-29 05:54:00.464000-04:00,395517447
+PSAJVPW,876380,PRAV32N,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-29 05:54:25.848000-04:00,395517456
+PSAJVPW,876380,PRAV32N,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-29 05:54:25.855000-04:00,395517463
+PSAJVPW,876380,,,,,assignment_finished,2020-10-29 05:54:25.957000-04:00,395517465
+PSAJVPW,877637,,,,,assignment_started,2020-10-20 10:55:28.817000-04:00,367304760
+PSAJVPW,877637,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-10-20 10:55:29.588000-04:00,367304764
+PSAJVPW,878485,,,,,assignment_started,2020-10-20 13:55:35.146000-04:00,368803856
+PSAJVPW,878485,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-20 13:55:35.964000-04:00,368803860
+PSAJVPW,878485,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],correct_response,2020-10-20 13:56:31.640000-04:00,368812529
+PSAJVPW,878485,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-20 13:56:31.656000-04:00,368813005
+PSAJVPW,878485,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-20 13:56:34.482000-04:00,368813007
+PSAJVPW,878485,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-20 13:56:34.600000-04:00,368813008
+PSAJVPW,878485,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-20 13:58:02.032000-04:00,368826916
+PSAJVPW,878485,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-20 13:58:02.035000-04:00,368827779
+PSAJVPW,878485,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-20 13:58:07.154000-04:00,368827780
+PSAJVPW,878485,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-20 13:58:07.237000-04:00,368827781
+PSAJVPW,878485,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],wrong_response,2020-10-20 13:58:32.479000-04:00,368831665
+PSAJVPW,878485,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],scaffolding_requested,2020-10-20 13:58:32.484000-04:00,368833242
+PSAJVPW,878485,PRAV32P,1.0,852597.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-20 13:58:32.693000-04:00,368833245
+PSAJVPW,878485,PRAV32P,1.0,852597.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-20 13:58:46.771000-04:00,368833885
+PSAJVPW,878485,PRAV32P,1.0,852597.0,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-20 13:58:46.774000-04:00,368834600
+PSAJVPW,878485,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-20 13:58:46.879000-04:00,368834604
+PSAJVPW,878485,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-20 13:58:50.906000-04:00,368834605
+PSAJVPW,878485,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-20 13:58:51.007000-04:00,368834606
+PSAJVPW,878485,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-20 13:59:08.149000-04:00,368837416
+PSAJVPW,878485,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-20 13:59:08.151000-04:00,368837705
+PSAJVPW,878485,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-20 13:59:10.310000-04:00,368837706
+PSAJVPW,878485,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-20 13:59:10.401000-04:00,368837709
+PSAJVPW,878485,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-20 13:59:35.559000-04:00,368841472
+PSAJVPW,878485,PRAV32K,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-20 13:59:35.562000-04:00,368841911
+PSAJVPW,878485,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-20 13:59:37.607000-04:00,368841912
+PSAJVPW,878485,PRAV32H,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-20 13:59:37.675000-04:00,368841913
+PSAJVPW,878485,PRAV32H,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-20 14:02:34.433000-04:00,368869975
+PSAJVPW,878485,PRAV32H,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-20 14:02:34.439000-04:00,368870071
+PSAJVPW,878485,,,,,assignment_finished,2020-10-20 14:02:34.506000-04:00,368870073
+PSAJVPW,879589,,,,,assignment_started,2020-10-29 15:38:43.129000-04:00,398221307
+PSAJVPW,879589,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-29 15:38:44.368000-04:00,398221311
+PSAJVPW,879589,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],correct_response,2020-10-29 15:39:00.863000-04:00,398222736
+PSAJVPW,879589,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-29 15:39:00.877000-04:00,398223024
+PSAJVPW,879589,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-29 15:39:03.547000-04:00,398223026
+PSAJVPW,879589,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-29 15:39:03.861000-04:00,398223027
+PSAJVPW,879589,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-29 15:39:40.483000-04:00,398226041
+PSAJVPW,879589,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-29 15:39:40.501000-04:00,398226230
+PSAJVPW,879589,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-29 15:39:42.289000-04:00,398226231
+PSAJVPW,879589,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-29 15:39:42.534000-04:00,398226233
+PSAJVPW,879589,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-29 15:40:13.256000-04:00,398229273
+PSAJVPW,879589,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-29 15:40:13.259000-04:00,398229393
+PSAJVPW,879589,,,,,assignment_finished,2020-10-29 15:40:13.406000-04:00,398229395
+PSAJVPW,885430,,,,,assignment_started,2020-11-06 14:16:07.279000-05:00,418527641
+PSAJVPW,885430,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-E [treatment]/Intro Video [ignore],problem_started,2020-11-06 14:16:08.565000-05:00,418527645
+PSAJVPW,887935,,,,,assignment_started,2020-10-25 22:04:05.499000-04:00,382841568
+PSAJVPW,887935,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_started,2020-10-25 22:04:06.198000-04:00,382841572
+PSAJVPW,887935,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],wrong_response,2020-10-25 22:07:16.778000-04:00,382843514
+PSAJVPW,887935,PRAV3ZU,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control]/Intro Video [ignore],problem_finished,2020-10-25 22:07:16.782000-04:00,382843538
+PSAJVPW,887935,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-25 22:07:19.456000-04:00,382843540
+PSAJVPW,887935,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-25 22:07:19.583000-04:00,382843541
+PSAJVPW,887935,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-25 22:09:50.288000-04:00,382845000
+PSAJVPW,887935,PRAV32G,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-25 22:09:50.293000-04:00,382845027
+PSAJVPW,887935,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-25 22:09:53.013000-04:00,382845028
+PSAJVPW,887935,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-25 22:09:53.813000-04:00,382845029
+PSAJVPW,887935,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-25 22:10:16.519000-04:00,382845256
+PSAJVPW,887935,PRAV32P,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-25 22:10:16.523000-04:00,382845280
+PSAJVPW,887935,,,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],continue_selected,2020-10-25 22:10:17.454000-04:00,382845281
+PSAJVPW,887935,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_started,2020-10-25 22:10:17.609000-04:00,382845282
+PSAJVPW,887935,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],correct_response,2020-10-25 22:10:36.488000-04:00,382845483
+PSAJVPW,887935,PRAV32J,1.0,,Intermediate Logarithm Manipulation F-BF.B.5 EX/PSAJVPW-C [control],problem_finished,2020-10-25 22:10:36.491000-04:00,382845498
+PSAJVPW,887935,,,,,assignment_finished,2020-10-25 22:10:36.576000-04:00,382845500
